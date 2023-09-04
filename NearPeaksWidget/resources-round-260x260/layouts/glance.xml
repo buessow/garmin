@@ -1,0 +1,7 @@
+<layout id="GlanceLayout">
+    <label x="center" y="5" 
+           font="Graphics.FONT_SYSTEM_SMALL" 
+           justification="Graphics.TEXT_JUSTIFY_CENTER"
+           text="@Strings.AppName"
+           color="Graphics.COLOR_WHITE" />
+</layout>

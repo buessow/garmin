@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>GlucoseWidget</name>
+	<comment></comment>
+	<projects>
+		<project>Shared</project>
+	</projects>
+	<buildSpec>
+                <buildCommand>
+                        <name>connectiq.builder</name>
+                        <arguments>
+                        </arguments>
+                </buildCommand>
+	</buildSpec>
+        <natures>
+                <nature>connectiq.projectNature</nature>
+        </natures>
+</projectDescription>

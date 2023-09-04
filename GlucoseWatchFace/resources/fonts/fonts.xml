@@ -1,0 +1,8 @@
+<resources>
+<!-- 
+  <font id="arial32" filename="arial32.fnt" antialias="true" filter="0123456789- +-/minoldg"/>
+  <font id="regular64" filename="Roboto-Regular64.fnt" antialias="true" filter="0123456789"/> 
+-->
+  <font id="medium64" filename="Roboto-Medium64.fnt" antialias="true" filter="0123456789"/>
+  <font id="thin64" filename="Roboto-Thin64.fnt" antialias="true" filter="0123456789"/> 
+</resources>

@@ -1,0 +1,9 @@
+<strings>
+    <string id="AppName">Glucose Field</string>
+    <string id="FieldName">Glucose</string>
+    <string id="glucose_label">Blood Glucose</string>
+    <string id="glucose_units">mg/dl</string>
+    <string id="GlucoseUnitSettingsTitle">Glucose Unit</string>
+    <string id="GlucoseUnitMgDl">mg/dl</string>
+    <string id="GlucoseUnitMmolL">mmol/l</string>
+</strings>

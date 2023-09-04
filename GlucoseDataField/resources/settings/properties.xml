@@ -1,0 +1,5 @@
+<properties>
+    <property id="DisplayDiameter" type="number">260</property>
+    <property id="GlucoseUnit" type="number">0</property>
+    <property id="GlucoseBuffer" type="string"></property>
+</properties>

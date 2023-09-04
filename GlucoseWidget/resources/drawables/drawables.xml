@@ -1,0 +1,9 @@
+<drawables>
+    <bitmap id="LauncherIcon" filename="icons8-blood-40.png" />
+    <bitmap id="Carb5g" filename="carb-5g.png" />
+    <bitmap id="Carb10g" filename="carb-10g.png" />
+    <bitmap id="Carb20g" filename="carb-20g.png" />
+    <bitmap id="CarbReset" filename="carb-reset.png" />
+    <bitmap id="CarbDone" filename="carb-done.png" />
+    <bitmap id="CarbSave" filename="carb-save.png" />
+</drawables>

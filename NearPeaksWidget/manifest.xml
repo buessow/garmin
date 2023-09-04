@@ -1,0 +1,23 @@
+<iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
+    <iq:application entry="NearPeaksWidgetApp" 
+                    id="708b7b2e8c25420a8ed93607e2a9181a"
+		    minSdkVersion="3.2.0" 
+		    launcherIcon="@Drawables.LauncherIcon" 
+		    name="@Strings.AppName" 
+		    type="widget" 
+		    version="1.0.0">
+        <iq:products>
+            <iq:product id="edge1030"/>
+            <iq:product id="fenix5plus"/>
+            <iq:product id="fenix7"/>
+        </iq:products>
+        <iq:permissions>
+            <iq:uses-permission id="Background"/>
+            <iq:uses-permission id="Communications"/>
+            <iq:uses-permission id="Positioning"/>
+        </iq:permissions>
+        <iq:languages>
+            <iq:language>eng</iq:language>
+        </iq:languages>
+    </iq:application>
+</iq:manifest>

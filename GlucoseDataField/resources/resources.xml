@@ -1,0 +1,8 @@
+<resources>
+	<layout id="GlucoseLayout" background="Gfx.COLOR_WHITE">
+		<label text="glucose" x="1" y="5" font="Gfx.FONT_MEDIUM"
+			color="Gfx.COLOR_RED" />
+		<label id="value" text="V" x="1" y="30" font="Gfx.FONT_LARGE"
+			color="Gfx.COLOR_RED" />
+	</layout>
+</resources>

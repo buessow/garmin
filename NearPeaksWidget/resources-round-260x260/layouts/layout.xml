@@ -1,0 +1,31 @@
+<resources>
+  <layout id="MainLayout" scope="glance">
+      <label x="center" y="5" 
+	     font="Graphics.FONT_SYSTEM_SMALL" 
+	     justification="Graphics.TEXT_JUSTIFY_CENTER"
+	     text="@Strings.AppName"
+	     color="Graphics.COLOR_WHITE" />
+      <label id="PositionLabel" 
+	     x="20" y="40"
+	     font="Graphics.FONT_SYSTEM_TINY" 
+	     text="-"
+	     justification="Graphics.TEXT_JUSTIFY_LEFT" />
+      <text-area id="PeaksText" 
+	     x="20" y="65" width="155" height="170"
+	     font="Graphics.FONT_SYSTEM_TINY" 
+	     text=""
+	     justification="Graphics.TEXT_JUSTIFY_LEFT" />
+      <text-area id="ElevationText"
+	     x="170" y="65" width="50" height="170"
+	     font="Graphics.FONT_SYSTEM_TINY" 
+	     text=""
+	     justification="Graphics.TEXT_JUSTIFY_LEFT" />
+  </layout>
+  <layout id="GlanceLayout" scope="glance">
+     <label x="center" y="5" 
+	    font="Graphics.FONT_SYSTEM_SMALL" 
+	    justification="Graphics.TEXT_JUSTIFY_CENTER"
+            text="@Strings.AppName"
+            color="Graphics.COLOR_WHITE" />
+  </layout>
+</resources>

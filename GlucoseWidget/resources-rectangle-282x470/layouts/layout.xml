@@ -1,0 +1,61 @@
+<layout id="MainLayout">
+    <drawable id="DateValueGraph" class="Shared.Graph">
+      <param name="x">0</param>
+      <param name="y">334</param>
+      <param name="width">282</param>
+      <param name="height">86</param>
+    </drawable>      
+
+    <label x="center" y="10" 
+           font="Graphics.FONT_SYSTEM_SMALL" 
+           justification="Graphics.TEXT_JUSTIFY_CENTER"
+           text="@Strings.AppName"
+           color="Graphics.COLOR_WHITE" />
+    <label id="GlucoseLabel" x="center" y="50" 
+           font="Graphics.FONT_SYSTEM_NUMBER_HOT" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT" />
+    <label id="GlucoseDelta" x="260" y="40"
+           text="iob: -" 
+           font="Graphics.FONT_SYSTEM_SMALL" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT" />
+    <label id="InsulinOnBoard" x="260" y="65"
+           text="-" 
+           font="Graphics.FONT_SYSTEM_SMALL" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT" />
+    <label id="GlucoseAge" x="260" y="90"
+           text="-" 
+           font="Graphics.FONT_SYSTEM_SMALL" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT" />
+    <label id="BasalCorrection" x="260" y="115"
+           text="-" 
+           font="Graphics.FONT_SYSTEM_SMALL" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT" />
+                              
+     <button x="190" y="220" width="50" height="50" behavior="onDone">
+        <state id="stateDefault" bitmap="@Drawables.CarbDone"/>
+	<state id="stateSelected" bitmap="@Drawables.CarbSave"/>
+    </button>  
+ 
+    <button x="10" y="150" width="50" height="180" behavior="onPlus5">
+        <state id="stateDefault" bitmap="@Drawables.Carb5g"/>
+    </button>
+    <button x="100" y="150" width="50" height="20" behavior="onPlus10">
+        <state id="stateDefault" bitmap="@Drawables.Carb10g"/>
+    </button>
+    <button x="190" y="150" width="50" height="50" behavior="onPlus20">
+        <state id="stateDefault" bitmap="@Drawables.Carb20g"/>
+    </button>  
+    <label id="Carbs" x="90" y="220" 
+           font="Gfx.FONT_LARGE" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT"
+           text="0" />
+    <button x="100" y="220" width="50" height="50" behavior="onReset">
+        <state id="stateDefault" bitmap="@Drawables.CarbReset"/>
+    </button>  
+
+    <label id="PostCarbsResultLabel" x="10" y="270"
+           text="idle" 
+           font="Graphics.FONT_SYSTEM_SMALL" 
+           justification="Graphics.TEXT_JUSTIFY_LEFT" />
+        
+</layout>

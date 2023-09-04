@@ -1,0 +1,5 @@
+<fitContributions>
+	<fitField id="243" displayInChart="true" sortOrder = "2" precision="1"
+	 chartTitle="@Strings.glucose_label" dataLabel="@Strings.glucose_label"
+	 unitLabel="@Strings.glucose_units" fillColor="#00FF00" />
+ </fitContributions>

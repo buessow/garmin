@@ -1,0 +1,48 @@
+<layout id="WatchFace">
+<!--
+    <drawable id="Background" class="Background" />
+    -->
+    <drawable id="DateValueGraph" class="Shared.Graph">
+      <param name="x">0</param>
+      <param name="y">130</param>
+      <param name="width">260</param>
+       <param name="height">90</param>
+    </drawable>      
+    <label id="DateLabel" x="center" y="10" 
+           font="Graphics.FONT_SYSTEM_SMALL" 
+           justification="Graphics.TEXT_JUSTIFY_CENTER" 
+           color="Graphics.COLOR_WHITE" />
+    <label id="HourLabel" x="185" y="28" 
+           font="Graphics.FONT_SYSTEM_NUMBER_HOT" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
+           color="Graphics.COLOR_WHITE" />
+    <label id="MinuteLabel" x="188" y="38" 
+           font="Graphics.FONT_SYSTEM_NUMBER_MILD" 
+           justification="Graphics.TEXT_JUSTIFY_LEFT" 
+           color="Graphics.COLOR_WHITE" />
+    <label id="GlucoseLabel" x="center" y="215" 
+           font="Graphics.FONT_SYSTEM_LARGE" 
+           justification="Graphics.TEXT_JUSTIFY_CENTER" 
+           color="Graphics.COLOR_WHITE" />
+    <label id="Data1Label" x="88" y="46" 
+           font="Graphics.FONT_SYSTEM_TINY" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
+           color="Graphics.COLOR_WHITE" />         
+    <label id="Data2Label" x="88" y="72" 
+           font="Graphics.FONT_SYSTEM_XTINY" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
+           color="Graphics.COLOR_WHITE" />
+    <label id="Data3Label" x="88" y="88" 
+           font="Graphics.FONT_SYSTEM_XTINY" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
+           color="Graphics.COLOR_WHITE" />     
+    <label id="Data4Label" x="88" y="104" 
+           font="Graphics.FONT_SYSTEM_XTINY" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
+           color="Graphics.COLOR_WHITE" />     
+           
+    <label id="MessageLabel" x="10" y="100" 
+           font="Graphics.FONT_SYSTEM_XTINY" 
+           justification="Graphics.TEXT_JUSTIFY_LEFT" 
+           color="Graphics.COLOR_RED" />   
+</layout>

@@ -1,0 +1,29 @@
+<layout id="MainLayout">
+    <drawable id="DateValueGraph" class="Shared.Graph">
+      <param name="x">3</param>
+      <param name="y">120</param>
+      <param name="width">234</param>
+      <param name="height">86</param>
+    </drawable>      
+
+    <label x="center" y="5" 
+           font="Graphics.FONT_SYSTEM_SMALL" 
+           justification="Graphics.TEXT_JUSTIFY_CENTER"
+           text="@Strings.AppName"
+           color="Graphics.COLOR_WHITE" />
+    <label id="GlucoseLabel" x="center" y="47" 
+           font="Graphics.FONT_SYSTEM_NUMBER_HOT" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT" />
+    <label id="GlucoseDelta" x="150" y="40"
+           text="iob: -" 
+           font="Graphics.FONT_XTINY" 
+           justification="Graphics.TEXT_JUSTIFY_LEFT" />
+    <label id="InsulinOnBoard" x="150" y="65"
+           text="-" 
+           font="Graphics.FONT_XTINY" 
+           justification="Graphics.TEXT_JUSTIFY_LEFT" />
+    <label id="BasalCorrection" x="150" y="90"
+           text="-" 
+           font="Graphics.FONT_XTINY" 
+           justification="Graphics.TEXT_JUSTIFY_LEFT" />
+</layout>

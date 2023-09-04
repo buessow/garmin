@@ -1,0 +1,45 @@
+<resources>
+  <layout id="MainLayout">
+      <drawable id="DateValueGraph" class="Shared.Graph">
+	<param name="x">3</param>
+	<param name="y">140</param>
+	<param name="width">254</param>
+	<param name="height">96</param>
+      </drawable>      
+
+      <label x="center" y="5" 
+	     font="Graphics.FONT_SYSTEM_SMALL" 
+	     justification="Graphics.TEXT_JUSTIFY_CENTER"
+	     text="@Strings.AppName"
+	     color="Graphics.COLOR_WHITE" />
+      <label id="GlucoseLabel" x="center" y="30" 
+	     font="Graphics.FONT_SYSTEM_NUMBER_HOT" 
+	     justification="Graphics.TEXT_JUSTIFY_RIGHT" />
+      <label id="GlucoseDelta" x="150" y="45"
+	     text="iob: -" 
+	     font="Graphics.FONT_XTINY" 
+	     justification="Graphics.TEXT_JUSTIFY_LEFT" />
+      <label id="InsulinOnBoard" x="150" y="65"
+	     text="-" 
+	     font="Graphics.FONT_XTINY" 
+	     justification="Graphics.TEXT_JUSTIFY_LEFT" />
+      <label id="BasalCorrection" x="150" y="90"
+	     text="-" 
+	     font="Graphics.FONT_XTINY" 
+	     justification="Graphics.TEXT_JUSTIFY_LEFT" />
+  </layout>
+  <drawable-list id="Connected" x="220" y="70" width="20" height="20">
+      <shape type="rectangle"
+	     x="left"
+	     y="top"
+	     width="100%"
+	     height="100%" />
+  </drawable-list>
+  <layout id="GlanceLayout" scope="glance">
+      <label x="center" y="5"
+             font="Graphics.FONT_SYSTEM_SMALL"
+             justification="Graphics.TEXT_JUSTIFY_CENTER"
+             text="@Strings.AppName"
+             color="Graphics.COLOR_WHITE" />
+  </layout>
+</resources>
