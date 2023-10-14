@@ -1,5 +1,6 @@
 using Shared.Log;
 using Toybox.Communications as Comm;
+using Toybox.Lang;
 using Toybox.System as Sys;
 
 module Shared {
@@ -19,16 +20,16 @@ class CommunicationDelegate extends Sys.ServiceDelegate {
   hidden function setData(msg) {
     if (msg != null && msg has :data && msg.data != null) {
       if (data == null || 
-          Util.ifNull(data["timestamp"], 0) < Util.ifNull(msg.data["timestamp"], 1)) {
-	data = msg.data;
-	Log.i(TAG, "setData " + data);
+        Util.ifNull(data["timestamp"], 0) < Util.ifNull(msg.data["timestamp"], 1)) {
+	      data = msg.data;
+	      Log.i(TAG, "setData " + data);
       }
     } else {
       Log.i(TAG, "ignore message, no data");
     }
   }
 
-  function onPhoneAppMessage(msg) {
+  function onPhoneAppMessage(msg as Comm.PhoneAppMessage) as Void {
     try {
       Log.i(TAG, "onPhoneAppMessage");
       data = null;
@@ -50,7 +51,7 @@ class CommunicationDelegate extends Sys.ServiceDelegate {
     var cmd = data["command"];
     if ("ping".equals(cmd)) {
       Log.i(TAG, "onPhoneAppMessage sending 'pong'");
-      Comm.transmit({ "command" => "pong" }, {}, new Listener());
+      Comm.transmit({ "command" => "pong" }, {}, new Listener(null));
       Background.exit(null);
     } else if ("glucose".equals(cmd)) {
       data["httpCode"] = 200;
@@ -60,7 +61,7 @@ class CommunicationDelegate extends Sys.ServiceDelegate {
     }
   }
 
-  function onNextMessage(msg) {
+  function onNextMessage(msg as Comm.PhoneAppMessage) as Void {
     try {
       Log.i(TAG, "onNextMessage");
       setData(msg);
@@ -83,7 +84,7 @@ class CommunicationDelegate extends Sys.ServiceDelegate {
     }
   }
 
-  hidden function populateHeartRateHistory(msg) {
+  hidden function populateHeartRateHistory(msg as Lang.Dictionary<Lang.String, Lang.Object>) as Void {
     var nowSec = Util.nowSec();
     var startSec = Application.getApp().getProperty("HeartRateStartSec");
     var lastSec = Application.getApp().getProperty("HeartRateLastSec");
@@ -104,7 +105,7 @@ class CommunicationDelegate extends Sys.ServiceDelegate {
 
   hidden function sendHeartRate(exitData) {
     var msg = { 
-	"command" => "heartrate",
+	      "command" => "heartrate",
         "device" => Application.getApp().getProperty("Device"),
         "manufacturer" => "garmin",
     };

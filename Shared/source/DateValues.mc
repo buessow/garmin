@@ -1,6 +1,7 @@
 using Toybox.Lang;
 
 module Shared {
+(:glance)
 class DateValues {
   var data;
   var start = 0;

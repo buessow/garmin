@@ -5,6 +5,7 @@ using Toybox.Time as Time;
 using Toybox.Timer as Timer;
 using Toybox.WatchUi as Ui;
 
+(:glance)
 class Messenger {
   hidden static const TAG = "Messenger";
   hidden static const ALERT_INTERVAL_SEC = 60;
@@ -26,7 +27,7 @@ class Messenger {
     new Timer.Timer().start(method(:onTime), 1000, true);
   }
 
-  function onTime() {
+  function onTime() as Void {
     if (Util.nowSec() % 10 == 0) {
       getGlucose();
     }

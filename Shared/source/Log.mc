@@ -4,7 +4,7 @@ using Toybox.Time as Time;
 using Toybox.Time.Gregorian as Gregorian;
 
 module Shared {
-(:background)
+(:background, :glance)
 module Log {
   function log(severity, tag, message) {
     var timeInfo = Gregorian.info(Time.now(), Time.FORMAT_SHORT);

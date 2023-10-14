@@ -3,7 +3,7 @@ using Shared.Util;
 using Toybox.Graphics as Gfx;
 using Toybox.WatchUi as Ui;
 
-(:background)
+(:glance)
 class GlucoseGlance extends Ui.GlanceView {
   hidden static const TAG = "GlucoseGlance";
   hidden var data;

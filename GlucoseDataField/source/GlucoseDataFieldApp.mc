@@ -10,55 +10,46 @@ using Toybox.WatchUi as Ui;
 
 class GlucoseDataFieldApp extends Application.AppBase {
   hidden const TAG = "GlucoseDataFieldApp";
-  hidden var server;
-  hidden var view;
-  hidden var comServer;
+  hidden var server as Shared.GmwServer or Null;
+  hidden var view as GlucoseDataFieldView or Null;
 
+  (:background)
   function initialize() {
     AppBase.initialize();
-    if (Application.getApp().getProperty("Device") == null) {
-      Application.getApp().setProperty(
-          "Device", System.getDeviceSettings().partNumber + "_DF");
-    }
-    if (UserProfile.getProfile().height.toLong() % 2 == 0) {
-      Log.i(TAG, "initialize with ComServer");
-      server = new Shared.ComServer();
-      //server = new Shared.FakeServer();
-      comServer = true;
-    } else {
-      Log.i(TAG, "initialize with GmwServer");
-      server = new Shared.GmwServer();
-      server.wait = true;
-      comServer = false;
-    }
+    Log.i(TAG, "initialize with GmwServer");
+    server = new Shared.GmwServer();
+    server.wait = true;
   }
 
   (:background)
-  function getServiceDelegate() {
+  function getServiceDelegate() as Lang.Array<System.ServiceDelegate> {
     Log.i(TAG, "getServiceDelegate");
     return [ server.getServiceDelegate() ];
   }
 
-  function onBackgroundData(result) {
+  function onBackgroundData(result) as Void {
+    Log.i(TAG, "onBackgroundData");
     BackgroundScheduler.registered = false;
     if (view == null) {
       view = new GlucoseDataFieldView();
-      view.data.comServer = comServer;
     }
     view.heartRateCollector.reset();
     server.onBackgroundData(result, view.data);
     BackgroundScheduler.backgroundComplete(view.data.glucoseBuffer.getLastDateSec());
   }
 
-  function onStart(state) {
+  function onStart(state as Lang.Dictionary or Null) as Void {
   }
 
-  function onStop(state) {
+  function onStop(state as Lang.Dictionary or Null) as Void {
   }
 
-  function getInitialView() {
+  function getInitialView() as Lang.Array<Ui.Views or Ui.InputDelegates> or Null {
+    if (Application.getApp().getProperty("Device") == null) {
+      Application.getApp().setProperty(
+          "Device", System.getDeviceSettings().partNumber + "_DF");
+    }
     view = new GlucoseDataFieldView();
-    view.data.comServer = comServer;
     server.init2();
     BackgroundScheduler.registerTemporalEventIfConnectedIn(new Time.Duration(2));
 

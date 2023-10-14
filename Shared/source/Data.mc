@@ -2,6 +2,7 @@ using Shared.Util;
 using Toybox.Time;
 using Toybox.Time.Gregorian as Calendar;
 
+(:glance)
 module Shared {
 class Data {
   hidden static const TAG = "Data";
@@ -13,10 +14,10 @@ class Data {
   var temporaryBasalRate;
   var profile = "D";
   var connected = true;
-  var comServer;
+  var comServer = false;
   hidden var fakeMode = false;
 
-   enum {
+   enum GlucoseUnit {
      unknown = 0,
      mgdl = 1,
      mmoll = 2,
@@ -117,6 +118,7 @@ class Data {
 	     ? glucose.format("%0.1f")
 	     : glucose.format("%0.0f");
     }
+    return null;
   }
 
   function getGlucoseUnitStr() {
@@ -207,6 +209,7 @@ class Data {
         case mmoll: return (deltaPerMinute / 18.0).format("%+0.2f") + p;
         case mgdl: return deltaPerMinute.format("%+0.1f") + p;
       }
+      return "";
     } else {
       return "+_.__" + p;
     }

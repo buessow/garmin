@@ -5,6 +5,7 @@ using Toybox.System as Sys;
 using Toybox.Time;
 using Toybox.WatchUi as Ui;
 
+(:graph)
 module Shared {
 class Graph extends Ui.Drawable {
   hidden const TAG = "Graph";
@@ -166,7 +167,6 @@ class Graph extends Ui.Drawable {
     for (var dateSec = (startSec-1) / MINOR_X_AXIS_SEC * MINOR_X_AXIS_SEC;
          dateSec < startSec + TIME_RANGE_SEC;
          dateSec += MINOR_X_AXIS_SEC) {
-      var y = dateSec % MAJOR_X_AXIS_SEC == 0 ? 0 : 15;
       var x = getX(startSec, dateSec);
       dc.drawLine(
           x + xOffset - GLUCOSE_BAR_PADDING, yOffset + height + 5,

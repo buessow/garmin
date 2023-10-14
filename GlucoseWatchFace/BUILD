@@ -16,17 +16,16 @@ filegroup(
 )
 
 monkeyc_binary(
-  name = 'fenix5plus', 
-  manifest = 'manifest.xml',
-  device = 'fenix5plus',
+  name = 'GlucoseWatchFace', 
+  jungles = 'monkey.jungle',
   resources = [':resources'],
   srcs = [':sources'],
 )
 
 monkeyc_binary(
-  name = 'fenix7', 
-  manifest = 'manifest.xml',
-  device = 'fenix7',
+  name = 'test', 
+  jungles = 'monkey.jungle',
   resources = [':resources'],
   srcs = [':sources'],
+  test = True,
 )

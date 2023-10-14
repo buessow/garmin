@@ -1,17 +1,6 @@
 filegroup(
   name = 'Shared',
-  srcs = ['source/BaseServer.mc',
-          'source/CommunicationDelegate.mc',
-          # 'source/FakeServer.mc',
-          'source/Data.mc',
-          'source/DateValue.mc',
-          'source/DateValues.mc',
-          'source/GlucoseServiceDelegate.mc',
-          'source/GmwServer.mc',
-          'source/ComServer.mc',
-          'source/Log.mc',
-          'source/Util.mc',
-	 ],
+  srcs = glob(['source/*.mc']),
   visibility = ['//visibility:public'],
 )
 

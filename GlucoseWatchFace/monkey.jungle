@@ -1,1 +1,5 @@
 project.manifest = manifest.xml
+base.sourcePath = source;../Shared/source
+#base.resourcePath = resources
+base.excludeAnnotations = fitContributor
+#round-260x260.resourcePath=$(base.resourcePath);resources-round-260x260

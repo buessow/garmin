@@ -113,7 +113,7 @@ class InputHandler extends Ui.BehaviorDelegate {
     function onSelect(item) {
       Log.i("BolusMenuDelegate", "action" + item.toString());
       if (item.getId() == :connect) {
-        messenger.connectPump(item.isEnabled() ? 0 : 30);
+        messenger.connectPump((item as Ui.ToggleMenuItem).isEnabled() ? 0 : 30);
       } else if (item.getId() instanceof Lang.Number) {
         messenger.postCarbs(item.getId());
 	Ui.popView(Ui.SLIDE_IMMEDIATE);

@@ -2,7 +2,7 @@ using Toybox.Lang as Lang;
 using Toybox.Time;
 
 module Shared {
-(:background)
+(:background, :glance)
 module Util {
   var testNowSec;
   var testNowSecIdx = 0;
@@ -42,10 +42,6 @@ module Util {
       s.substring(s.length() - suffix.length(), s.length()).equals(suffix));
   }
 
-//  function find(a, cmp) {
-//    return find2(a, cmp, 0, a.size());
-//  }
-
   function ifNull(a, b) {
     return a == null ? b : a;
   }
@@ -61,18 +57,6 @@ module Util {
     return s;
   }
 
-//  function find2(a, cmp, start, count) {
-//    count = min(a.size() - start, count);
-//    if (count <= 0) { return null; }
-//    var o = a[start];
-//    for (var i = start+1; i < start+count; i++) {
-//      if (cmp.invoke(a[i], o)) {
-//        o = a[i];
-//      }
-//    }
-//    return o;
-//  }
-//
   function timeSecToString(sec) {
     return sec == null ? "NULL" : momentToString(new Time.Moment(sec));
   }

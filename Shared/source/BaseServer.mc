@@ -1,5 +1,4 @@
 using Toybox.Attention;
-using Toybox.FitContributor as Fit;
 
 module Shared {
 
@@ -11,10 +10,11 @@ class BaseServer {
   function initialize() {
   }
 
+  (:fitContributor)
   function initGlucoseField(view) {
     glucoseField = view.createField(
-        "Glucose", 243, Fit.DATA_TYPE_SINT32,
-        {:units => "mgdl", :mesgType => Fit.MESG_TYPE_RECORD });
+        "Glucose", 243, Toybox.FitContributor.DATA_TYPE_SINT32,
+        {:units => "mgdl", :mesgType => Toybox.FitContributor.MESG_TYPE_RECORD });
   }
 
   function onData(msg, data) {
@@ -34,32 +34,6 @@ class BaseServer {
     }
     data.connected = msg["connected"];
     Log.i(TAG, "remaining: "  + data.remainingInsulin.toString());
-  }
-
-  function alert(result) {
-    if (result == null) {
-      return;
-    }
-    var values = Shared.DeltaVarEncoder.decodeBase64(2, msg["encodedGlucose"]);
-    if (values.size() < 4) {
-      return;
-    }
-    var now = Time.now();
-    var v0 = new Shared.DateValue(values[values.size()-3], values[values.size()-2]);
-    var v1 = new Shared.DateValue(values[values.size()-1], values[values.size()-0]);
-    if (v1.value >= 60 && v1.value > v0.value) {
-      //return;
-    }
-    if (Attention has :vibrate) {
-      var vibeData = [
-        new Attention.VibeProfile(50, 2000),
-        new Attention.VibeProfile(0, 2000),
-        new Attention.VibeProfile(50, 2000),
-        new Attention.VibeProfile(0, 2000),
-        new Attention.VibeProfile(50, 2000)];
-      Log.i(TAG, "vibrate");
-      Attention.vibrate(vibeData);
-    }
   }
 
   function onBackgroundData(result, data) {
@@ -84,7 +58,6 @@ class BaseServer {
         }
       } else {
         data.errorMessage = result["errorMessage"] + " " + code.toString();
-	Log.i(TAG, "onBackgroundData error " + data.errorMessage);
       }
     } catch (e) {
       Log.e(TAG, "ex ");

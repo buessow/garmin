@@ -7,7 +7,7 @@ using Toybox.Time;
 
 module Shared {
 
-(:background)
+(:background, :glance)
 class GlucoseServiceDelegate extends System.ServiceDelegate {
   static const TAG = "GlucoseServiceDelegate";
   hidden var server;
@@ -18,27 +18,27 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   hidden function getErrorMessage(code) {
     switch (code) {
       case -1: return "BLE error";
-      case -2: return "BLE hst tout";
-      case -3: return "BLE srv tout";
+      case -2: return "BLE timeout/h";
+      case -3: return "BLE timeout/s";
       case -4: return "BLE no data";
-      case -5: return "BLE req cancel";
+      case -5: return "BLE cancel";
       case -101: return "BLE queue full";
       case -102: return "BLE too large";
       case -103: return "BLE send error";
-      case -104: return "BLE conn unavail";
-      case -200: return "invalid req header";
-      case -201: return "invalid req body";
-      case -202: return "invalid req method";
-      case -300: return "network timed out";
-      case -400: return "invalid resp body";
-      case -401: return "invalid resp header";
+      case -104: return "BLE no conn";
+      case -200: return "inv req header";
+      case -201: return "inv req body";
+      case -202: return "inv req method";
+      case -300: return "net timeout";
+      case -400: return "inv resp body";
+      case -401: return "inv resp header";
       case -402: return "resp too large";
-      case -403: return "resp out of memory";
+      case -403: return "resp oom";
       case -1000: return "storage full";
-      case -1001: return "secure conn req";
+      case -1001: return "sec conn req";
       case -1002: return "bad content type";
-      case -1003: return "request cancelled";
-      case -1004: return "connection dropped";
+      case -1003: return "req cancelled";
+      case -1004: return "conn dropped";
       default:
         if (code > 0) {
           return "HTTP";
@@ -113,7 +113,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     post("get", callback, parameters);
   }
 
-  function onResult(code, obj) {
+  function onResult(code as Lang.Number, obj as Lang.Dictionary) as Void {
     code = code == null ? 0 : code;
     try {
       onResultImpl(code, obj, methodName, callback);

@@ -3,7 +3,7 @@ using Shared.Log;
 using Toybox.Application;
 using Toybox.System as Sys;
 
-(:background)
+(:glance)
 class GlucoseWidgetApp extends Application.AppBase {
   hidden const TAG = "GlucoseWidgetApp";
   var data;

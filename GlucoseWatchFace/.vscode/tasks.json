@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "monkeyc",
+			"device": "fenix7",
+			"simulatorBuild": true,
+			"problemMatcher": [
+				"$monkeyc.error",
+				"$monkeyc.fileWarning",
+				"$monkeyc.genericWarning"
+			],
+			"label": "monkeyc: fenix7"
+		}
+	]
+}

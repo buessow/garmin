@@ -180,6 +180,7 @@ class GlucoseDataFieldView extends Ui.DataField {
       case Shared.Data.mgdl: return "mg";
       case Shared.Data.mmoll: return "mmol";
     }
+    return null;
   }
 
   hidden function getGlucoseUnitDivisor(unit) {
@@ -187,6 +188,7 @@ class GlucoseDataFieldView extends Ui.DataField {
       case Shared.Data.mgdl: return "dl";
       case Shared.Data.mmoll: return "l";
     }
+    return null;
   }
 
   function compute(info) {
