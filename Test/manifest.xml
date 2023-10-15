@@ -4,13 +4,15 @@
 		    launcherIcon="@Drawables.LauncherIcon" 
 		    minSdkVersion="3.0.0"
 		    name="@Strings.AppName" 
-		    type="watchface">
+		    type="widget">
         <iq:products>
             <iq:product id="fenix7"/>
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="Background"/>
             <iq:uses-permission id="Communications"/>
+            <iq:uses-permission id="FitContributor"/>
+            <iq:uses-permission id="SensorHistory"/>
         </iq:permissions>
         <iq:languages>
             <iq:language>eng</iq:language>

@@ -1,21 +1,21 @@
+import Toybox.Lang;
+
 using Toybox.Background;
 using Toybox.Communications as Comm;
-using Toybox.Lang;
-using Toybox.SensorHistory;
 using Toybox.System;
-using Toybox.Time;
 
 module Shared {
 
 (:background, :glance)
 class GlucoseServiceDelegate extends System.ServiceDelegate {
-  static const TAG = "GlucoseServiceDelegate";
-  hidden var server;
-  hidden var startTime;
-  hidden var methodName;
-  hidden var callback;
+  private static const TAG = "GlucoseServiceDelegate";
+  private var server as GmwServer;
+  private var startTime as Long?;
+  private var methodName as String?;
+  private var callback as (Method(result as Dictionary<String, Object>) as Void)?;
+  var makeWebRequest = new Method(Comm, :makeWebRequest);
 
-  hidden function getErrorMessage(code) {
+  private function getErrorMessage(code as Number) as String {
     switch (code) {
       case -1: return "BLE error";
       case -2: return "BLE timeout/h";
@@ -41,7 +41,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
       case -1004: return "conn dropped";
       default:
         if (code > 0) {
-          return "HTTP";
+          return "HTTP" + code;
         } else {
           return "unknown error";
         }
@@ -50,22 +50,22 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
 
   // Initializes a new instance.
   //
-  // @Param url (Toybox.Lang.String)
+  // @Param url (String)
   //        URL of the request.
-  // @Param parameters (Toybox.Lang.Dictionary)
+  // @Param parameters (Dictionary)
   //        Request/URL parameters. These will be added to the URL
   //        with ? & delemiters.
-  function initialize(server) {
+  function initialize(server as GmwServer) {
     System.ServiceDelegate.initialize();
     me.server = server;
   }
 
-  function onTemporalEvent() {
+  function onTemporalEvent() as Void {
     Comm.registerForPhoneAppMessages(null);
-    requestBloodGlucose(new Lang.Method(Background, :exit));
+    requestBloodGlucose(new Method(Toybox.Background, :exit));
   }
 
-  hidden function populateHeartRateHistory(parameters) {
+  private function populateHeartRateHistory(parameters as Dictionary<String, String>) as Void {
     var nowSec = Util.nowSec();
     var startSec = Application.getApp().getProperty("HeartRateStartSec");
     var lastSec = Application.getApp().getProperty("HeartRateLastSec");
@@ -79,7 +79,10 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     }
   }
 
-  hidden function post(methodName, callback, parameters) {
+  private function get(
+      methodName as String, 
+      callback as Method(result as Dictionary<String, Object>) as Void, 
+      parameters as Dictionary<String, String>) as Void {
     me.methodName = methodName;
     me.callback = callback;
     startTime = Util.nowSec();
@@ -91,29 +94,28 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     var stats = System.getSystemStats();
     Log.i(TAG, 
         methodName + " url: " + url + " params: " + parameters
-        + " mem avail: " + stats.freeMemory 
-	+ " mem total: " + stats.totalMemory);
+        + " mem avail: " + stats.freeMemory + " mem total: " + stats.totalMemory);
     try {
-      Comm.makeWebRequest(
-	  url,
-	  parameters,
-	  { :method => Communications.HTTP_REQUEST_METHOD_GET },
-	  method(:onResult));
+      makeWebRequest.invoke(
+	        url,
+	        parameters,
+	        { :method => Comm.HTTP_REQUEST_METHOD_GET },
+	        method(:onResult));
     } catch (e) {
       e.printStackTrace();
     }
   }
 
-  function requestBloodGlucose(callback) {
+  function requestBloodGlucose(callback as Method(result as Dictionary<String, Object>) as Void) as Void {
     var parameters = {};
-    if (server.wait) {
+    if (server has :wait && server.wait) {
       parameters["wait"] = "15";
     }
     populateHeartRateHistory(parameters);
-    post("get", callback, parameters);
+    get("get", callback, parameters);
   }
 
-  function onResult(code as Lang.Number, obj as Lang.Dictionary) as Void {
+  function onResult(code as Number, obj) as Void {
     code = code == null ? 0 : code;
     try {
       onResultImpl(code, obj, methodName, callback);
@@ -125,12 +127,17 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     }
   }
 
-  hidden function onResultImpl(code, obj, method, callback) {
+  private function onResultImpl(
+      code as Number, 
+      obj, 
+      method as String, 
+      callback as Method(result as Dictionary<String, Object>) as Void) {
     Log.i(TAG, method + " " + code + " obj: " + (obj == null ? "NULL" : obj));
 
     var result = obj instanceof Dictionary ? obj : { "message" => obj };
     result["httpCode"] = code;
     if (code != 200) {
+      Log.i(TAG, "set error " + getErrorMessage(code));
       result["errorMessage"] = getErrorMessage(code);
     }
     result["startTimeSec"] = startTime;
@@ -139,11 +146,15 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     }
   }
 
-  function postCarbs(carbs, callback) {
-    post("carbs", callback, {"carbs" => carbs});
+  function postCarbs(
+      carbs as Number, 
+      callback as Method(result as Dictionary<String, Object>) as Void) {
+    get("carbs", callback, {"carbs" => carbs.toString()});
   }
 
-  function connectPump(disconnectMinutes, callback) {
-    post("connect", callback, { "disconnectMinutes" => disconnectMinutes });
+  function connectPump(
+      disconnectMinutes as Number, 
+      callback as Method(result as Dictionary<String, Object>) as Void) {
+    get("connect", callback, { "disconnectMinutes" => disconnectMinutes.toString()});
   }
 }}

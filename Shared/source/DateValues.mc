@@ -1,13 +1,15 @@
-using Toybox.Lang;
+import Toybox.Lang;
 
 module Shared {
 (:glance)
 class DateValues {
-  var data;
+  var data as Array<Number>;
   var start = 0;
   var count = 0;
 
-  function initialize(values, size) {
+  function initialize(
+      values as Array<Number>?, 
+      size as Number) {
     if (values == null) {
       data = new [2*size];
     } else {
@@ -16,7 +18,7 @@ class DateValues {
     }
   }
 
-  function size() {
+  function size() as Number {
     return count / 2;
   }
 
@@ -27,7 +29,7 @@ class DateValues {
 
   hidden function add1(value) {
     if (value == null) {
-      throw new Lang.InvalidValueException("null");
+      throw new InvalidValueException("null");
     }
     if (data.size() == count) {
       data[start] = value;
@@ -42,11 +44,11 @@ class DateValues {
     if (i < 2 * size()) {
       var v = data[(start + i) % data.size()];
       if (v == null) {
-        throw new Lang.InvalidValueException("i=" + i);
+        throw new InvalidValueException("i=" + i);
       }
       return v;
     } else {
-      throw new Lang.ValueOutOfBoundsException("i=" + i + " size=" + size());
+      throw new ValueOutOfBoundsException("i=" + i + " size=" + size());
     }
   }
 

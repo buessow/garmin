@@ -1,25 +1,28 @@
-using Toybox.Lang;
+import Toybox.Lang;
+
 using Toybox.StringUtil as StringUtil;
 
 module Shared {
 module DeltaVarEncoder {
 
-  function zigzagEncode (i) {
+  function zigzagEncode (i as Long) as Long {
     return (i >> 31) ^ (i << 1);
   }
 
-  function zigzagDecode (i) {
+  function zigzagDecode (i as Long) as Long {
     // emulate >>> 1
     var x = (i >> 1) & 0x7fffffff;
     return x ^ (-1 * (i & 1));
   }
 
-  function get(data, pos) {
+  function get(data as ByteArray, pos as Number) {
     var wi = pos % data.size();
     return data[wi];
   }
 
-  function readDelta(data, posRef) {
+  function readDelta(
+      data as ByteArray, 
+      posRef as Array<Number>) as Number or Null {
     if (posRef[0] == data.size()) { return null; }
 
     var value = 0L;
@@ -39,8 +42,9 @@ module DeltaVarEncoder {
     return zigzagDecode(value).toNumber();
   }
 
-  function decodeBase64(entrySize, dataBase64) {
-    var a = [];
+  function decodeBase64(entrySize as Number, dataBase64 as String) 
+      as Array<Number> {
+    var a = [] as Array<Number>;
     if (dataBase64 == null || dataBase64.length() == 0) {
       return a;
     }
@@ -51,7 +55,7 @@ module DeltaVarEncoder {
     var data = StringUtil.convertEncodedString(
         dataBase64,
         { :fromRepresentation => StringUtil.REPRESENTATION_STRING_BASE64,
-          :toRepresentation => StringUtil.REPRESENTATION_BYTE_ARRAY });
+          :toRepresentation => StringUtil.REPRESENTATION_BYTE_ARRAY }) as ByteArray;
 
     var posRef = [0];
     var i = 0;

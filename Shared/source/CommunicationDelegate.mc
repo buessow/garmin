@@ -8,8 +8,8 @@ module Shared {
 (:background)
 class CommunicationDelegate extends Sys.ServiceDelegate {
   static const TAG = "CommunicationDelegate";
-  hidden var server = null;
-  hidden var data = null;
+  hidden var server as BaseServer or Null = null;
+  hidden var data as Lang.Dictionary<Lang.String, Lang.Object> or Null = null;
 
 
   function initialize(server) {
@@ -17,10 +17,23 @@ class CommunicationDelegate extends Sys.ServiceDelegate {
     me.server = server;
   }
 
-  hidden function setData(msg) {
+  hidden function getNumber(
+      data as Lang.Dictionary<Lang.String, Lang.Object> or Null, 
+      key as Lang.String) as Lang.Number or Null {
+    if (data == null) { return null; }
+    var value = data[key];
+    if (value != null && value instanceof Lang.Number) {
+      return value;
+    } else {
+      return null;
+    }
+  }
+
+  hidden function setData(msg as Comm.PhoneAppMessage) as Void {
     if (msg != null && msg has :data && msg.data != null) {
-      if (data == null || 
-        Util.ifNull(data["timestamp"], 0) < Util.ifNull(msg.data["timestamp"], 1)) {
+      var tsOld = getNumber(data, "timestamp");
+      var tsNew = getNumber(msg.data, "timestamp");
+      if (tsOld == null || (tsNew != null && tsOld < tsNew)) {
 	      data = msg.data;
 	      Log.i(TAG, "setData " + data);
       }

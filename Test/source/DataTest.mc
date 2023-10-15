@@ -52,6 +52,7 @@ class DataTest {
   (:test)
   function glucoseFallingMgdl(log) {
     try {
+      Util.testNowSec = 1000;
       var buffer = new Shared.DateValues(null, 10);
       buffer.add(new Shared.DateValue(880, 133));
       buffer.add(new Shared.DateValue(1000, 123));
@@ -70,6 +71,7 @@ class DataTest {
   (:test)
   function glucoseRaisingMgdl(log) {
     try {
+      Util.testNowSec = 1000;
       var buffer = new Shared.DateValues(null, 10);
       buffer.add(new Shared.DateValue(880, 133));
       buffer.add(new Shared.DateValue(1000, 153));

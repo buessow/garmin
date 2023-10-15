@@ -1,4 +1,5 @@
 using Shared.Util;
+using Toybox.Lang;
 using Toybox.Time;
 using Toybox.Time.Gregorian as Calendar;
 
@@ -7,7 +8,7 @@ module Shared {
 class Data {
   hidden static const TAG = "Data";
   var glucoseBuffer = new Shared.DateValues(null, 24);   // never null
-  var glucoseUnit;
+  var glucoseUnit as GlucoseUnit = mgdl;
   var errorMessage;
   var requestTimeSec;
   var remainingInsulin;
@@ -54,12 +55,12 @@ class Data {
       Log.i(TAG, "no glucose stored");
       errorMessage = "no value";
     }
-    glucoseUnit = Application.getApp().getProperty("GlucoseUnit");
-    glucoseUnit = glucoseUnit == mmoll ? mmoll : mgdl;
+    var glucoseUnitStr = Application.getApp().getProperty("GlucoseUnit");
+    glucoseUnit = glucoseUnitStr == "mmoll" ? mmoll : mgdl;
   }
 
   // Returns true iff we have a blood glucose reading.
-  function hasValue() {
+  function hasValue() as Lang.Boolean {
     return glucoseBuffer.size() > 0 && (Util.nowSec() - glucoseBuffer.getLastDateSec()) < 16 * 60;
   }
 
@@ -122,16 +123,16 @@ class Data {
   }
 
   function getGlucoseUnitStr() {
-    if (hasValue) {
+    if (hasValue()) {
       return glucoseUnit == mgdl ? "mgdl" : "mmoll";
     } else {
       return "";
     }
   }
 
-  function setGlucoseUnit(glucoseUnit) {
+  function setGlucoseUnit(glucoseUnit as GlucoseUnit) as Void {
     me.glucoseUnit = glucoseUnit;
-    Application.getApp().setProperty("GlucoseUnit", glucoseUnit);
+    Application.getApp().setProperty("GlucoseUnit", getGlucoseUnitStr());
   }
 
   function getGlucoseTimeStr() {
@@ -199,19 +200,18 @@ class Data {
   // @Returns Toybox.Lang.String
   function getGlucoseDeltaPerMinuteStr() {
     if (fakeMode) { return "-0.05"; }
-    var p = comServer ? "*" : "";
     if (!hasValue()) {
-      return "+_.__" + p;
+      return "+_.__";
     }
     var deltaPerMinute = getGlucoseDeltaPerMinute();
     if (deltaPerMinute != null) {
       switch (glucoseUnit) {
-        case mmoll: return (deltaPerMinute / 18.0).format("%+0.2f") + p;
-        case mgdl: return deltaPerMinute.format("%+0.1f") + p;
+        case mmoll: return (deltaPerMinute / 18.0).format("%+0.2f");
+        case mgdl: return deltaPerMinute.format("%+0.1f");
       }
       return "";
     } else {
-      return "+_.__" + p;
+      return "+_.__";
     }
   }
 

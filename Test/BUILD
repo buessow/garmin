@@ -5,21 +5,20 @@ filegroup(
   srcs = glob(['resources*/**/*.xml']),
 )
 
+filegroup(
+  name = 'sources',
+  srcs = glob(['source/*.mc']),
+)
+
 monkeyc_binary(
   name = 'Test', 
-  manifest = 'manifest.xml',
-  device = 'fenix7',
+  jungles = 'monkey.jungle',
   resources = [':resources'],
   test = True,
   srcs = ['//Shared',
           '//Shared:Base',
           '//Shared:Scheduler',
-	  '//TestLib:TestLib',
-          'source/BackgroundSchedulerTest.mc',
-          'source/DataTest.mc',
-          'source/DateValuesTest.mc',
-          'source/DeltaVarEncodedBufferTest.mc',
-          'source/Main.mc',
-          'source/UtilTest.mc',
+       	  '//TestLib:TestLib',
+          ':sources',
 	 ],
 )
