@@ -1,6 +1,3 @@
-bazel-testlogs
-bazel-out
-bazel-bin
-bazel-garmin
+bazel-*
 .*.swp
 *.mir
