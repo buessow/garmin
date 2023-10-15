@@ -15,6 +15,6 @@ filegroup(
 monkeyc_binary(
   name = 'GlucoseDataField', 
   jungles = 'monkey.jungle',
-  resources = [':resources'],
+  resources = ['//Shared:Resources', ':resources'],
   srcs = ['//Shared', ':sources'],
 )

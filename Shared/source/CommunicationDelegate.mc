@@ -1,4 +1,5 @@
 using Shared.Log;
+using Toybox.Application.Properties;
 using Toybox.Communications as Comm;
 using Toybox.Lang;
 using Toybox.System as Sys;
@@ -99,9 +100,9 @@ class CommunicationDelegate extends Sys.ServiceDelegate {
 
   hidden function populateHeartRateHistory(msg as Lang.Dictionary<Lang.String, Lang.Object>) as Void {
     var nowSec = Util.nowSec();
-    var startSec = Application.getApp().getProperty("HeartRateStartSec");
-    var lastSec = Application.getApp().getProperty("HeartRateLastSec");
-    var avg = Application.getApp().getProperty("HeartRateAvg");
+    var startSec = Properties.getValue("HeartRateStartSec");
+    var lastSec = Properties.getValue("HeartRateLastSec");
+    var avg = Properties.getValue("HeartRateAvg");
     if (startSec != null && lastSec != null && avg != null &&
         avg > 0 && nowSec - lastSec < 300) {
       Log.i(TAG, "HR " + avg);
@@ -119,7 +120,7 @@ class CommunicationDelegate extends Sys.ServiceDelegate {
   hidden function sendHeartRate(exitData) {
     var msg = { 
 	      "command" => "heartrate",
-        "device" => Application.getApp().getProperty("Device"),
+        "device" => Properties.getValue("Device"),
         "manufacturer" => "garmin",
     };
     populateHeartRateHistory(msg);

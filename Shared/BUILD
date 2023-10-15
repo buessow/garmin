@@ -5,6 +5,13 @@ filegroup(
 )
 
 filegroup(
+  name = 'Resources',
+  srcs = glob(['resources/**/*.xml']),
+  visibility = ['//visibility:public'],
+)
+
+
+filegroup(
   name = 'Base',
   srcs = ['source/DeltaVarEncoder.mc',
          ],

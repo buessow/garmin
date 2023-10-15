@@ -1,5 +1,8 @@
+import Toybox.Lang;
+
 using Shared.Log;
 using Shared.Util;
+using Toybox.Application.Properties;
 using Toybox.Graphics as Gfx;
 using Toybox.System as Sys;
 using Toybox.Time;
@@ -8,40 +11,41 @@ using Toybox.WatchUi as Ui;
 (:graph)
 module Shared {
 class Graph extends Ui.Drawable {
-  hidden const TAG = "Graph";
-  hidden const TIME_RANGE_SEC = 120 * 60;
-  hidden const GLUCOSE_BAR_WIDTH_SEC = 5 * 60;
-  hidden const HR_SAMPLING_PERIOD_SEC = 5 * 60;
-  hidden const VALUE_COUNT = TIME_RANGE_SEC / GLUCOSE_BAR_WIDTH_SEC;
-  hidden const MIN_HEART_RATE = 30;
-  hidden const MAX_HEART_RATE = 160;
-  hidden const GLUCOSE_BAR_PADDING = 2;
-  hidden var glucoseBarWidth;
-  hidden var INITIAL_X_OFFSET = 6;
-  hidden var INITIAL_WIDTH = 240 - 2 * INITIAL_X_OFFSET;
+  private const TAG = "Graph";
+  private const TIME_RANGE_SEC = 120 * 60;
+  private const GLUCOSE_BAR_WIDTH_SEC = 5 * 60;
+  private const HR_SAMPLING_PERIOD_SEC = 5 * 60;
+  private const VALUE_COUNT = TIME_RANGE_SEC / GLUCOSE_BAR_WIDTH_SEC;
+  private const MIN_HEART_RATE = 30;
+  private const MAX_HEART_RATE = 160;
+  private const GLUCOSE_BAR_PADDING = 2;
+  private const MINOR_X_AXIS_SEC = 30 * 60;
 
-  hidden var firstValueIdx = 0;
-  hidden var xOffset = 3;
-  hidden var yOffset = 120;
-  hidden var width;
-  hidden var height = 86;
-  hidden var glucoseBuffer;
-  hidden var maxGlucose;
-  hidden var circular;
-  var isMmolL;
+  private var initialXOffset as Number;
+  private var initialWidth as Number;
+  private var glucoseBarWidth as Number?;
+  private var firstValueIdx = 0;
+  private var xOffset = 3;
+  private var yOffset = 120;
+  var width;
+  var height = 86;
+  private var glucoseBuffer as Shared.DateValues = new Shared.DateValues(null, 2);
+  private var maxGlucose;
+  private var circular;
+  var isMmolL as Boolean?;
 
   function initialize(params) {
     Log.i(TAG, "initialize");
     Drawable.initialize(params);
     me.circular = Sys.getDeviceSettings().screenShape == Sys.SCREEN_SHAPE_ROUND;
-    me.INITIAL_X_OFFSET = params.get(:x).toNumber();
+    me.initialXOffset = params.get(:x).toNumber();
     me.yOffset = params.get(:y).toNumber();
-    me.INITIAL_WIDTH = params.get(:width).toNumber();
-    me.width = INITIAL_WIDTH;
+    me.initialWidth = params.get(:width).toNumber();
+    me.width = initialWidth;
     me.height = params.get(:height).toNumber();
   }
 
-  function setReadings(glucoseBuffer) {
+  function setReadings(glucoseBuffer as Shared.DateValues) as Void {
     Log.i(TAG, "setReadings " + glucoseBuffer.size() + " values");
     me.glucoseBuffer = glucoseBuffer;
     var startSec = Util.nowSec() - TIME_RANGE_SEC;
@@ -62,44 +66,44 @@ class Graph extends Ui.Drawable {
       leftOffset = getBorderOffset(glucoseBuffer.getValue(firstValueIdx));
       rightOffset = getBorderOffset(glucoseBuffer.getLastValue());
     }
-    xOffset = INITIAL_X_OFFSET + leftOffset;
-    width = INITIAL_WIDTH - leftOffset - rightOffset;
+    xOffset = initialXOffset + leftOffset;
+    width = initialWidth - leftOffset - rightOffset;
     var totalPadding = GLUCOSE_BAR_PADDING * (VALUE_COUNT - 1);
     glucoseBarWidth = Math.ceil((width - totalPadding) / VALUE_COUNT);
     var totalBarWidth = glucoseBarWidth * VALUE_COUNT + totalPadding;
     xOffset = xOffset - Util.max(0, totalBarWidth - width);
     Log.i(
-	TAG, 
-	"graph dimensions: " + { 
-	    "leftOffset"=>leftOffset,
-	    "rightOffset"=> rightOffset, 
-	    "width" => width, 
-	    "glucoseBarWidth" => glucoseBarWidth,
-	    "VALUE_COUNT" => VALUE_COUNT});
+        TAG, 
+        "graph dimensions: " + { 
+            "leftOffset"=>leftOffset,
+            "rightOffset"=> rightOffset, 
+            "width" => width, 
+            "glucoseBarWidth" => glucoseBarWidth,
+            "VALUE_COUNT" => VALUE_COUNT});
   }
 
-  hidden function getBorderOffset(value) {
+  private function getBorderOffset(value) {
     if (!circular) { return 0; }
     var y = Util.min(height, getYForGlucose(value));
-    var r = INITIAL_WIDTH / 2;
+    var r = initialWidth / 2;
     var o = r - Math.sqrt(r*r - y*y);  // Pythagoras' theorem
     return Math.ceil(o);
   }
 
-  hidden function getX(startSec, dateSec) {
+  private function getX(startSec as Number, dateSec as Number) as Number {
     var rel = (dateSec - startSec) / GLUCOSE_BAR_WIDTH_SEC * (GLUCOSE_BAR_PADDING + glucoseBarWidth);
     return rel;
   }
 
-  hidden function getYForGlucose(glucose) {
+  private function getYForGlucose(glucose as Number) as Number {
     return height * (maxGlucose - glucose) / (maxGlucose - 40);
   }
 
-  hidden function getYForHR(hr) {
+  private function getYForHR(hr as Number) as Number {
     return height * (MAX_HEART_RATE - hr) / (MAX_HEART_RATE - MIN_HEART_RATE);
   }
 
-  hidden function formatValue(value) {
+  private function formatValue(value as Number) as String {
     if (isMmolL) {
       var valMmolL = value / 18.0;
       if (valMmolL < 10.0) {
@@ -112,7 +116,7 @@ class Graph extends Ui.Drawable {
     }
   }
 
-  hidden function drawValue(dc, startSec, i) {
+  private function drawValue(dc, startSec, i) {
     var x = getX(startSec, glucoseBuffer.getDateSec(i));
     var y = getYForGlucose(glucoseBuffer.getValue(i));
     var justification;
@@ -138,7 +142,7 @@ class Graph extends Ui.Drawable {
         justification);
   }
 
-  hidden function drawGlucose(dc, startSec) {
+  private function drawGlucose(dc, startSec) {
     if (glucoseBuffer == null || glucoseBuffer.size() <= firstValueIdx) {
       return;
     }
@@ -156,9 +160,7 @@ class Graph extends Ui.Drawable {
     }
   }
 
-  hidden const MAJOR_X_AXIS_SEC = 60 * 60;
-  hidden const MINOR_X_AXIS_SEC = 30 * 60;
-  hidden function drawTimeAxis(dc, startSec) {
+  private function drawTimeAxis(dc, startSec) {
     dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
     dc.setPenWidth(2);
     dc.drawLine(xOffset, yOffset, xOffset + width, yOffset);
@@ -177,7 +179,7 @@ class Graph extends Ui.Drawable {
     }
   }
 
-  hidden function drawHeartRate(dc, startSec, nowSec) {
+  private function drawHeartRate(dc, startSec, nowSec) {
     if (!(Toybox has :SensorHistory)) {
       return;
     }
@@ -227,10 +229,9 @@ class Graph extends Ui.Drawable {
       minuteSum = 0;
     }
     if (count > 0) {
-      Application.getApp().setProperty("HeartRateLastSec", nowSec);
-      Application.getApp().setProperty(
-          "HeartRateStartSec", nowSec - HR_SAMPLING_PERIOD_SEC);
-      Application.getApp().setProperty("HeartRateAvg", sum / count);
+      Properties.setValue("HeartRateStartSec", nowSec - HR_SAMPLING_PERIOD_SEC);
+      Properties.setValue("HeartRateLastSec", nowSec);
+      Properties.setValue("HeartRateAvg", sum / count);
     }
   }
 
@@ -254,11 +255,7 @@ class Graph extends Ui.Drawable {
 
 
   function draw(dc) {
-    // Draw white background
-    // dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
-    // dc.fillRectangle(INITIAL_X_OFFSET, yOffset, INITIAL_WIDTH, height);
-
-    if (glucoseBuffer == null) {
+    if (glucoseBuffer.size() == 0) {
       return;
     }
     var nowSec = Util.nowSec();

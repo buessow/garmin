@@ -1,5 +1,6 @@
 import Toybox.Lang;
 
+using Toybox.Application.Properties;
 using Toybox.Background;
 using Toybox.Communications as Comm;
 using Toybox.System;
@@ -10,7 +11,7 @@ module Shared {
 class GlucoseServiceDelegate extends System.ServiceDelegate {
   private static const TAG = "GlucoseServiceDelegate";
   private var server as GmwServer;
-  private var startTime as Long?;
+  private var startTime as Number?;
   private var methodName as String?;
   private var callback as (Method(result as Dictionary<String, Object>) as Void)?;
   var makeWebRequest = new Method(Comm, :makeWebRequest);
@@ -67,15 +68,23 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
 
   private function populateHeartRateHistory(parameters as Dictionary<String, String>) as Void {
     var nowSec = Util.nowSec();
-    var startSec = Application.getApp().getProperty("HeartRateStartSec");
-    var lastSec = Application.getApp().getProperty("HeartRateLastSec");
-    var avg = Application.getApp().getProperty("HeartRateAvg");
+    var startSec = Properties.getValue("HeartRateStartSec");
+    var lastSec = Properties.getValue("HeartRateLastSec");
+    var avg = Properties.getValue("HeartRateAvg");
     if (startSec != null && lastSec != null && avg != null &&
         avg > 0 && nowSec - lastSec < 300) {
       Log.i(TAG, "HR " + avg);
       parameters["hr"] = avg.toString();
       parameters["hrStart"] = startSec.toString();
       parameters["hrEnd"] = lastSec.toString();
+    }
+  }
+
+  private function putIfNotNull(d as Dictionary<String, Object>, k as String, v as Object?) as Void {
+    if (v == null) {
+      d.remove(k);
+    } else {
+      d.put(k, v);
     }
   }
 
@@ -87,9 +96,9 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     me.callback = callback;
     startTime = Util.nowSec();
     var url = server.url + methodName;
-    parameters["device"] = Application.getApp().getProperty("Device");
+    putIfNotNull(parameters, "device", Properties.getValue("Device"));
     parameters["manufacturer"] = "garmin";
-    parameters["test"] =  Util.stringEndsWith(parameters["device"], "Sim");
+    parameters["test"] = Util.stringEndsWith(parameters["device"], "Sim").toString();
 
     var stats = System.getSystemStats();
     Log.i(TAG, 

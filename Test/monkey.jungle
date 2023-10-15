@@ -1,3 +1,4 @@
 project.manifest = manifest.xml
 base.sourcePath = source;../Shared/source;../TestLib
+base.resourcePath = resources;../Shared/resources
 

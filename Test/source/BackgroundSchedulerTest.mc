@@ -29,7 +29,7 @@ class BackgroundSchedulerTest {
           + BackgroundScheduler.READING_FREQUENCY
           + BackgroundScheduler.EXTRA_READING_DELAY;
       var next = BackgroundScheduler.getNextRunTime(now, value, null);
-      Assert.equal(expect.toLong(), next);
+      Assert.equal(expect, next);
     } catch (e) {
       log.error(e.getErrorMessage());
       e.printStackTrace();
@@ -72,7 +72,7 @@ class BackgroundSchedulerTest {
   (:test)
   function valueRanInacceptableDelay(log) {
     try {
-      var now = 1000l;
+      var now = 1000;
       var val = now - 5*60;
       var ran = val 
           + BackgroundScheduler.ACCEPTABLE_EXTRA_DELAY 
@@ -92,7 +92,7 @@ class BackgroundSchedulerTest {
   (:test)
   function valueRanLongAgo(log) {
     try {
-      var now = 1000l;
+      var now = 1000;
       var val = now - 45*60;
       var ran = now - 1*60;
       var next = BackgroundScheduler.getNextRunTime(now, val, ran);

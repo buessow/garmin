@@ -1,3 +1,5 @@
+import Toybox.Lang;
+
 using Toybox.Background;
 using Toybox.Math;
 using Toybox.System;
@@ -28,21 +30,20 @@ module BackgroundScheduler {
   const ACCEPTABLE_EXTRA_DELAY = EXTRA_READING_DELAY + 15;
 
   var registered = false;
-  var nextScheduleTimeSec;
+  var nextScheduleTimeSec as Number?;
   var schedule = false;
 
 
   // Computes when we expect the next value, usually 5 minutes plus a bit
   // after the last reading.
-  function getNextValueTimeSec(nowSec, lastGlucoseTimeSec) {
+  function getNextValueTimeSec(nowSec, lastGlucoseTimeSec) as Number? {
     if (lastGlucoseTimeSec == null) { return null; }
 
     var missedReadings = (nowSec - lastGlucoseTimeSec) / READING_FREQUENCY.toDouble();
     if (missedReadings > 6.0) {
       return null;
     } else {
-      return (lastGlucoseTimeSec + Math.ceil(missedReadings) * READING_FREQUENCY).toLong() 
-	  + EXTRA_READING_DELAY;
+      return (lastGlucoseTimeSec + Math.ceil(missedReadings) * READING_FREQUENCY).toNumber() + EXTRA_READING_DELAY;
     }
   }
 
@@ -143,7 +144,7 @@ module BackgroundScheduler {
         Log.i(TAG, "schedule temporal event at " + Util.timeSecToString(nextScheduleTimeSec));
         try {
           registered = true;
-          Background.registerForTemporalEvent(new Time.Moment(nextScheduleTimeSec));
+          Background.registerForTemporalEvent(new Time.Moment(nextScheduleTimeSec as Number));
         } catch (e) {
           Log.e(TAG, e.getErrorMessage());
           e.printStackTrace();

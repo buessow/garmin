@@ -1,42 +1,38 @@
-using Toybox.Lang as Lang;
+import Toybox.Lang;
+
 using Toybox.Time;
 
 module Shared {
 (:background, :glance)
 module Util {
-  var testNowSec;
-  var testNowSecIdx = 0;
+  var testNowSec as Number? = null;
 
   (:background)
-  function nowSec() {
+  function nowSec() as Number {
     if (testNowSec == null) {
       return Time.now().value();
-    } else if (testNowSec instanceof Lang.Number) {
-      return testNowSec;
     } else {
-      var i = Util.min(testNowSecIdx, testNowSec.size()-1);
-      testNowSecIdx++;
-      return testNowSec[i];
+      return testNowSec;
     }
   }
 
-  function max(a, b) {
+  function max(a as Number, b as Number) as Number {
     return a < b ? b : a;
   }
 
-  function min(a, b) {
+  function min(a as Number, b as Number) as Number {
     return a < b ? a : b;
   }
 
-  function abs(a) {
+  function abs(a as Number) as Number {
     return a < 0 ? -a : a;
   }
 
-  function epochToString(sec) {
+  function epochToString(sec as Number) as String {
     return momentToString(new Toybox.Time.Moment(sec));
   }
 
-  function stringEndsWith(s, suffix) {
+  function stringEndsWith(s as String?, suffix as String?) as Boolean {
     return s != null && (
       suffix == null || suffix.length() == 0 ||
       s.substring(s.length() - suffix.length(), s.length()).equals(suffix));
@@ -46,7 +42,7 @@ module Util {
     return a == null ? b : a;
   }
 
-  function join(sep, array) {
+  function join(sep as String, array as Array<String>) as String {
     var s = "";
     var theSep = "";
     for (var i = 0; i < array.size(); i++) {
@@ -57,15 +53,15 @@ module Util {
     return s;
   }
 
-  function timeSecToString(sec) {
+  function timeSecToString(sec as Number?) as String {
     return sec == null ? "NULL" : momentToString(new Time.Moment(sec));
   }
 
-  function momentToString(m) {
+  function momentToString(m as Time.Moment?) as String {
     if (m == null) {
       return "NULL";
     }
-    var info = Toybox.Time.Gregorian.info(m, Toybox.Time.FORMAT_SHORT);
+    var info = Time.Gregorian.info(m, Time.FORMAT_SHORT);
     return info.year.format("%04d") + "-" + info.month.format("%02d") + "-" +
            info.day.format("%02d") + "T" +
            info.hour.format("%02d") + ":" + info.min.format("%02d") + ":" +

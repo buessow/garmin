@@ -10,27 +10,24 @@ using Toybox.Time.Gregorian as Calendar;
 using Toybox.Lang;
 using Toybox.WatchUi as Ui;
 
-
 class GlucoseWatchFaceView extends Ui.WatchFace {
   hidden static const TAG = "GlucoseWatchFaceView";
   hidden const MINUTE_WIDTH = 4;
 
-  var data;
-  var graph;
+  var data as Shared.Data;
+  var graph as Shared.Graph?;
 
-  function initialize(data) {
+  function initialize(data as Shared.Data) {
     WatchFace.initialize();
     me.data = data;
   }
 
-  function onLayout(dc) {
+  function onLayout(dc as Gfx.Dc) as Void {
     setLayout(Rez.Layouts.WatchFace(dc));
 
-    graph = findDrawableById("DateValueGraph");
-    if (data.glucoseBuffer != null) {
-      graph.isMmolL = data.glucoseUnit == Shared.Data.mmoll;
-      graph.setReadings(data.glucoseBuffer);
-    }
+    graph = findDrawableById("DateValueGraph") as Shared.Graph;
+    graph.isMmolL = data.glucoseUnit == Shared.Data.mmoll;
+    graph.setReadings(data.glucoseBuffer);
     updateSettings();
     Ui.requestUpdate();
   }
@@ -52,7 +49,6 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
     graph.setReadings(data.glucoseBuffer);
     Ui.requestUpdate();
   }
-
 
   function onShow() {
   }

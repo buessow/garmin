@@ -1,25 +1,25 @@
+import Toybox.Lang;
+
 using Shared.Util;
-using Toybox.Lang;
+using Toybox.Application.Properties;
 using Toybox.Time;
 using Toybox.Time.Gregorian as Calendar;
 
 (:glance)
 module Shared {
 class Data {
-  hidden static const TAG = "Data";
+  private static const TAG = "Data";
   var glucoseBuffer = new Shared.DateValues(null, 24);   // never null
   var glucoseUnit as GlucoseUnit = mgdl;
-  var errorMessage;
-  var requestTimeSec;
-  var remainingInsulin;
-  var temporaryBasalRate;
-  var profile = "D";
+  var errorMessage as String?;
+  var requestTimeSec as Number?;
+  var remainingInsulin as Number?;
+  var temporaryBasalRate as Float?;
+  var profile as String?;
   var connected = true;
-  var comServer = false;
-  hidden var fakeMode = false;
+  private var fakeMode = false;
 
    enum GlucoseUnit {
-     unknown = 0,
      mgdl = 1,
      mmoll = 2,
    }
@@ -32,10 +32,10 @@ class Data {
     }
   }
 
-  hidden function restoreValues() {
+  private function restoreValues() {
     Log.i(TAG, "restoreValues()");
     var glucoseBufferStr = Util.ifNull(
-        Application.getApp().getProperty("GlucoseBuffer5"), "");
+        Properties.getValue("GlucoseValues"), "");
     if (glucoseBufferStr.length() > 0) {
       glucoseBuffer.fromHexString(glucoseBufferStr);
       var dateSec = glucoseBuffer.getDateSec(glucoseBuffer.size()-1);
@@ -43,11 +43,9 @@ class Data {
         Log.i(TAG, "stored value too old " + Util.timeSecToString(dateSec));
         glucoseBuffer.fromHexString("");  // clear
       } else {
-        remainingInsulin =
-            Application.getApp().getProperty("RemainingInsulin");
-        temporaryBasalRate =
-            Application.getApp().getProperty("TemporaryBasalRate");
-        profile = Application.getApp().getProperty("BasalProfile");
+        remainingInsulin = Properties.getValue("RemainingInsulin");
+        temporaryBasalRate = Properties.getValue("TemporaryBasalRate");
+        profile = Properties.getValue("BasalProfile");
         Log.i(TAG, "restored " + glucoseBuffer.get(glucoseBuffer.size() - 1));
       }
     }
@@ -55,26 +53,26 @@ class Data {
       Log.i(TAG, "no glucose stored");
       errorMessage = "no value";
     }
-    var glucoseUnitStr = Application.getApp().getProperty("GlucoseUnit");
+    var glucoseUnitStr = Properties.getValue("GlucoseUnit");
     glucoseUnit = glucoseUnitStr == "mmoll" ? mmoll : mgdl;
   }
 
   // Returns true iff we have a blood glucose reading.
-  function hasValue() as Lang.Boolean {
+  function hasValue() as Boolean {
     return glucoseBuffer.size() > 0 && (Util.nowSec() - glucoseBuffer.getLastDateSec()) < 16 * 60;
   }
 
-  function setProfile(profile) {
-    Application.getApp().setProperty("BasalProfile", profile);
+  function setProfile(profile as String?) as Void {
+    Properties.setValue("BasalProfile", profile);
     me.profile = profile;
   }
 
-  function setTemporaryBasalRate(tbr) {
+  function setTemporaryBasalRate(tbr as Float?) as Void {
     temporaryBasalRate = tbr;
-    Application.getApp().setProperty("TemporaryBasalRate", tbr);
+    Properties.setValue("TemporaryBasalRate", tbr);
   }
 
-  function getBasalCorrectionStr() {
+  function getBasalCorrectionStr() as String {
     if (fakeMode) { return "S10%"; }
     if (temporaryBasalRate == null || profile == null) {
       return  "-";
@@ -91,12 +89,12 @@ class Data {
     return s;
   }
 
-  function setRemainingInsulin(remainingInsulin) {
+  function setRemainingInsulin(remainingInsulin as Number) as Void {
     me.remainingInsulin = remainingInsulin;
-    Application.getApp().setProperty("RemainingInsulin", remainingInsulin);
+    Properties.setValue("RemainingInsulin", remainingInsulin);
   }
 
-  function getRemainingInsulinStr() {
+  function getRemainingInsulinStr() as String {
     if (remainingInsulin == null) {
       return "iob -";
     }
@@ -107,22 +105,22 @@ class Data {
   // unit.
   //
   // @Returns Toybox.Lang.String
-  function getGlucoseStr() {
+  function getGlucoseStr() as String {
     if (fakeMode) { return "5.6"; }
     if (!hasValue()) { return "-"; }
     switch (glucoseUnit) {
       case mgdl:
-	return glucoseBuffer.getLastValue().toString();
+	      return glucoseBuffer.getLastValue().toString();
       case mmoll:
-	var glucose = glucoseBuffer.getLastValue() / 18.0;
-	return glucose < 10.0
-	     ? glucose.format("%0.1f")
-	     : glucose.format("%0.0f");
+        var glucose = glucoseBuffer.getLastValue() / 18.0;
+        return glucose < 10.0
+            ? glucose.format("%0.1f")
+            : glucose.format("%0.0f");
     }
-    return null;
+    return "";  // unreachable
   }
 
-  function getGlucoseUnitStr() {
+  function getGlucoseUnitStr() as String {
     if (hasValue()) {
       return glucoseUnit == mgdl ? "mgdl" : "mmoll";
     } else {
@@ -132,10 +130,10 @@ class Data {
 
   function setGlucoseUnit(glucoseUnit as GlucoseUnit) as Void {
     me.glucoseUnit = glucoseUnit;
-    Application.getApp().setProperty("GlucoseUnit", getGlucoseUnitStr());
+    Properties.setValue("GlucoseUnit", getGlucoseUnitStr());
   }
 
-  function getGlucoseTimeStr() {
+  function getGlucoseTimeStr() as String {
     if (fakeMode) { return "3:14"; }
     if (hasValue()) {
        return "_:__";
@@ -147,7 +145,7 @@ class Data {
     }
   }
 
-  hidden function formatMinute(t) {
+  private function formatMinute(t as Number?) as String {
     if (t == null) { return ""; }
     var min = t / 60;
     var sec = Util.abs(t) % 60;
@@ -163,7 +161,7 @@ class Data {
   // 10min ago.
   //
   // @Returns Toybox.Lang.String
-  function getGlucoseAgeStr() {
+  function getGlucoseAgeStr() as String {
     if (fakeMode) { return "3:14"; }
     if (!hasValue() || getGlucoseAgeSec() > 26 * 60) {
       return "_:__";
@@ -198,7 +196,7 @@ class Data {
   // minute as a formatted string.
   //
   // @Returns Toybox.Lang.String
-  function getGlucoseDeltaPerMinuteStr() {
+  function getGlucoseDeltaPerMinuteStr() as String {
     if (fakeMode) { return "-0.05"; }
     if (!hasValue()) {
       return "+_.__";
@@ -218,14 +216,13 @@ class Data {
   // Set the last readings.
   //
   // @Param glucoseBuffer: Shared.DeltaVarEncodedBuffer
-  function setGlucose(glucoseBuffer) {
+  function setGlucose(glucoseBuffer as Shared.DateValues) as Void {
     Log.i(TAG, "setGlucose");
     if (glucoseBuffer != null && glucoseBuffer.size() > 0) {
       me.glucoseBuffer = glucoseBuffer;
       errorMessage = null;
       Log.i(TAG, "lastGlucose: " + glucoseBuffer.get(glucoseBuffer.size() - 1));
-      Application.getApp().setProperty(
-          "GlucoseBuffer5", glucoseBuffer.toHexString());
+      Properties.setValue("GlucoseValues", glucoseBuffer.toHexString());
 
     } else {
       me.glucoseBuffer.clear();

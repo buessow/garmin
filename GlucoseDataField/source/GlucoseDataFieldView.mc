@@ -75,7 +75,7 @@ class GlucoseDataFieldView extends Ui.DataField {
   hidden var graph;
   hidden var displayRadius;
   hidden var obscurity;
-  var heartRateCollector = new Shared.HeartRateCollector();
+  var heartRateCollector = new DataFieldHeartRateCollector();
 
   function initialize() {
     Log.i(TAG, "initialize");

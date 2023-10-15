@@ -18,8 +18,6 @@ class UtilTest {
   static function testAbs(l) {
     Assert.equal(1, Util.abs(1));
     Assert.equal(1, Util.abs(-1));
-    Assert.equal(1.0, Util.abs(1.0));
-    Assert.equal(1.0, Util.abs(-1.0));
     return true;
   }
 

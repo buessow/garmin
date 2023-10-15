@@ -29,9 +29,9 @@ class BaseServer {
       data.glucoseBuffer.add(dv);
     }
     data.setGlucose(data.glucoseBuffer);
-    data.setRemainingInsulin(msg["remainingInsulin"]);
-    data.setTemporaryBasalRate(msg["temporaryBasalRate"]);
-    data.setProfile(msg["profile"]);
+    data.setRemainingInsulin(msg["remainingInsulin"] as Number?);
+    data.setTemporaryBasalRate(msg["temporaryBasalRate"] as Float?);
+    data.setProfile(msg["profile"] as String?);
     switch (msg["glucoseUnit"]) {
       case "mmoll": data.setGlucoseUnit(Data.mmoll); break;
       default: data.setGlucoseUnit(Data.mgdl); break;

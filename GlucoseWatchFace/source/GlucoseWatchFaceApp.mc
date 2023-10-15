@@ -54,10 +54,7 @@ class GlucoseWatchFaceApp extends Application.AppBase {
   }
 
   function getInitialView() {
-    if (Application.getApp().getProperty("Device") == null) {
-      Application.getApp().setProperty(
-          "Device", System.getDeviceSettings().partNumber + "_WF");
-    }
+    Properties.setValue("Device", System.getDeviceSettings().partNumber + "_WF");
     server.init2();
     Log.i(TAG, "getInitialView");
     if (data == null) {

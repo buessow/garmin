@@ -13,11 +13,9 @@ filegroup(
 monkeyc_binary(
   name = 'Test', 
   jungles = 'monkey.jungle',
-  resources = [':resources'],
+  resources = ['//Shared:Resources', ':resources'],
   test = True,
   srcs = ['//Shared',
-          '//Shared:Base',
-          '//Shared:Scheduler',
        	  '//TestLib:TestLib',
           ':sources',
 	 ],

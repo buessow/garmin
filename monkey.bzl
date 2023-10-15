@@ -42,10 +42,10 @@ def _monkeyc_binary_impl(ctx):
     command  = ' '.join([
         'monkeyc',
         '--jungles %s' % '\\;'.join([f.path for f in ctx.files.jungles]),
-	'--output %s' % prg_file.path,
-	'--private-key $(printenv DEVELOPER_KEY)', 
-	'--device %s' % device,
-	'--warn',
+        '--output %s' % prg_file.path,
+        '--private-key $(printenv DEVELOPER_KEY)', 
+        '--device %s' % device,
+        '--warn',
         '--optimization %s' % OPT[ctx.var['COMPILATION_MODE']],
         '--profile' if profile else '',
         '--unit-test' if ctx.attr.test else ''

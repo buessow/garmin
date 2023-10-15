@@ -2,6 +2,7 @@ using Shared;
 using Shared.BackgroundScheduler;
 using Shared.Log;
 using Toybox.Application;
+using Toybox.Application.Properties;
 using Toybox.Background;
 using Toybox.Lang;
 using Toybox.System;
@@ -45,10 +46,7 @@ class GlucoseDataFieldApp extends Application.AppBase {
   }
 
   function getInitialView() as Lang.Array<Ui.Views or Ui.InputDelegates> or Null {
-    if (Application.getApp().getProperty("Device") == null) {
-      Application.getApp().setProperty(
-          "Device", System.getDeviceSettings().partNumber + "_DF");
-    }
+    Properties.setValue("Device", System.getDeviceSettings().partNumber + "_DF");
     view = new GlucoseDataFieldView();
     server.init2();
     BackgroundScheduler.registerTemporalEventIfConnectedIn(new Time.Duration(2));

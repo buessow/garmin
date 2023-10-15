@@ -5,6 +5,7 @@ using Shared;
 using Shared.Log;
 using Shared.Util;
 using Toybox.Application;
+using Toybox.Application.Properties;
 using Toybox.Lang;
 using Toybox.Communications as Comm;
 
@@ -54,15 +55,22 @@ class Receiver {
 (:test)
 class GlucoseServiceDelegateTest {
 
+  private static function clearProperties() {
+    Properties.setValue("Device", null);
+    Properties.setValue("HeartRateStartSec", null);
+    Properties.setValue("HeartRateLastSec", null);
+    Properties.setValue("HeartRateAvg", null);
+  }
+
   (:test)
   function onBloodGlucoseHTTP200(log) {
     try {
+      GlucoseServiceDelegateTest.clearProperties();
       Util.testNowSec = 1000;
-      Application.getApp().clearProperties();
-      Application.getApp().setProperty("Device", "Test23");
-      Application.getApp().setProperty("HeartRateStartSec", 880L);
-      Application.getApp().setProperty("HeartRateLastSec", 1000L);
-      Application.getApp().setProperty("HeartRateAvg", 112);
+      Properties.setValue("Device", "Test23");
+      Properties.setValue("HeartRateStartSec", 880L);
+      Properties.setValue("HeartRateLastSec", 1000L);
+      Properties.setValue("HeartRateAvg", 112);
 
       var server = new Shared.GmwServer();
       server.wait = true;
@@ -95,9 +103,10 @@ class GlucoseServiceDelegateTest {
   (:test)
   function onBloodGlucoseHTTP400(log) {
     try {
+      GlucoseServiceDelegateTest.clearProperties();
       Util.testNowSec = 1000;
       Application.getApp().clearProperties();
-      Application.getApp().setProperty("Device", "Test23");
+      Properties.setValue("Device", "Test23");
       var server = new Shared.GmwServer();
       var comm = new FakeCommunication([400]);
       var gsd = new Shared.GlucoseServiceDelegate(server);
@@ -126,9 +135,10 @@ class GlucoseServiceDelegateTest {
   (:test)
   function postCarbs(log) {
     try {
+      GlucoseServiceDelegateTest.clearProperties();
       Util.testNowSec = 1000;
       Application.getApp().clearProperties();
-      Application.getApp().setProperty("Device", "Test23");
+      Properties.setValue("Device", "Test23");
       var server = new Shared.GmwServer();
       var comm = new FakeCommunication([{}]);
       var gsd = new Shared.GlucoseServiceDelegate(server);
@@ -157,9 +167,10 @@ class GlucoseServiceDelegateTest {
   (:test)
   function connectPump(log) {
     try {
+      GlucoseServiceDelegateTest.clearProperties();
       Util.testNowSec = 1000;
       Application.getApp().clearProperties();
-      Application.getApp().setProperty("Device", "Test23");
+      Properties.setValue("Device", "Test23");
       var server = new Shared.GmwServer();
       var comm = new FakeCommunication([{}]);
       var gsd = new Shared.GlucoseServiceDelegate(server);

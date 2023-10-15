@@ -1,0 +1,11 @@
+<properties>
+  <property id="Device" type="string"/>
+  <property id="HeartRateStartSec" type="number">0</property>
+  <property id="HeartRateLastSec" type="number">0</property>
+  <property id="HeartRateAvg" type="number">0</property>
+  <property id="GlucoseValues" type="string"/>
+  <property id="RemainingInsuling" type="number">0</property>
+  <property id="RemainingBasalRate" type="number">0</property>
+  <property id="TemporaryBasalRate" type="float">0.0</property>
+  <property id="BasalProfile" type="string"/>
+</properties>

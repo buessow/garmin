@@ -23,7 +23,7 @@ function toString(o) {
   return o == null ? "null" : ("'" + o.toString() + "'");
 }
 
-function join(sep, array) {
+function join(sep as String, array as Array<String>) as String {
   var s = "";
   var theSep = "";
   for (var i = 0; i < array.size(); i++) {
@@ -38,7 +38,7 @@ function dictEquals(d1 as Dictionary, d2 as Dictionary) as Boolean {
   return equal(d1.toString(), d2.toString());
 }
 
-function arrayEquals(a1, a2) {
+function arrayEquals(a1 as Array<Object>, a2 as Array<Object>) as Boolean {
   if (a1.size() != a2.size()) {
     return false;
   }
