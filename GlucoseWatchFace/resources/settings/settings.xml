@@ -15,10 +15,4 @@
       <listEntry value="0xFFFFFF">@Strings.ColorWhite</listEntry>
     </settingConfig>
   </setting>
-  <setting propertyKey="@Properties.GlucoseUnit" title="@Strings.GlucoseUnitSettingsTitle">
-    <settingConfig type="list">
-      <listEntry value="1">@Strings.GlucoseUnitMgDl</listEntry>
-      <listEntry value="2">@Strings.GlucoseUnitMmolL</listEntry>
-    </settingConfig>
-  </setting>
 </settings>

@@ -23,7 +23,6 @@ OPT = {
 
 def _monkeyc_binary_impl(ctx):
   developer_key = '/Users/robertbuessow/StudioProjects/developer_key'
-  connectiq_path = '/Users/robertbuessow/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-6.3.1-2023-09-13-47b193194/bin'
   device = ctx.var['TARGET_CPU']
   prg = ctx.files.jungles[0].dirname
   prg_device = '%s_%s' % (ctx.attr.name, device)
@@ -53,14 +52,36 @@ def _monkeyc_binary_impl(ctx):
   )
   monkeydo_script = ctx.actions.declare_file('%s-do.sh' % ctx.attr.name)
   monkeydo_script_content = monkeydo_script_tmpl.format(
-    connectiq_path=connectiq_path,
     prg=prg,
     prg_device=prg_device,
     device=device,
     test_flag=' -t' if ctx.attr.test else '')
   ctx.actions.write(monkeydo_script, monkeydo_script_content, is_executable=True)
-
   return [DefaultInfo(runfiles=ctx.runfiles(files=outputs), executable=monkeydo_script)]
+
+def _monkeyc_package_impl(ctx):
+  developer_key = '/Users/robertbuessow/StudioProjects/developer_key'
+  prg = ctx.files.jungles[0].dirname
+  prg_file = ctx.actions.declare_file(prg + ".iq")
+  outputs = [prg_file]
+  ctx.actions.run_shell(
+    inputs = ctx.files.jungles + ctx.files.srcs + ctx.files.resources,
+    outputs = outputs,
+    progress_message = 'Building %s.iq' % ctx.attr.name,
+    execution_requirements = { 'no-sandbox': 'True' },
+    use_default_shell_env = True,
+    command  = ' '.join([
+        'monkeyc',
+        '--jungles %s' % '\\;'.join([f.path for f in ctx.files.jungles]),
+        '--output %s' % prg_file.path,
+        '--private-key $(printenv DEVELOPER_KEY)', 
+        '--warn',
+        '--optimization %s' % OPT[ctx.var['COMPILATION_MODE']],
+        '--package-app',
+        '--release',
+    ])
+  )
+  return [DefaultInfo(runfiles=ctx.runfiles(files=outputs))]
 
 monkeyc_binary = rule(
   implementation = _monkeyc_binary_impl,
@@ -68,9 +89,18 @@ monkeyc_binary = rule(
     'srcs': attr.label_list(mandatory=True, allow_files=['.mc']),
     'resources': attr.label_list(default=[], allow_files=True),
     'jungles': attr.label(mandatory=True, allow_single_file=True),
-    'device': attr.string(mandatory=False),
     'test': attr.bool(default=False),
   },
   executable = True,
+)
+
+monkeyc_package = rule(
+  implementation = _monkeyc_package_impl,
+  attrs = {
+    'srcs': attr.label_list(mandatory=True, allow_files=['.mc']),
+    'resources': attr.label_list(default=[], allow_files=True),
+    'jungles': attr.label(mandatory=True, allow_single_file=True),
+  },
+  executable = False,
 )
 
