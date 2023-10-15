@@ -4,8 +4,9 @@
   <property id="HeartRateLastSec" type="number">0</property>
   <property id="HeartRateAvg" type="number">0</property>
   <property id="GlucoseValues" type="string"/>
-  <property id="RemainingInsuling" type="number">0</property>
+  <property id="RemainingInsulin" type="number">0</property>
   <property id="RemainingBasalRate" type="number">0</property>
   <property id="TemporaryBasalRate" type="float">0.0</property>
   <property id="BasalProfile" type="string"/>
+  <property id="GlucoseUnit" type="string"/>
 </properties>

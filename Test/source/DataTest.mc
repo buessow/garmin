@@ -1,13 +1,54 @@
 using TestLib.Assert;
+using Toybox.Application.Properties;
 using Toybox.Time;
 using Shared;
 using Shared.Util;
 
 (:Test)
 class DataTest {
+    private static function clearProperties() {
+      Properties.setValue("GlucoseValues", null);
+      Properties.setValue("RemainingInsulin", null);
+      Properties.setValue("TemporaryBasalRate", null);
+      Properties.setValue("BasalProfile", null);
+      Properties.setValue("GlucoseUnit", null);      
+    }
+
+  (:test)
+  function restore(log) {
+    try {
+      DataTest.clearProperties();
+      Util.testNowSec = 1000;
+
+      var d = new Shared.Data();
+      d.glucoseBuffer.add(new Shared.DateValue(1000, 90));
+      d.updateGlucose();
+      d.setRemainingInsulin(4.1);
+      d.setTemporaryBasalRate(0.9);
+      d.setProfile("P");
+      d.setGlucoseUnit(Shared.Data.mmoll);
+      Assert.equal("mmoll", d.getGlucoseUnitStr());
+
+      var d1 = new Shared.Data();
+      Assert.equal(true, d1.hasValue());
+      Assert.equal("iob 4.1", d1.getRemainingInsulinStr());
+      Assert.equal("P90%", d1.getBasalCorrectionStr());
+      Assert.equal("mmoll", d1.getGlucoseUnitStr());
+
+    } catch (e) {
+      log.error(e.getErrorMessage());
+      e.printStackTrace();
+      throw e;
+    } finally {
+      DataTest.clearProperties();
+    }
+    return true;
+  }
+
   (:test)
   function noValueSet(log) {
     try {
+      DataTest.clearProperties();
       var d = new Shared.Data();
       Assert.equal(false, d.hasValue());
       Assert.equal("-", d.getGlucoseStr());
@@ -27,11 +68,11 @@ class DataTest {
   (:test)
   function singleValueMgdl(log) {
     try {
+      DataTest.clearProperties();
       Util.testNowSec = 1010;
-      var buffer = new Shared.DateValues(null, 10);
-      buffer.add(new Shared.DateValue(1000, 123));
       var d = new Shared.Data();
-      d.setGlucose(buffer);
+      d.glucoseBuffer.add(new Shared.DateValue(1000, 123));
+      d.updateGlucose();
       d.setRemainingInsulin(3.366);
 
       Assert.equal(true, d.hasValue());
@@ -52,12 +93,12 @@ class DataTest {
   (:test)
   function glucoseFallingMgdl(log) {
     try {
+      DataTest.clearProperties();
       Util.testNowSec = 1000;
-      var buffer = new Shared.DateValues(null, 10);
-      buffer.add(new Shared.DateValue(880, 133));
-      buffer.add(new Shared.DateValue(1000, 123));
       var d = new Shared.Data();
-      d.setGlucose(buffer);
+      d.glucoseBuffer.add(new Shared.DateValue(880, 133));
+      d.glucoseBuffer.add(new Shared.DateValue(1000, 123));
+      d.updateGlucose();
 
       Assert.equal("-5.0", d.getGlucoseDeltaPerMinuteStr());
       return true;
@@ -71,13 +112,13 @@ class DataTest {
   (:test)
   function glucoseRaisingMgdl(log) {
     try {
+      DataTest.clearProperties();
       Util.testNowSec = 1000;
-      var buffer = new Shared.DateValues(null, 10);
-      buffer.add(new Shared.DateValue(880, 133));
-      buffer.add(new Shared.DateValue(1000, 153));
       var d = new Shared.Data();
+      d.glucoseBuffer.add(new Shared.DateValue(880, 133));
+      d.glucoseBuffer.add(new Shared.DateValue(1000, 153));
+      d.updateGlucose();
       d.requestTimeSec = 1100;
-      d.setGlucose(buffer);
 
       Assert.equal("+10.0", d.getGlucoseDeltaPerMinuteStr());
       return true;
@@ -91,13 +132,14 @@ class DataTest {
   (:test)
   function fallingMmoll(log) {
     try {
+      DataTest.clearProperties();
       Util.testNowSec = 1010;
-      var buffer = new Shared.DateValues(null, 10);
-      buffer.add(new Shared.DateValue(880, 100));
-      buffer.add(new Shared.DateValue(1000, 120));
       var d = new Shared.Data();
+      d.glucoseBuffer.add(new Shared.DateValue(880, 100));
+      d.glucoseBuffer.add(new Shared.DateValue(1000, 120));
+      d.updateGlucose();
+
       d.requestTimeSec = 1100;
-      d.setGlucose(buffer);
       d.setGlucoseUnit(Shared.Data.mmoll);
 
       Assert.equal(true, d.hasValue());

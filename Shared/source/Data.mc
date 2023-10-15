@@ -13,7 +13,7 @@ class Data {
   var glucoseUnit as GlucoseUnit = mgdl;
   var errorMessage as String?;
   var requestTimeSec as Number?;
-  var remainingInsulin as Number?;
+  var remainingInsulin as Float?;
   var temporaryBasalRate as Float?;
   var profile as String?;
   var connected = true;
@@ -34,12 +34,11 @@ class Data {
 
   private function restoreValues() {
     Log.i(TAG, "restoreValues()");
-    var glucoseBufferStr = Util.ifNull(
-        Properties.getValue("GlucoseValues"), "");
+    var glucoseBufferStr = Util.ifNull(Properties.getValue("GlucoseValues"), "");
     if (glucoseBufferStr.length() > 0) {
       glucoseBuffer.fromHexString(glucoseBufferStr);
       var dateSec = glucoseBuffer.getDateSec(glucoseBuffer.size()-1);
-      if (Util.abs(Time.now().value() - dateSec) > 3600) {
+      if (Util.abs(Util.nowSec() - dateSec) > 3600) {
         Log.i(TAG, "stored value too old " + Util.timeSecToString(dateSec));
         glucoseBuffer.fromHexString("");  // clear
       } else {
@@ -54,7 +53,7 @@ class Data {
       errorMessage = "no value";
     }
     var glucoseUnitStr = Properties.getValue("GlucoseUnit");
-    glucoseUnit = glucoseUnitStr == "mmoll" ? mmoll : mgdl;
+    glucoseUnit = "mmoll".equals(glucoseUnitStr) ? mmoll : mgdl;
   }
 
   // Returns true iff we have a blood glucose reading.
@@ -89,7 +88,7 @@ class Data {
     return s;
   }
 
-  function setRemainingInsulin(remainingInsulin as Number) as Void {
+  function setRemainingInsulin(remainingInsulin as Float) as Void {
     me.remainingInsulin = remainingInsulin;
     Properties.setValue("RemainingInsulin", remainingInsulin);
   }
@@ -122,7 +121,7 @@ class Data {
 
   function getGlucoseUnitStr() as String {
     if (hasValue()) {
-      return glucoseUnit == mgdl ? "mgdl" : "mmoll";
+      return glucoseUnit == mmoll ? "mmoll" : "mgdl";
     } else {
       return "";
     }
@@ -213,13 +212,10 @@ class Data {
     }
   }
 
-  // Set the last readings.
-  //
-  // @Param glucoseBuffer: Shared.DeltaVarEncodedBuffer
-  function setGlucose(glucoseBuffer as Shared.DateValues) as Void {
+  // Notify that glucoseBuffer was updated.
+  function updateGlucose() as Void {
     Log.i(TAG, "setGlucose");
-    if (glucoseBuffer != null && glucoseBuffer.size() > 0) {
-      me.glucoseBuffer = glucoseBuffer;
+    if (glucoseBuffer.size() > 0) {
       errorMessage = null;
       Log.i(TAG, "lastGlucose: " + glucoseBuffer.get(glucoseBuffer.size() - 1));
       Properties.setValue("GlucoseValues", glucoseBuffer.toHexString());

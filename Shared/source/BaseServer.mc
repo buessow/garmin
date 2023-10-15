@@ -28,8 +28,8 @@ class BaseServer {
       var dv = new Shared.DateValue(values[i], values[i+1]);
       data.glucoseBuffer.add(dv);
     }
-    data.setGlucose(data.glucoseBuffer);
-    data.setRemainingInsulin(msg["remainingInsulin"] as Number?);
+    data.updateGlucose();
+    data.setRemainingInsulin(msg["remainingInsulin"] as Float?);
     data.setTemporaryBasalRate(msg["temporaryBasalRate"] as Float?);
     data.setProfile(msg["profile"] as String?);
     switch (msg["glucoseUnit"]) {
