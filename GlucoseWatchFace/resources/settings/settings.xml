@@ -1,8 +1,8 @@
 <settings>
   <setting propertyKey="@Properties.Appearance" title="@Strings.AppearanceTitle">
     <settingConfig type="list">
-      <listEntry value="1">@Strings.AppearanceLight</listEntry>
       <listEntry value="0">@Strings.AppearanceDark</listEntry>
+      <listEntry value="1">@Strings.AppearanceLight</listEntry>
     </settingConfig>
   </setting>
 </settings>
