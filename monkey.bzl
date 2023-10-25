@@ -11,6 +11,7 @@ while [ ! -d $DST ]; do echo waiting for $DST; sleep 1; done
 sleep 5
 cp -f {prg_device}.prg $DST/{prg}.prg
 cp -f {prg_device}.prg.debug.xml $DST/{prg}.prg.debug.xml
+# cp -f {prg_device}-settings.json $DST/{prg}-settings.json
 "monkeydo" {prg_device}.prg {device} {test_flag}
 killall simulator
 """
@@ -29,7 +30,8 @@ def _monkeyc_binary_impl(ctx):
   prg_file = ctx.actions.declare_file(prg_device + ".prg")
   outputs = [
       prg_file, 
-      ctx.actions.declare_file(prg_device + ".prg.debug.xml")
+      ctx.actions.declare_file(prg_device + ".prg.debug.xml"),
+      # ctx.actions.declare_file(prg_device + "-settings.json"),
   ]
   profile = ctx.var['COMPILATION_MODE'] == 'dbg'
   ctx.actions.run_shell(
@@ -39,6 +41,7 @@ def _monkeyc_binary_impl(ctx):
     execution_requirements = { 'no-sandbox': 'True' },
     use_default_shell_env = True,
     command  = ' '.join([
+#        'date \'+<strings><string id="BuildTime">%Y-%m-%dT%H:%M%z</string></strings>\' > "resources/strings/version.xml";',
         'monkeyc',
         '--jungles %s' % '\\;'.join([f.path for f in ctx.files.jungles]),
         '--output %s' % prg_file.path,

@@ -1,4 +1,6 @@
 <layout id="WatchFace">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="true" />
     <drawable id="DateValueGraph" class="Shared.Graph">
       <param name="x">3</param>
       <param name="y">120</param>
@@ -9,11 +11,11 @@
            font="Graphics.FONT_SYSTEM_SMALL" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 
            color="Graphics.COLOR_WHITE" />
-    <label id="HourLabel" x="165" y="50" 
+    <label id="HourLabel" x="165" y="28" 
            font="Graphics.FONT_SYSTEM_NUMBER_HOT" 
            justification="Graphics.TEXT_JUSTIFY_RIGHT" 
            color="Graphics.COLOR_WHITE" />
-    <label id="MinuteLabel" x="170" y="50" 
+    <label id="MinuteLabel" x="170" y="32" 
            font="Graphics.FONT_SYSTEM_NUMBER_MEDIUM" 
            justification="Graphics.TEXT_JUSTIFY_LEFT" 
            color="Graphics.COLOR_WHITE" />
@@ -25,16 +27,20 @@
            font="Graphics.FONT_SYSTEM_XTINY" 
            justification="Graphics.TEXT_JUSTIFY_RIGHT" 
            color="Graphics.COLOR_WHITE" />         
-    <label id="Data2Label" x="88" y="67" 
+    <label id="Data2Label" x="88" y="64" 
            font="Graphics.FONT_SYSTEM_XTINY" 
            justification="Graphics.TEXT_JUSTIFY_RIGHT" 
            color="Graphics.COLOR_WHITE" />
-    <label id="Data3Label" x="88" y="89" 
+    <label id="Data3Label" x="88" y="81" 
            font="Graphics.FONT_SYSTEM_XTINY" 
            justification="Graphics.TEXT_JUSTIFY_RIGHT" 
            color="Graphics.COLOR_WHITE" />     
-           
-    <label id="MessageLabel" x="10" y="100" 
+    <label id="Data4Label" x="88" y="98" 
+           font="Graphics.FONT_SYSTEM_XTINY" 
+           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
+           color="Graphics.COLOR_WHITE" />     
+
+    <label id="MessageLabel" x="10" y="98" 
            font="Graphics.FONT_SYSTEM_XTINY" 
            justification="Graphics.TEXT_JUSTIFY_LEFT" 
            color="Graphics.COLOR_RED" />   

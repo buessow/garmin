@@ -1,7 +1,2 @@
 <resources>
-    <drawable-list id="BackgroundList">
-        <shape type="rectangle" 
-               x="0" y="0" width="fill" height="43" 
-               color="Gfx.COLOR_DK_GRAY" />
-    </drawable-list >
 </resources>

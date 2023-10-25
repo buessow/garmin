@@ -3,6 +3,7 @@ using Shared.BackgroundScheduler;
 using Shared.Log;
 using Shared.Util;
 using Toybox.Application;
+using Toybox.Application.Properties;
 using Toybox.Graphics as Gfx;
 using Toybox.System;
 using Toybox.Time;
@@ -11,11 +12,13 @@ using Toybox.Lang;
 using Toybox.WatchUi as Ui;
 
 class GlucoseWatchFaceView extends Ui.WatchFace {
-  hidden static const TAG = "GlucoseWatchFaceView";
-  hidden const MINUTE_WIDTH = 4;
+  private static const TAG = "GlucoseWatchFaceView";
+  private const MINUTE_WIDTH = 4;
 
   var data as Shared.Data;
   var graph as Shared.Graph?;
+  private var fgColor = Gfx.COLOR_BLACK;
+  private var bgColor = Gfx.COLOR_WHITE;
 
   function initialize(data as Shared.Data) {
     WatchFace.initialize();
@@ -33,7 +36,19 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
   }
 
   function updateSettings() {
-    Log.i(TAG, "update settings");
+    Log.i(TAG, "update settings '" + Properties.getValue("Appearance") + "'");
+    var light = Properties.getValue("Appearance") == 1;
+    View.findDrawableById("BackgroundDark").setVisible(!light);
+    View.findDrawableById("BackgroundLight").setVisible(light);
+    if (light) {
+      graph.setAppearanceLight();
+      fgColor = Gfx.COLOR_BLACK;
+      bgColor = Gfx.COLOR_WHITE;
+    } else {
+      graph.setAppearanceDark();
+      fgColor = Gfx.COLOR_WHITE;
+      bgColor = Gfx.COLOR_BLACK;
+    }
   }
 
   function onEnterSleep() {
@@ -53,12 +68,17 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
   function onShow() {
   }
 
+  hidden function setViewLabelAndColor(view, text) {
+    view.setColor(fgColor);
+    view.setText(text);
+  }
+
   hidden function setViewLabel(view, text) {
     view.setText(text);
   }
 
   hidden function setLabel(id, text) {
-    setViewLabel(View.findDrawableById(id), text);
+    setViewLabelAndColor(View.findDrawableById(id), text);
   }
 
   hidden function minuteToArcDegree(min) {
@@ -66,7 +86,7 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
   }
 
   hidden function drawAtMin(dc, min, color) {
-    dc.setColor(color, Gfx.COLOR_BLACK);
+    dc.setColor(color, bgColor);
     dc.setPenWidth(MINUTE_WIDTH);
     dc.drawArc(
         dc.getWidth() / 2 - 0.5, dc.getHeight() / 2  - 0.5,
@@ -111,6 +131,8 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
 
   hidden function onUpdateImpl(dc) {
     BackgroundScheduler.schedule2(data.glucoseBuffer.getLastDateSec(), 5);
+    dc.setColor(bgColor, fgColor);
+    dc.drawRectangle(0, 0, dc.getWidth(), dc.getHeight());
     var now = Time.now();
     var nowInfo = Calendar.info(now, Time.FORMAT_MEDIUM);
     var hourDisplay = System.getDeviceSettings().is24Hour ? 24 : 12;
@@ -120,7 +142,12 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
     if (nowInfo.min / 10 == 1) { dx = dx + 3; }
     var minuteView = findDrawableById("MinuteLabel");
     minuteView.locX = minuteView.locX - dx;
-    setLabel("HourLabel", (nowInfo.hour % hourDisplay).toString());
+    if (System.getDeviceSettings().is24Hour) {
+      setLabel("HourLabel", (nowInfo.hour % hourDisplay).toString());
+    } else {
+      var h = nowInfo.hour % 12;
+      setLabel("HourLabel", (h == 0 ? 12 : h).toString());
+    }
     setLabel("MinuteLabel", nowInfo.min.format("%02d"));
 
     setLabel("GlucoseLabel", data.getGlucoseStr());
@@ -129,10 +156,10 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
     setLabel("Data3Label", data.getGlucoseAgeStr());
     if (data.errorMessage == null) {
       setLabel("Data4Label", data.getBasalCorrectionStr());
-      setLabel("MessageLabel", "");
+      setViewLabel(View.findDrawableById("MessageLabel"), "");
     } else {
       setLabel("Data4Label", "");
-      setLabel("MessageLabel", data.errorMessage);
+      setViewLabel(View.findDrawableById("MessageLabel"), data.errorMessage);
     }
     View.onUpdate(dc);
     minuteView.locX = minuteView.locX + dx;

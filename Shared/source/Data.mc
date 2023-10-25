@@ -191,7 +191,7 @@ class Data {
     }
   }
 
-  // Gets the how much the blood glucose has been changing per
+  // Gets how much the blood glucose has been changing per
   // minute as a formatted string.
   //
   // @Returns Toybox.Lang.String

@@ -125,7 +125,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   }
 
   function onResult(code as Number, obj) as Void {
-    code = code == null ? 0 : code;
+    code = -code == null ? 0 : code;
     try {
       onResultImpl(code, obj, methodName, callback);
     } catch (e) {

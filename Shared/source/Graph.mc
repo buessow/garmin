@@ -33,6 +33,9 @@ class Graph extends Ui.Drawable {
   private var maxGlucose;
   private var circular;
   var isMmolL as Boolean?;
+  private var bgColor;
+  private var hrColor;
+  private var axisColor;
 
   function initialize(params) {
     Log.i(TAG, "initialize");
@@ -43,6 +46,19 @@ class Graph extends Ui.Drawable {
     me.initialWidth = params.get(:width).toNumber();
     me.width = initialWidth;
     me.height = params.get(:height).toNumber();
+    setAppearanceLight();
+  }
+
+  function setAppearanceLight() {
+    bgColor = Gfx.COLOR_WHITE;
+    axisColor = Gfx.COLOR_LT_GRAY;
+    hrColor = Gfx.COLOR_DK_GRAY;
+  }
+
+  function setAppearanceDark() {
+    bgColor = Gfx.COLOR_BLACK;
+    axisColor = Gfx.COLOR_DK_GRAY;
+    hrColor = Gfx.COLOR_LT_GRAY;
   }
 
   function setReadings(glucoseBuffer as Shared.DateValues) as Void {
@@ -153,17 +169,17 @@ class Graph extends Ui.Drawable {
       var h = height - y;
 //      Log.i(TAG, "draw " + glucoseBuffer.getValue(i)
 //          + " x=" + x + " y=" + y + " h=" + h);
-      dc.setColor(Gfx.COLOR_DK_BLUE, Gfx.COLOR_BLACK);
+      dc.setColor(Gfx.COLOR_DK_BLUE, bgColor);
       dc.fillRectangle(xOffset + x, yOffset + y, w, h);
-      dc.setColor(Gfx.COLOR_BLUE, Gfx.COLOR_BLACK);
+      dc.setColor(Gfx.COLOR_BLUE, bgColor);
       dc.fillRectangle(xOffset + x, yOffset + y, w, 3);
     }
   }
 
   private function drawTimeAxis(dc, startSec) {
-    dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
+    dc.setColor(axisColor, Gfx.COLOR_TRANSPARENT);
     dc.setPenWidth(2);
-    dc.drawLine(xOffset, yOffset, xOffset + width, yOffset);
+    dc.drawLine(0, yOffset, width, yOffset);
     dc.drawLine(xOffset, yOffset + height, xOffset + width, yOffset + height);
     dc.setPenWidth(GLUCOSE_BAR_PADDING);
     for (var dateSec = (startSec-1) / MINOR_X_AXIS_SEC * MINOR_X_AXIS_SEC;
@@ -196,7 +212,7 @@ class Graph extends Ui.Drawable {
     } while (val.data == null );
     var prevX = getX(startSec, val.when.value());
     var prevY = getYForHR(val.data);
-    dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_BLACK);
+    dc.setColor(hrColor, bgColor);
     dc.setPenWidth(2);
     var count = 0;
     var sum = 0;

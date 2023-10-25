@@ -1,3 +1,9 @@
 <drawables>
     <bitmap id="LauncherIcon" filename="icons8-blood-40.png" />
+    <drawable-list id="BackgroundDark"> 
+        <shape type="rectangle" x="0" y="0" width="fill" height="fill" color="Gfx.COLOR_BLACK" />
+    </drawable-list>
+    <drawable-list id="BackgroundLight"> 
+        <shape type="rectangle" x="0" y="0" width="fill" height="fill" color="Gfx.COLOR_WHITE" />
+    </drawable-list>
 </drawables>

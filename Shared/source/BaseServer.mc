@@ -63,7 +63,7 @@ class BaseServer {
           glucoseField.setData(data.glucoseBuffer.getLastValue());
         }
       } else {
-        data.errorMessage = result["errorMessage"] + " " + code.toString();
+        data.errorMessage = result["errorMessage"];
       }
     } catch (e) {
       Log.e(TAG, "ex ");
