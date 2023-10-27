@@ -179,7 +179,7 @@ class Graph extends Ui.Drawable {
   private function drawTimeAxis(dc, startSec) {
     dc.setColor(axisColor, Gfx.COLOR_TRANSPARENT);
     dc.setPenWidth(2);
-    dc.drawLine(0, yOffset, width, yOffset);
+    dc.drawLine(0, yOffset, initialWidth, yOffset);
     dc.drawLine(xOffset, yOffset + height, xOffset + width, yOffset + height);
     dc.setPenWidth(GLUCOSE_BAR_PADDING);
     for (var dateSec = (startSec-1) / MINOR_X_AXIS_SEC * MINOR_X_AXIS_SEC;

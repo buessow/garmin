@@ -5,8 +5,8 @@
     <drawable id="DateValueGraph" class="Shared.Graph">
       <param name="x">0</param>
       <param name="y">130</param>
-      <param name="width">280</param>
-       <param name="height">105</param>
+      <param name="width">260</param>
+       <param name="height">90</param>
     </drawable>      
     <label id="DateLabel" x="center" y="10" 
            font="Graphics.FONT_SYSTEM_SMALL" 
@@ -16,11 +16,11 @@
            font="Graphics.FONT_SYSTEM_NUMBER_HOT" 
            justification="Graphics.TEXT_JUSTIFY_RIGHT" 
            color="Graphics.COLOR_WHITE" />
-    <label id="MinuteLabel" x="188" y="38" 
+    <label id="MinuteLabel" x="188" y="40" 
            font="Graphics.FONT_SYSTEM_NUMBER_MILD" 
            justification="Graphics.TEXT_JUSTIFY_LEFT" 
            color="Graphics.COLOR_WHITE" />
-    <label id="GlucoseLabel" x="center" y="235" 
+    <label id="GlucoseLabel" x="center" y="215" 
            font="Graphics.FONT_SYSTEM_LARGE" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 
            color="Graphics.COLOR_WHITE" />

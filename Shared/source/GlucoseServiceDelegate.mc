@@ -30,7 +30,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
       case -200: return "inv req header";
       case -201: return "inv req body";
       case -202: return "inv req method";
-      case -300: return "net timeout";
+      case -300: return "Enable Garmin in AAPS config";
       case -400: return "inv resp body";
       case -401: return "inv resp header";
       case -402: return "resp too large";
@@ -40,6 +40,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
       case -1002: return "bad content type";
       case -1003: return "req cancelled";
       case -1004: return "conn dropped";
+      case 404: return "enable Garmin in AAPS config";
       default:
         if (code > 0) {
           return "HTTP" + code;
@@ -125,7 +126,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   }
 
   function onResult(code as Number, obj) as Void {
-    code = -code == null ? 0 : code;
+    code = code == null ? 0 : code;
     try {
       onResultImpl(code, obj, methodName, callback);
     } catch (e) {

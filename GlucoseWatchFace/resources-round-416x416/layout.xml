@@ -4,44 +4,44 @@
     <drawable id="BackgroundLight" visible="true" />
     <drawable id="DateValueGraph" class="Shared.Graph">
       <param name="x">0</param>
-      <param name="y">130</param>
-      <param name="width">280</param>
-       <param name="height">105</param>
+      <param name="y">195</param>
+      <param name="width">416</param>
+       <param name="height">160</param>
     </drawable>      
     <label id="DateLabel" x="center" y="10" 
            font="Graphics.FONT_SYSTEM_SMALL" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 
            color="Graphics.COLOR_WHITE" />
-    <label id="HourLabel" x="185" y="28" 
+    <label id="HourLabel" x="280" y="45" 
            font="Graphics.FONT_SYSTEM_NUMBER_HOT" 
            justification="Graphics.TEXT_JUSTIFY_RIGHT" 
            color="Graphics.COLOR_WHITE" />
-    <label id="MinuteLabel" x="188" y="38" 
+    <label id="MinuteLabel" x="283" y="55" 
            font="Graphics.FONT_SYSTEM_NUMBER_MILD" 
            justification="Graphics.TEXT_JUSTIFY_LEFT" 
            color="Graphics.COLOR_WHITE" />
-    <label id="GlucoseLabel" x="center" y="235" 
+    <label id="GlucoseLabel" x="center" y="355" 
            font="Graphics.FONT_SYSTEM_LARGE" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 
            color="Graphics.COLOR_WHITE" />
-    <label id="Data1Label" x="88" y="46" 
+    <label id="Data1Label" x="145" y="65" 
            font="Graphics.FONT_SYSTEM_TINY" 
            justification="Graphics.TEXT_JUSTIFY_RIGHT" 
            color="Graphics.COLOR_WHITE" />         
-    <label id="Data2Label" x="88" y="72" 
+    <label id="Data2Label" x="145" y="105" 
            font="Graphics.FONT_SYSTEM_XTINY" 
            justification="Graphics.TEXT_JUSTIFY_RIGHT" 
            color="Graphics.COLOR_WHITE" />
-    <label id="Data3Label" x="88" y="88" 
+    <label id="Data3Label" x="145" y="135" 
            font="Graphics.FONT_SYSTEM_XTINY" 
            justification="Graphics.TEXT_JUSTIFY_RIGHT" 
            color="Graphics.COLOR_WHITE" />     
-    <label id="Data4Label" x="88" y="104" 
+    <label id="Data4Label" x="145" y="165" 
            font="Graphics.FONT_SYSTEM_XTINY" 
            justification="Graphics.TEXT_JUSTIFY_RIGHT" 
            color="Graphics.COLOR_WHITE" />     
            
-    <label id="MessageLabel" x="10" y="108" 
+    <label id="MessageLabel" x="20" y="165" 
            font="Graphics.FONT_SYSTEM_XTINY" 
            justification="Graphics.TEXT_JUSTIFY_LEFT" 
            color="Graphics.COLOR_RED" />   
