@@ -100,6 +100,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     putIfNotNull(parameters, "device", Properties.getValue("Device"));
     parameters["manufacturer"] = "garmin";
     parameters["test"] = Util.stringEndsWith(parameters["device"], "Sim").toString();
+    parameters["key"] = Properties.getValue("AAPSKey");
 
     var stats = System.getSystemStats();
     Log.i(TAG, 
