@@ -1,5 +1,6 @@
 import Toybox.Lang;
 
+using Toybox.Application.Properties;
 using Toybox.Attention;
 
 module Shared {
@@ -53,6 +54,17 @@ class BaseServer {
       data.errorMessage = "bad result type";
       return;
     }
+    var channel = result["channel"];
+    if ("http".equals(channel)) {
+      onHttpData(result, data);
+    } else if ("phoneApp".equals(channel)) {
+      onPhoneAppData(result, data);
+    }
+  }
+
+  function onHttpData(
+      result as Dictionary<String, Object> or Null, 
+      data as Data) as Void {
     var code = result["httpCode"];
     Log.i(TAG, "onBackgroundData " + Util.ifNull(code, -1).toString());
     data.requestTimeSec = result["startTimeSec"];
@@ -71,6 +83,20 @@ class BaseServer {
       data.errorMessage = e.getErrorMessage();
     }
     Log.i(TAG, "onBackgroundData done");
+  }
+
+  function onPhoneAppData(
+      result as Dictionary<String, Object> or Null, 
+      data as Data) as Void {
+    var key = result["key"];
+    Log.i(TAG, "Got key '" + key + "'");
+    Properties.setValue("AAPSKey", key);
+    if (result.hasKey("encodedGlucose")) {
+      onData(result, data);
+    }
+    if (glucoseField != null && data.hasValue()) {
+      glucoseField.setData(data.glucoseBuffer.getLastValue());
+    }
   }
 }
 }

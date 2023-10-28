@@ -152,6 +152,8 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
       result["errorMessage"] = getErrorMessage(code);
     }
     result["startTimeSec"] = startTime;
+    result["channel"] = "http";
+    
     if (callback != null) {
       callback.invoke(result);
     }
@@ -167,5 +169,27 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
       disconnectMinutes as Number, 
       callback as Method(result as Dictionary<String, Object>) as Void) {
     get("connect", callback, { "disconnectMinutes" => disconnectMinutes.toString()});
+  }
+
+  private function handlePhoneAppMessage(msg as Comm.PhoneAppMessage) as Void {
+    if (msg != null && msg has :data && msg.data != null) {
+      Log.i(TAG, "setData " + msg.data);
+      msg.data["channel"] = "phoneApp";
+      Background.exit(msg.data);
+    } else {
+      Log.i(TAG, "ignore message, no data");
+    }
+  }
+
+  function onPhoneAppMessage(msg as Comm.PhoneAppMessage) as Void {
+    try {
+      Log.i(TAG, "onPhoneAppMessage");
+      handlePhoneAppMessage(msg);
+    } catch (e) {
+      Log.e(TAG, "onPhoneAppMessage ex: " + (e == null ? "NULL" : e.getErrorMessage()));
+      if (e != null) {
+        e.printStackTrace();
+      }
+    }
   }
 }}
