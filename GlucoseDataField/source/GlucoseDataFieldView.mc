@@ -80,7 +80,7 @@ class GlucoseDataFieldView extends Ui.DataField {
   function initialize() {
     Log.i(TAG, "initialize");
     Ui.DataField.initialize();
-    displayRadius = Application.getApp().getProperty("DisplayDiameter") / 2;
+    displayRadius = System.getDeviceSettings().screenWidth / 2;
   }
 
   function onLayout(dc) {
@@ -288,9 +288,9 @@ class GlucoseDataFieldView extends Ui.DataField {
         x, y, settings[:unitFont],
         getGlucoseUnitDividend(data.glucoseUnit),
         Gfx.TEXT_JUSTIFY_CENTER);
-    y +=  Gfx.getFontHeight(settings[:unitFont]) + 3;
-    dc.drawLine(
-        x - settings[:unitWidth]/2, y, x + settings[:unitWidth]/2, y);
+    y +=  Gfx.getFontHeight(settings[:unitFont]);
+    // dc.drawLine(
+    //     x - settings[:unitWidth] / 2, y, x + settings[:unitWidth] / 2, y);
     y += 1;
     dc.drawText(
         x, y, settings[:unitFont],

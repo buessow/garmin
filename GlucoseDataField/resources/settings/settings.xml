@@ -1,8 +1,5 @@
 <settings>
-  <setting propertyKey="@Properties.GlucoseUnit" title="@Strings.GlucoseUnitSettingsTitle">
-    <settingConfig type="list">
-      <listEntry value="1">@Strings.GlucoseUnitMgDl</listEntry>
-      <listEntry value="2">@Strings.GlucoseUnitMmolL</listEntry>
-    </settingConfig>
+  <setting propertyKey="@Properties.AAPSKey" title="@Strings.AAPSKeyTitle">
+    <settingConfig type="alphaNumeric" />
   </setting>
 </settings>

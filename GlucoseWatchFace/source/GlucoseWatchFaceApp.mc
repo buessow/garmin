@@ -27,8 +27,7 @@ class GlucoseWatchFaceApp extends Application.AppBase {
 
   function onBackgroundData(result) {
     try {
-      Log.i(TAG, "onBackgroundData server=" + (server!=null).toString()
-          + " view=" + (view!=null).toString());
+      Log.i(TAG, "onBackgroundData " + result);
       if (data == null) {
         data = new Shared.Data();
       }

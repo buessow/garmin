@@ -29,7 +29,7 @@ class GlucoseDataFieldApp extends Application.AppBase {
   }
 
   function onBackgroundData(result) as Void {
-    Log.i(TAG, "onBackgroundData");
+    Log.i(TAG, "onBackgroundData " + result);
     BackgroundScheduler.registered = false;
     if (view == null) {
       view = new GlucoseDataFieldView();

@@ -60,6 +60,7 @@ class BaseServer {
     } else if ("phoneApp".equals(channel)) {
       onPhoneAppData(result, data);
     }
+    Log.i(TAG, "onBackgroundData done " + channel);
   }
 
   function onHttpData(
@@ -82,7 +83,6 @@ class BaseServer {
       e.printStackTrace();
       data.errorMessage = e.getErrorMessage();
     }
-    Log.i(TAG, "onBackgroundData done");
   }
 
   function onPhoneAppData(
