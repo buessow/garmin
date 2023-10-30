@@ -7,7 +7,7 @@
                     launcherIcon="@Drawables.LauncherIcon"
                     name="@Strings.AppName" 
                     type="watchface" 
-                    version="1.0.3">
+                    version="1.0.4">
         <iq:products>
             <iq:product id='approachs7042mm'/>
             <iq:product id='approachs7047mm'/>
