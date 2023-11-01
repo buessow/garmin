@@ -1,5 +1,24 @@
 <resources>
-<layout id="WatchFace">
+  <jsonData id="timeOverrides">
+    { 
+      "deviceOverrides": [
+        {
+           "devices": ["fr955"],
+           "locX": 175,
+           "locY": 38,
+           "addMinuteY": 0
+        }, {
+           "devices": ["fr255", "fr255m", "vivoactive4", "legacyherofirstavenger", "legacysagadarthvader"],
+           "addMinuteY": 4
+        }, {
+           "devices": ["fenix7", "fenix7s", "fenix7pro"],
+           "locX": 180,
+           "addMinuteY": -2
+        }
+      ]
+    }
+  </jsonData>
+  <layout id="WatchFace">
     <drawable id="BackgroundDark" visible="false" />
     <drawable id="BackgroundLight" visible="true" />
     <drawable id="DateValueGraph" class="Shared.Graph">
@@ -12,14 +31,13 @@
            font="Graphics.FONT_SYSTEM_SMALL" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 
            color="Graphics.COLOR_WHITE" />
-    <label id="HourLabel" x="185" y="28" 
-           font="Graphics.FONT_SYSTEM_NUMBER_HOT" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />
-    <label id="MinuteLabel" x="188" y="40" 
-           font="Graphics.FONT_SYSTEM_NUMBER_MILD" 
-           justification="Graphics.TEXT_JUSTIFY_LEFT" 
-           color="Graphics.COLOR_WHITE" />
+    <drawable id="Time" class="Time">
+          <param name="locX">170</param>
+          <param name="locY">28</param>
+          <param name="hourMinuteSpace">3</param>
+          <param name="hourFont">Graphics.FONT_SYSTEM_NUMBER_HOT</param> 
+          <param name="minuteFont">Graphics.FONT_SYSTEM_NUMBER_MILD</param>
+    </drawable>
     <label id="GlucoseLabel" x="center" y="215" 
            font="Graphics.FONT_SYSTEM_LARGE" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 

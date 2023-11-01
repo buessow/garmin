@@ -13,6 +13,7 @@ filegroup(
           '//Shared:Scheduler',
           'source/GlucoseWatchFaceApp.mc',
           'source/GlucoseWatchFaceView.mc',
+          'source/Time.mc',
 	 ],
 )
 

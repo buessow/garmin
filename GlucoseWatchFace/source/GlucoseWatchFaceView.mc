@@ -1,3 +1,5 @@
+import Toybox.Lang;
+
 using Shared;
 using Shared.BackgroundScheduler;
 using Shared.Log;
@@ -31,6 +33,7 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
     graph = findDrawableById("DateValueGraph") as Shared.Graph;
     graph.isMmolL = data.glucoseUnit == Shared.Data.mmoll;
     graph.setReadings(data.glucoseBuffer);
+
     updateSettings();
     Ui.requestUpdate();
   }
@@ -135,20 +138,7 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
     dc.drawRectangle(0, 0, dc.getWidth(), dc.getHeight());
     var now = Time.now();
     var nowInfo = Calendar.info(now, Time.FORMAT_MEDIUM);
-    var hourDisplay = System.getDeviceSettings().is24Hour ? 24 : 12;
     setLabel("DateLabel", nowInfo.day.toString() + " " + nowInfo.month.toString());
-    var dx = 0;
-    if (nowInfo.hour % 10 == 1) { dx = dx + 3; }
-    if (nowInfo.min / 10 == 1) { dx = dx + 3; }
-    var minuteView = findDrawableById("MinuteLabel");
-    minuteView.locX = minuteView.locX - dx;
-    if (System.getDeviceSettings().is24Hour) {
-      setLabel("HourLabel", (nowInfo.hour % hourDisplay).toString());
-    } else {
-      var h = nowInfo.hour % 12;
-      setLabel("HourLabel", (h == 0 ? 12 : h).toString());
-    }
-    setLabel("MinuteLabel", nowInfo.min.format("%02d"));
 
     setLabel("GlucoseLabel", data.getGlucoseStr());
     setLabel("Data1Label", data.getGlucoseDeltaPerMinuteStr());
@@ -162,9 +152,5 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
       setViewLabel(View.findDrawableById("MessageLabel"), data.errorMessage);
     }
     View.onUpdate(dc);
-    minuteView.locX = minuteView.locX + dx;
-
-
-    //drawTimerMin(dc, now.value());
   }
 }

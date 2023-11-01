@@ -1,4 +1,15 @@
 <resources>
+  <jsonData id="timeOverrides">
+    { 
+      "deviceOverrides": [
+        {
+           "devices": ["epix2", "epix2pro47mm", "epix2pro51mm"],
+         
+           "addMinuteY": 2
+        }
+      ]
+    }
+  </jsonData>
 <layout id="WatchFace">
     <drawable id="BackgroundDark" visible="false" />
     <drawable id="BackgroundLight" visible="true" />
@@ -12,14 +23,14 @@
            font="Graphics.FONT_SYSTEM_SMALL" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 
            color="Graphics.COLOR_WHITE" />
-    <label id="HourLabel" x="280" y="45" 
-           font="Graphics.FONT_SYSTEM_NUMBER_HOT" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />
-    <label id="MinuteLabel" x="283" y="55" 
-           font="Graphics.FONT_SYSTEM_NUMBER_MILD" 
-           justification="Graphics.TEXT_JUSTIFY_LEFT" 
-           color="Graphics.COLOR_WHITE" />
+    <drawable id="Time" class="Time">
+          <param name="locX">280</param>
+          <param name="locY">45</param>
+          <param name="addMinuteY">-5</param>
+          <param name="hourMinuteSpace">3</param>
+          <param name="hourFont">Graphics.FONT_SYSTEM_NUMBER_HOT</param> 
+          <param name="minuteFont">Graphics.FONT_SYSTEM_NUMBER_MILD</param> 
+    </drawable>    
     <label id="GlucoseLabel" x="center" y="355" 
            font="Graphics.FONT_SYSTEM_LARGE" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 

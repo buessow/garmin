@@ -1,0 +1,59 @@
+<resources>
+  <jsonData id="timeOverrides">
+    { 
+      "deviceOverrides": [
+        {
+           "devices": ["epix2"],
+           "addMinuteY": 2
+        }
+      ]
+    }
+  </jsonData>
+  <layout id="WatchFace">
+  <drawable id="BackgroundDark" visible="false" />
+  <drawable id="BackgroundLight" visible="true" />
+  <drawable id="DateValueGraph" class="Shared.Graph">
+  <param name="x">3</param>
+  <param name="y">132</param>
+  <param name="width">244</param>
+        <param name="height">74</param>
+  </drawable>      
+  <label id="DateLabel" x="center" y="10" 
+        font="Graphics.FONT_SYSTEM_SMALL" 
+        justification="Graphics.TEXT_JUSTIFY_CENTER" 
+        color="Graphics.COLOR_WHITE" />
+  <drawable id="Time" class="Time">
+        <param name="locX">165</param>
+        <param name="locY">44</param>
+        <param name="addMinuteY">0</param>
+        <param name="hourMinuteSpace">3</param>
+        <param name="hourFont">Graphics.FONT_SYSTEM_NUMBER_HOT</param> 
+        <param name="minuteFont">Graphics.FONT_SYSTEM_NUMBER_MILD</param> 
+  </drawable> 
+  <label id="GlucoseLabel" x="center" y="203" 
+        font="Graphics.FONT_SYSTEM_MEDIUM" 
+        justification="Graphics.TEXT_JUSTIFY_CENTER" 
+        color="Graphics.COLOR_WHITE" />
+  <label id="Data1Label" x="94" y="37" 
+        font="Graphics.FONT_SYSTEM_XTINY" 
+        justification="Graphics.TEXT_JUSTIFY_RIGHT" 
+        color="Graphics.COLOR_WHITE" />         
+  <label id="Data2Label" x="94" y="60" 
+        font="Graphics.FONT_SYSTEM_XTINY" 
+        justification="Graphics.TEXT_JUSTIFY_RIGHT" 
+        color="Graphics.COLOR_WHITE" />
+  <label id="Data3Label" x="94" y="83" 
+        font="Graphics.FONT_SYSTEM_XTINY" 
+        justification="Graphics.TEXT_JUSTIFY_RIGHT" 
+        color="Graphics.COLOR_WHITE" />     
+  <label id="Data4Label" x="94" y="106" 
+        font="Graphics.FONT_SYSTEM_XTINY" 
+        justification="Graphics.TEXT_JUSTIFY_RIGHT" 
+        color="Graphics.COLOR_WHITE" />     
+
+  <label id="MessageLabel" x="10" y="98" 
+        font="Graphics.FONT_SYSTEM_XTINY" 
+        justification="Graphics.TEXT_JUSTIFY_LEFT" 
+        color="Graphics.COLOR_RED" />   
+  </layout>
+</resources>

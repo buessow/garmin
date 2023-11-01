@@ -1,3 +1,21 @@
+<resources>  
+  <jsonData id="timeOverrides">
+    { 
+      "deviceOverrides": [
+        {
+           "devices": ["fr245", "fr245m", "fr745"],
+           "addMinuteY": 5
+        }, {
+           "devices": ["fr945", "fr945lte"],
+           "locX": 170,
+           "addMinuteY": 5
+        }, {
+           "devices": ["descentmk2s", "fenix6spro"],
+           "addMinuteY": -2
+        }
+      ]
+    }
+  </jsonData>
 <layout id="WatchFace">
     <drawable id="BackgroundDark" visible="false" />
     <drawable id="BackgroundLight" visible="true" />
@@ -11,20 +29,19 @@
            font="Graphics.FONT_SYSTEM_SMALL" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 
            color="Graphics.COLOR_WHITE" />
-    <label id="HourLabel" x="165" y="28" 
-           font="Graphics.FONT_SYSTEM_NUMBER_HOT" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />
-    <label id="MinuteLabel" x="170" y="32" 
-           font="Graphics.FONT_SYSTEM_NUMBER_MEDIUM" 
-           justification="Graphics.TEXT_JUSTIFY_LEFT" 
-           color="Graphics.COLOR_WHITE" />
+    <drawable id="Time" class="Time">
+          <param name="locX">165</param>
+          <param name="locY">28</param>
+          <param name="hourMinuteSpace">3</param>
+          <param name="hourFont">Graphics.FONT_SYSTEM_NUMBER_HOT</param> 
+          <param name="minuteFont">Graphics.FONT_SYSTEM_NUMBER_MEDIUM</param>
+    </drawable>
     <label id="GlucoseLabel" x="center" y="203" 
            font="Graphics.FONT_SYSTEM_MEDIUM" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 
            color="Graphics.COLOR_WHITE" />
     <label id="Data1Label" x="88" y="45" 
-           font="Graphics.FONT_SYSTEM_XTINY" 
+           font="Graphics.FONT_SYSTEM_XTINY"
            justification="Graphics.TEXT_JUSTIFY_RIGHT" 
            color="Graphics.COLOR_WHITE" />         
     <label id="Data2Label" x="88" y="64" 
@@ -45,3 +62,4 @@
            justification="Graphics.TEXT_JUSTIFY_LEFT" 
            color="Graphics.COLOR_RED" />   
 </layout>
+</resources>

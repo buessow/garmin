@@ -1,4 +1,18 @@
 <resources>
+  <jsonData id="timeOverrides">
+    { 
+      "deviceOverrides": [
+        {
+           "devices": ["venu2s"],
+           "locY": 40,
+           "addMinuteY": -6
+        }, {
+           "devices": ["fr265s"],
+           "addMinuteY": -2
+        }
+      ]
+    }
+  </jsonData>
 <layout id="WatchFace">
     <drawable id="BackgroundDark" visible="false" />
     <drawable id="BackgroundLight" visible="true" />
@@ -12,14 +26,13 @@
            font="Graphics.FONT_SYSTEM_SMALL" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 
            color="Graphics.COLOR_WHITE" />
-    <label id="HourLabel" x="266" y="45" 
-           font="Graphics.FONT_SYSTEM_NUMBER_HOT" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />
-    <label id="MinuteLabel" x="273" y="58" 
-           font="Graphics.FONT_SYSTEM_NUMBER_MILD" 
-           justification="Graphics.TEXT_JUSTIFY_LEFT" 
-           color="Graphics.COLOR_WHITE" />
+    <drawable id="Time" class="Time">
+          <param name="locX">266</param>
+          <param name="locY">45</param>
+          <param name="hourMinuteSpace">3</param>
+          <param name="hourFont">Graphics.FONT_SYSTEM_NUMBER_HOT</param> 
+          <param name="minuteFont">Graphics.FONT_LARGE</param>
+    </drawable>
     <label id="GlucoseLabel" x="center" y="307" 
            font="Graphics.FONT_SYSTEM_LARGE" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 

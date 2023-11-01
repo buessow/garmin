@@ -2,4 +2,5 @@ project.manifest = manifest.xml
 base.sourcePath = source;../Shared/source
 base.resourcePath = resources;../Shared/resources
 base.excludeAnnotations = fitContributor
-#round-260x260.resourcePath=$(base.resourcePath);resources-round-260x260
+fenix5xplus.resourcePath = $(fenix5plus.resourcePath)
+fenix5splus.resourcePath = $(fenix5plus.resourcePath)
