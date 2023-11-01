@@ -15,6 +15,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   private var methodName as String?;
   private var callback as (Method(result as Dictionary<String, Object>) as Void)?;
   var makeWebRequest = new Method(Comm, :makeWebRequest);
+  private var key = Properties.getValue("AAPSKey");
 
   private function getErrorMessage(code as Number) as String {
     switch (code) {
@@ -63,7 +64,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   }
 
   function onTemporalEvent() as Void {
-    Comm.registerForPhoneAppMessages(null);
+    key = Properties.getValue("AAPSKey");
     requestBloodGlucose(new Method(Toybox.Background, :exit));
   }
 
@@ -100,8 +101,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     putIfNotNull(parameters, "device", Properties.getValue("Device"));
     parameters["manufacturer"] = "garmin";
     parameters["test"] = Util.stringEndsWith(parameters["device"], "Sim").toString();
-    parameters["key"] = Properties.getValue("AAPSKey");
-
+    parameters["key"] = key;
     var stats = System.getSystemStats();
     Log.i(TAG, 
         methodName + " url: " + url + " params: " + parameters
@@ -143,8 +143,6 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
       obj, 
       method as String, 
       callback as Method(result as Dictionary<String, Object>) as Void) {
-    Log.i(TAG, method + " " + code + " obj: " + (obj == null ? "NULL" : obj));
-
     var result = obj instanceof Dictionary ? obj : { "message" => obj };
     result["httpCode"] = code;
     if (code != 200) {
@@ -153,6 +151,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     }
     result["startTimeSec"] = startTime;
     result["channel"] = "http";
+    result["key"] = key;
     
     if (callback != null) {
       callback.invoke(result);
@@ -171,11 +170,9 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     get("connect", callback, { "disconnectMinutes" => disconnectMinutes.toString()});
   }
 
-  private function handlePhoneAppMessage(msg as Comm.PhoneAppMessage) as Void {
+ function handlePhoneAppMessage(msg as Comm.PhoneAppMessage) as Void {
     if (msg != null && msg has :data && msg.data != null) {
-      Log.i(TAG, "setData " + msg.data);
-      msg.data["channel"] = "phoneApp";
-      Background.exit(msg.data);
+      Log.i(TAG, "handlePhoneAppMessage " + msg.data);
     } else {
       Log.i(TAG, "ignore message, no data");
     }
@@ -183,8 +180,16 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
 
   function onPhoneAppMessage(msg as Comm.PhoneAppMessage) as Void {
     try {
-      Log.i(TAG, "onPhoneAppMessage");
-      handlePhoneAppMessage(msg);
+      msg.data["channel"] = "phoneApp";
+      Log.i(TAG, "onPhoneAppMessage " + msg.data);
+      
+      var timestamp = msg.data["timestamp"];
+      if (Util.nowSec() - timestamp > 60) {
+        var key = msg.data["key"];
+        requestBloodGlucose(new Method(Toybox.Background, :exit));
+      } else {
+        Background.exit(msg.data);
+      }
     } catch (e) {
       Log.e(TAG, "onPhoneAppMessage ex: " + (e == null ? "NULL" : e.getErrorMessage()));
       if (e != null) {

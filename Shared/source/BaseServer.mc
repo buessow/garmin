@@ -68,6 +68,11 @@ class BaseServer {
       data as Data) as Void {
     var code = result["httpCode"];
     Log.i(TAG, "onBackgroundData " + Util.ifNull(code, -1).toString());
+    var key = result["key"];
+    if (key != null && !key.equals(Properties.getValue("AAPSKey"))) {
+      Log.i(TAG, "Got key '" + key + "'");
+      Properties.setValue("AAPSKey", key);
+    }
     data.requestTimeSec = result["startTimeSec"];
     try {
       if (code == 200) {
