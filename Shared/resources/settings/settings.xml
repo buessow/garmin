@@ -1,0 +1,14 @@
+<settings>
+  <setting propertyKey="@Properties.GlucoseDeltaSec" title="@Strings.GlucoseDeltaSecTitle" prompt="foo">
+    <settingConfig type="numeric" min="1"/>
+  </setting>
+  <setting propertyKey="@Properties.GlucoseValueFrequencySec" title="@Strings.GlucoseValueFrequencySecTitle">
+    <settingConfig type="numeric"  min="1"/>
+  </setting>
+  <setting propertyKey="@Properties.GlucoseValueWaitSec" title="@Strings.GlucoseValueWaitSecTitle">
+    <settingConfig type="numeric"  min="0"/>
+  </setting>
+    <setting propertyKey="@Properties.AAPSKey" title="@Strings.AAPSKeyTitle">
+    <settingConfig type="alphaNumeric" />
+  </setting>
+</settings>

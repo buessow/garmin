@@ -26,8 +26,8 @@ class BackgroundSchedulerTest {
       var now = 30 * 60;
       var value = now - 2*60;
       var expect = value
-          + BackgroundScheduler.READING_FREQUENCY
-          + BackgroundScheduler.EXTRA_READING_DELAY;
+          + BackgroundScheduler.readingFrequency()
+          + BackgroundScheduler.extraReadingDelay();
       var next = BackgroundScheduler.getNextRunTime(now, value, null);
       Assert.equal(expect, next);
     } catch (e) {
@@ -59,7 +59,7 @@ class BackgroundSchedulerTest {
       var val = now - 5*60;
       var ran = val 
           + BackgroundScheduler.ACCEPTABLE_EXTRA_DELAY 
-	  + BackgroundScheduler.EXTRA_READING_DELAY - 1;
+          + BackgroundScheduler.extraReadingDelay() - 1;
       var next = BackgroundScheduler.getNextRunTime(now, val, ran);
       Assert.equal(ran + BackgroundScheduler.MIN_SCHEDULE_DELAY, next);
     } catch (e) {
@@ -72,21 +72,21 @@ class BackgroundSchedulerTest {
   (:test)
   function valueRanInacceptableDelay(log) {
     try {
-      var now = 1000;
+      var now = 300;
       var val = now - 5*60;
       var ran = val 
           + BackgroundScheduler.ACCEPTABLE_EXTRA_DELAY 
-	  + BackgroundScheduler.EXTRA_READING_DELAY;
+	        + BackgroundScheduler.extraReadingDelay() + 1;
       var next = BackgroundScheduler.getNextRunTime(now, val, ran);
       Assert.equal(
-          val + BackgroundScheduler.READING_FREQUENCY
-              + BackgroundScheduler.NEXT_READING_DELAY,
+          val + 2*BackgroundScheduler.readingFrequency()
+              + BackgroundScheduler.extraReadingDelay(),
           next);
     } catch (e) {
       e.printStackTrace();
       throw e;
     }
-      return true;
+    return true;
   }
 
   (:test)
@@ -105,5 +105,4 @@ class BackgroundSchedulerTest {
       throw e;
     }
   }
-
 }

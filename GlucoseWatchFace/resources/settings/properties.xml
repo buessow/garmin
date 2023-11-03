@@ -1,4 +1,3 @@
 <properties>
     <property id="Appearance" type="number">0</property>
-    <property id="AAPSKey" type="string">foo</property>
 </properties>

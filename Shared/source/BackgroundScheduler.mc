@@ -1,5 +1,6 @@
 import Toybox.Lang;
 
+using Toybox.Application.Properties;
 using Toybox.Background;
 using Toybox.Math;
 using Toybox.System;
@@ -15,35 +16,37 @@ module BackgroundScheduler {
   // How often are we allowed to schedule background events. 5 min.
   const MIN_SCHEDULE_DELAY = 5 * 60;
 
-  // Frequency at which Dexcom provides glucose readings. 5 min.
-  const READING_FREQUENCY = 5 * 60;
-
-  // The phone doesn't get new readings immediately, so add some
-  // slack to avoid that we try to get it just before it's available.
-  const EXTRA_READING_DELAY = 5;
-
-  // When do we expect the next glucose reading.
-  const NEXT_READING_DELAY = READING_FREQUENCY + EXTRA_READING_DELAY;
-
   // If next scheduled time is that much after next expected reading
   // skip one reading.
-  const ACCEPTABLE_EXTRA_DELAY = EXTRA_READING_DELAY + 15;
+  const ACCEPTABLE_EXTRA_DELAY = 15;
 
   var registered = false;
   var nextScheduleTimeSec as Number?;
   var schedule = false;
 
+  // The phone doesn't get new readings immediately, so add some
+  // slack to avoid that we try to get it just before it's available.  
+  function extraReadingDelay() as Number {
+    return Util.ifNull(Properties.getValue("GlucoseValueWaitSec"), 5);
+  }
+
+  // Frequency at which the CGMprovides glucose readings. The default is 5 min.
+  function readingFrequency() as Number {
+    return Util.ifNull(Properties.getValue("GlucoseValueFrequencySec"), 300);
+  }
 
   // Computes when we expect the next value, usually 5 minutes plus a bit
   // after the last reading.
   function getNextValueTimeSec(nowSec, lastGlucoseTimeSec) as Number? {
     if (lastGlucoseTimeSec == null) { return null; }
 
-    var missedReadings = (nowSec - lastGlucoseTimeSec) / READING_FREQUENCY.toDouble();
+    var missedReadings = (nowSec - lastGlucoseTimeSec) / readingFrequency().toDouble();
     if (missedReadings > 6.0) {
       return null;
     } else {
-      return (lastGlucoseTimeSec + Math.ceil(missedReadings) * READING_FREQUENCY).toNumber() + EXTRA_READING_DELAY;
+      return (lastGlucoseTimeSec
+          + Math.ceil(missedReadings) * readingFrequency()).toNumber() 
+          + extraReadingDelay();
     }
   }
 
@@ -59,7 +62,7 @@ module BackgroundScheduler {
   // @Returns Toybox.Lang.Integer
   //          Time we should run the background task next in seconds
   //          since the epoch.
-  function getNextRunTime(nowSec, lastGlucoseTimeSec, lastRunTimeSec) {
+  function getNextRunTime(nowSec, lastGlucoseTimeSec, lastRunTimeSec) as Number {
     var nextRunTimeSec = lastRunTimeSec == null
                        ? nowSec + IMMEDIATE_SCHEDULING_DELAY
                        : lastRunTimeSec + MIN_SCHEDULE_DELAY;
@@ -89,14 +92,17 @@ module BackgroundScheduler {
       // Compute how much extra delay we get if we schedule at earliest
       // time.
       var extraDelaySec = nextRunTimeSec - nextValueSec;
+      Log.i(TAG, "extraDelaySec " + extraDelaySec + " " + ACCEPTABLE_EXTRA_DELAY + extraReadingDelay());
       if (extraDelaySec < ACCEPTABLE_EXTRA_DELAY) {
         // We would access the next value ACCEPTABLE_EXTRA_DELAY sec
-	// after it's available. That seems acceptable.
+	      // after it's available. That should be acceptable.
         return nextRunTimeSec;
       } else {
-        // Skip one glucose reading and get the next immediately, so
-        // that we're better synchronized with Dexcom schedule.
-        return nextValueSec + READING_FREQUENCY;
+        // Skip glucose readings and get the next immediately, so
+        // that we're better synchronized with the CGM schedule. For 5 minute
+        // frequency like Dexcom G6, this would be always another 5min.
+        return nextValueSec + 
+            (Math.ceil(extraDelaySec / readingFrequency().toDouble()) * readingFrequency()).toNumber();
       }
 
     } else {
@@ -131,13 +137,13 @@ module BackgroundScheduler {
       }
       return;
     }
-    var regTime = Background.getTemporalEventRegisteredTime();
     if (registered) {
       return;
     }
     if (nextScheduleTimeSec == null) {
       nextScheduleTimeSec = scheduleTime(nowSec, lastDateSec);
     }
+    var regTime = Background.getTemporalEventRegisteredTime();
     if (nextScheduleTimeSec <= nowSec + scheduleWithinSec) {
       if(System.getDeviceSettings().phoneConnected && regTime == null) {
         nextScheduleTimeSec = Util.max(nextScheduleTimeSec, nowSec + 1);

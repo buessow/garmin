@@ -34,8 +34,22 @@ function join(sep as String, array as Array<String>) as String {
   return s;
 }
 
+function dictSubset(d1 as Dictionary, d2 as Dictionary) as Boolean {
+  var keys = d1.keys();
+  for (var i = 0; i < keys.size(); i++) {
+    var key = keys[i];
+    var v1 = d1.get(key).toString();
+    var v2 = d2.get(key).toString();
+    if (!v1.equals(v2)) { 
+      Sys.println("Mismatch for '" + key + "'" + " '" + v1 + "' != '" + v2 + "'");
+      return false; 
+    }
+  }
+  return true;
+}
+
 function dictEquals(d1 as Dictionary, d2 as Dictionary) as Boolean {
-  return equal(d1.toString(), d2.toString());
+  return dictSubset(d1, d2) && dictSubset(d2, d1);
 }
 
 function arrayEquals(a1 as Array<Object>, a2 as Array<Object>) as Boolean {

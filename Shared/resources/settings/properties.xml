@@ -9,4 +9,9 @@
   <property id="TemporaryBasalRate" type="float">0.0</property>
   <property id="BasalProfile" type="string"/>
   <property id="GlucoseUnit" type="string"/>
+
+  <property id="AAPSKey" type="string"></property>
+  <property id="GlucoseDeltaSec" type="number">60</property>
+  <property id="GlucoseValueFrequencySec" type="number">300</property>
+  <property id="GlucoseValueWaitSec" type="number">5</property>
 </properties>

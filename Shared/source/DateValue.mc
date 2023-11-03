@@ -10,13 +10,13 @@ class DateValue {
     me.value = value;
   }
 
-  function deltaPerMinute(dv as DateValue?) as Float {
+  function deltaPerSec(dv as DateValue?, sec as Number) as Float {
     if (dv == null || dv.dateSec == dateSec) {
       return 0.0;
     }
     var deltaPerSec = (dv.value.toFloat() - value.toFloat()) /
         (dv.dateSec.toFloat() - dateSec.toFloat());
-    return 60.0 * deltaPerSec;
+    return sec * deltaPerSec;
   }
 
   function toString() as String {

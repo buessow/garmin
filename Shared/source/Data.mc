@@ -185,7 +185,8 @@ class Data {
   function getGlucoseDeltaPerMinute() {
     if (glucoseBuffer.size() > 1) {
       var last = glucoseBuffer.get(glucoseBuffer.size() - 1);
-      return last.deltaPerMinute(glucoseBuffer.get(glucoseBuffer.size() - 2));
+      var secs = Properties.getValue("GlucoseDeltaSec") as Number;
+      return last.deltaPerSec(glucoseBuffer.get(glucoseBuffer.size() - 2), secs);
     } else {
       return null;    
     }

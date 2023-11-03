@@ -4,7 +4,7 @@
 		    launcherIcon="@Drawables.LauncherIcon" 
 		    minSdkVersion="3.0.0"
 		    name="@Strings.AppName" 
-		    type="widget">
+		    type="watch-app">
         <iq:products>
             <iq:product id="fenix7"/>
         </iq:products>

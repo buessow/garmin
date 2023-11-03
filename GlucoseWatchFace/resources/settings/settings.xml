@@ -5,7 +5,4 @@
       <listEntry value="1">@Strings.AppearanceLight</listEntry>
     </settingConfig>
   </setting>
-  <setting propertyKey="@Properties.AAPSKey" title="@Strings.AAPSKeyTitle">
-    <settingConfig type="alphaNumeric" />
-  </setting>
 </settings>
