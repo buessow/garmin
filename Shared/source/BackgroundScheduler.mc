@@ -92,6 +92,10 @@ module BackgroundScheduler {
       // Compute how much extra delay we get if we schedule at earliest
       // time.
       var extraDelaySec = nextRunTimeSec - nextValueSec;
+      // We might miss several readings, e.g. if we get a reading per minute.
+      // Compute the time of the most recent reading before nextRunTimeSec.
+      var freq = readingFrequency().toDouble();
+      extraDelaySec -= (Math.floor(extraDelaySec / freq) * freq).toNumber();
       Log.i(TAG, "extraDelaySec " + extraDelaySec + " " + ACCEPTABLE_EXTRA_DELAY + extraReadingDelay());
       if (extraDelaySec < ACCEPTABLE_EXTRA_DELAY) {
         // We would access the next value ACCEPTABLE_EXTRA_DELAY sec
@@ -102,7 +106,7 @@ module BackgroundScheduler {
         // that we're better synchronized with the CGM schedule. For 5 minute
         // frequency like Dexcom G6, this would be always another 5min.
         return nextValueSec + 
-            (Math.ceil(extraDelaySec / readingFrequency().toDouble()) * readingFrequency()).toNumber();
+            (Math.ceil(extraDelaySec / freq) * freq).toNumber();
       }
 
     } else {

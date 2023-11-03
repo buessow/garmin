@@ -1,6 +1,7 @@
 using Shared;
 using Shared.BackgroundScheduler;
 using TestLib.Assert;
+using Toybox.Application.Properties;
 using Toybox.Time;
 
 (:test)
@@ -54,6 +55,7 @@ class BackgroundSchedulerTest {
 
   (:test)
   function valueRanAcceptableDelay(log) {
+    Properties.setValue("GlucoseValueFrequencySec", 300);
     try {
       var now = 1000;
       var val = now - 5*60;
@@ -85,6 +87,47 @@ class BackgroundSchedulerTest {
     } catch (e) {
       e.printStackTrace();
       throw e;
+    }
+    return true;
+  }
+
+  (:test)
+  function valueRanMinutelyFreq(log) {
+    Properties.setValue("GlucoseValueFrequencySec", 60);
+    try {
+      var now = 300;
+      var val = now - 3*60;
+      var ran = val + 10;
+      var next = BackgroundScheduler.getNextRunTime(now, val, ran);
+      Assert.equal(
+          val + BackgroundScheduler.MIN_SCHEDULE_DELAY + 10,
+          next);
+    } catch (e) {
+      e.printStackTrace();
+      throw e;
+    } finally {
+      Properties.setValue("GlucoseValueFrequencySec", 300);
+    }
+    return true;
+  }
+
+  (:test)
+  function valueRan3MinutelyFreq(log) {
+    Properties.setValue("GlucoseValueFrequencySec", 180);
+    try {
+      var now = 300;
+      var val = now - 3*60;
+      var ran = val + BackgroundScheduler.extraReadingDelay() + 1;
+      var next = BackgroundScheduler.getNextRunTime(now, val, ran);
+      Assert.equal(
+          val + 2*BackgroundScheduler.readingFrequency()
+              + BackgroundScheduler.extraReadingDelay(),
+          next);
+    } catch (e) {
+      e.printStackTrace();
+      throw e;
+    } finally {
+      Properties.setValue("GlucoseValueFrequencySec", 300);
     }
     return true;
   }
