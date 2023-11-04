@@ -1,4 +1,5 @@
 load('//:monkey.bzl', 'monkeyc_binary')
+load('//:monkey.bzl', 'monkeyc_package')
 
 filegroup(
   name = 'resources',
@@ -17,4 +18,11 @@ monkeyc_binary(
   jungles = 'monkey.jungle',
   resources = ['//Shared:Resources', ':resources'],
   srcs = ['//Shared', ':sources'],
+)
+
+monkeyc_package(
+  name = 'package', 
+  jungles = 'monkey.jungle',
+  resources = [':resources'],
+  srcs = [':sources'],
 )
