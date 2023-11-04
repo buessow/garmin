@@ -7,6 +7,7 @@ using Toybox.System;
 using Toybox.Time;
 using Toybox.WatchUi as Ui;
 
+(:exclude)
 class GlucoseDataFieldView extends Ui.DataField {
   static const TAG = "GlucoseDataFieldView";
   static const SETTINGS_KEYS = [ :large, :medium, :small ];

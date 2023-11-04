@@ -2,7 +2,7 @@ using Toybox.Application;
 using Toybox.Time;
 
 module Shared {
-  (:background)
+  (:background,:exclude)
   class FakeServer extends BaseServer {
     function initialize() {
       BaseServer.initialize();

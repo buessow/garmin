@@ -10,9 +10,10 @@ using Toybox.Time;
 using Toybox.WatchUi as Ui;
 
 class GlucoseDataFieldApp extends Application.AppBase {
-  hidden const TAG = "GlucoseDataFieldApp";
-  hidden var server as Shared.GmwServer or Null;
-  hidden var view as GlucoseDataFieldView or Null;
+  private const TAG = "GlucoseDataFieldApp";
+  private var server as Shared.GmwServer or Null;
+  private var view as LabelView?;
+  private var data as Shared.Data?;
 
   (:background)
   function initialize() {
@@ -31,12 +32,12 @@ class GlucoseDataFieldApp extends Application.AppBase {
   function onBackgroundData(result) as Void {
     Log.i(TAG, "onBackgroundData " + result);
     BackgroundScheduler.registered = false;
-    if (view == null) {
-      view = new GlucoseDataFieldView();
+    if (data == null) {
+      data = new Shared.Data();
     }
     view.heartRateCollector.reset();
-    server.onBackgroundData(result, view.data);
-    BackgroundScheduler.backgroundComplete(view.data.glucoseBuffer.getLastDateSec());
+    server.onBackgroundData(result, data);
+    BackgroundScheduler.backgroundComplete(data.glucoseBuffer.getLastDateSec());
   }
 
   function onStart(state as Lang.Dictionary or Null) as Void {
@@ -47,8 +48,10 @@ class GlucoseDataFieldApp extends Application.AppBase {
 
   function getInitialView() as Lang.Array<Ui.Views or Ui.InputDelegates> or Null {
     Properties.setValue("Device", System.getDeviceSettings().partNumber + "_DF");
-    view = new GlucoseDataFieldView();
+    data = new Shared.Data();
+    view = new LabelView(data);
     server.init2();
+    Background.registerForPhoneAppMessageEvent();
     BackgroundScheduler.registerTemporalEventIfConnectedIn(new Time.Duration(2));
 
     Log.i(TAG, "getInitialView - done");

@@ -1,4 +1,4 @@
 project.manifest = manifest.xml
 base.sourcePath = source;../Shared/source
-base.excludeAnnotations = graph
+base.excludeAnnotations = graph;exclude;partNumbers
 base.resourcePath = resources;../Shared/resources

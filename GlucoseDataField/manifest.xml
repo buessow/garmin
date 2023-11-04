@@ -3,7 +3,7 @@
 	entry="GlucoseDataFieldApp" 
 	id="1107ca6c2d5644b998d4bcb3793f2b7c" 
 	launcherIcon="@Drawables.LauncherIcon" 
-	minSdkVersion="3.0.0" 
+	minSdkVersion="3.3.1" 
 	name="@Strings.AppName" 
 	type="datafield" 
 	version="0.1.0">
@@ -16,7 +16,13 @@
             <iq:product id="fenix5plus"/>
             <iq:product id="fenix5splus"/>
             <iq:product id="fenix5xplus"/>
-            <iq:product id="fenix7"/>
+            <iq:product id='fenix6pro'/>
+            <iq:product id='fenix7'/>
+            <iq:product id='fenix7pro'/>
+            <iq:product id='fr255'/>
+            <iq:product id='fr255m'/>
+            <iq:product id='fr955'/>
+            <iq:product id='vivoactive4'/>
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="Background"/>

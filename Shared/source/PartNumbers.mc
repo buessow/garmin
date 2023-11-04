@@ -1,6 +1,7 @@
 import Toybox.Lang;
 
 module Shared {
+(:partNumbers)
 module PartNumbers {
     var map = {
         "006-B1836-00" => "edge_1000",
