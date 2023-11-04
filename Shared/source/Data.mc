@@ -105,13 +105,18 @@ class Data {
   //
   // @Returns Toybox.Lang.String
   function getGlucoseStr() as String {
-    if (fakeMode) { return "5.6"; }
-    if (!hasValue()) { return "-"; }
+    var glucose = null;
+    if (fakeMode) { 
+      glucose = (Util.nowSec() % 30)*10 + Util.nowSec() % 11; 
+    } else {
+      if (!hasValue()) { return "-"; }
+      glucose = glucoseBuffer.getLastValue();
+    }
     switch (glucoseUnit) {
       case mgdl:
-	      return glucoseBuffer.getLastValue().toString();
+	      return glucose.toString();
       case mmoll:
-        var glucose = glucoseBuffer.getLastValue() / 18.0;
+        glucose = glucose / 18.0;
         return glucose < 10.0
             ? glucose.format("%0.1f")
             : glucose.format("%0.0f");
