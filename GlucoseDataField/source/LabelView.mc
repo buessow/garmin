@@ -44,8 +44,8 @@ class LabelView extends Ui.DataField {
         case "L3B_Mid": setLayout(Rez.Layouts.L3B_Mid(dc)); break;
         case "L3B_Midfr": setLayout(Rez.Layouts.L3B_Midfr(dc)); break;
         case "L3B_Bot": setLayout(Rez.Layouts.L3B_Bot(dc)); break;
-        case "L3C_Bot_L": setLayout(Rez.Layouts.L3C_Bot_L(dc)); break;
-        case "L3C_Bot_R": setLayout(Rez.Layouts.L3C_Bot_R(dc)); break;        
+        case "L3C_4C_Bot_L": setLayout(Rez.Layouts.L3C_4C_Bot_L(dc)); break;
+        case "L3C_4C_Bot_R": setLayout(Rez.Layouts.L3C_4C_Bot_R(dc)); break;        
         case "L4A_Top": setLayout(Rez.Layouts.L4A_Top(dc)); break;
         case "L4A_Mid": setLayout(Rez.Layouts.L4A_Mid(dc)); break;
         case "L4A_Bot": setLayout(Rez.Layouts.L4A_Bot(dc)); break;

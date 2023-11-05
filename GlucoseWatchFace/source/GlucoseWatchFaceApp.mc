@@ -22,7 +22,7 @@ class GlucoseWatchFaceApp extends Application.AppBase {
   }
 
   function getServiceDelegate() {
-    return [ server.getServiceDelegate() ];
+    return [ new Shared.GlucoseServiceDelegate(server, 2 * 3600 - 9 * 60) ];
   }
 
   function onBackgroundData(result) {

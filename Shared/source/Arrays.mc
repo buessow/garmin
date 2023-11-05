@@ -1,7 +1,6 @@
 import Toybox.Lang;
 
 module Shared {
-  (:exclude)
   module Arrays {
     const TAG = "Arrays";
     function swap(a as Array, i as Number, j as Number) as Void {

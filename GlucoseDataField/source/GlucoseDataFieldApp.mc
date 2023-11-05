@@ -26,7 +26,7 @@ class GlucoseDataFieldApp extends Application.AppBase {
   (:background)
   function getServiceDelegate() as Lang.Array<System.ServiceDelegate> {
     Log.i(TAG, "getServiceDelegate");
-    return [ server.getServiceDelegate() ];
+    return [ new Shared.GlucoseServiceDelegate(server, 15 * 60) ];
   }
 
   function onBackgroundData(result) as Void {

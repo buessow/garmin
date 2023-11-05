@@ -16,6 +16,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   private var callback as (Method(result as Dictionary<String, Object>) as Void)?;
   var makeWebRequest = new Method(Comm, :makeWebRequest);
   private var key = Properties.getValue("AAPSKey");
+  private var glucoseValueIntervalSec as Number;
 
   private function getErrorMessage(code as Number) as String {
     switch (code) {
@@ -58,8 +59,9 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   // @Param parameters (Dictionary)
   //        Request/URL parameters. These will be added to the URL
   //        with ? & delemiters.
-  function initialize(server as GmwServer) {
+  function initialize(server as GmwServer, glucoseValueIntervalSec as Number) {
     System.ServiceDelegate.initialize();
+    me.glucoseValueIntervalSec = glucoseValueIntervalSec;
     me.server = server;
   }
 
@@ -122,6 +124,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     if (server has :wait && server.wait) {
       parameters["wait"] = "15";
     }
+    parameters["from"] = Util.nowSec() - glucoseValueIntervalSec;
     populateHeartRateHistory(parameters);
     get("get", callback, parameters);
   }

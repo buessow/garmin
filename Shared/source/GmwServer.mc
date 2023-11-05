@@ -17,8 +17,4 @@ class GmwServer extends BaseServer {
     BackgroundScheduler.registerTemporalEventIfConnectedIn(new Time.Duration(2));
     BackgroundScheduler.schedule = true;
   }
-
-  function getServiceDelegate() {
-    return new GlucoseServiceDelegate(me);
-  }
 }}
