@@ -3,7 +3,7 @@ import Toybox.Lang;
 module Shared {
 (:partNumbers)
 module PartNumbers {
-    var map = {
+    var map as Dictionary<String, String> = {
         "006-B1836-00" => "edge_1000",
         "006-B2067-00" => "edge_520",
         "006-B2158-00" => "fr735xt",
