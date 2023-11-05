@@ -14,9 +14,9 @@ class DateValue {
     if (dv == null || dv.dateSec == dateSec) {
       return 0.0;
     }
-    var deltaPerSec = (dv.value.toFloat() - value.toFloat()) /
-        (dv.dateSec.toFloat() - dateSec.toFloat());
-    return sec * deltaPerSec;
+    var dval = dv.value - value;
+    var dsec = dv.dateSec - dateSec;
+    return sec.toFloat() * dval.toFloat() / dsec.toFloat();
   }
 
   function toString() as String {
