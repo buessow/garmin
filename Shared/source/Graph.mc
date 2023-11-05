@@ -67,6 +67,7 @@ class Graph extends Ui.Drawable {
   function setReadings(glucoseBuffer as Shared.DateValues) as Void {
     Log.i(TAG, "setReadings " + glucoseBuffer.size() + " values");
     glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec");
+    glucoseBarPadding = glucoseBarWidthSec < 300 ? 0 : 2;
     me.glucoseBuffer = glucoseBuffer;
     var startSec = Util.nowSec() - TIME_RANGE_SEC;
     maxGlucose = 180;

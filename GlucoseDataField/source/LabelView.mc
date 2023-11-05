@@ -16,8 +16,9 @@ using Toybox.WatchUi as Ui;
 class LabelView extends Ui.DataField {
   private const TAG = "LabelView";
   private var data as Shared.Data;
-  private var sizes = {};
+  private var sizes as Dictionary<String, Boolean> = {};
   var heartRateCollector = new DataFieldHeartRateCollector();
+  private var graph as Shared.Graph?;
 
   
   function initialize(data as Shared.Data) {
@@ -31,7 +32,7 @@ class LabelView extends Ui.DataField {
     sizes[sizeStr] = true;
     var layouts =  Application.loadResource(Rez.JsonData.Layouts);
     try {
-      var layoutId = layouts[sizeStr]["layout"];
+      var layoutId = layouts[sizeStr]["layout"] as String?;
       if (log) { Log.i(TAG, "onLayout " + sizeStr + " " + layoutId); }
       switch(layoutId) {
         case "L1": setLayout(Rez.Layouts.L1(dc)); break;
@@ -60,7 +61,20 @@ class LabelView extends Ui.DataField {
       if (log) { Log.i(TAG, "onLayout " + sizeStr + " not found"); }
     }  
 
+    graph = findDrawableById("DateValueGraph") as Shared.Graph;
+    if (graph != null) {
+      graph.isMmolL = data.glucoseUnit == Shared.Data.mmoll;
+      graph.setReadings(data.glucoseBuffer);
+    }
+    
     Ui.requestUpdate();
+  }
+
+  function onNewGlucose() {
+    if (graph != null) {
+      graph.isMmolL = data.glucoseUnit == Shared.Data.mmoll;
+      graph.setReadings(data.glucoseBuffer);
+    }
   }
 
   private function setLabel(id as String, text as String) {

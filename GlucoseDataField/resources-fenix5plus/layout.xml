@@ -1,0 +1,186 @@
+<resources>
+  <jsonData id="Layouts">
+    {
+        "L_240x240_15": { "layout": "L1" },
+        "L_240x119_7": { "layout": "L2_3C_Top" },
+        "L_240x119_13": { "layout": "L2_Bot" },
+        "L_240x77_7": { "layout": "L3A_Top" },
+        "L_240x82_5": { "layout": "L3A_Mid" },
+        "L_240x77_13": { "layout": "L3A_Bot" },
+        "L_240x81_7": { "layout": "L3B_4B_Top" },
+        "L_240x86_7": { "layout": "L3B_4B_Top" },
+        "L_240x74_5": { "layout": "L3B_Mid" },
+        "L_240x68_5": { "layout": "L3B_Mid" },
+        "L_240x81_13": { "layout": "L3B_Bot" },
+        "L_240x86_13": { "layout": "L3B_Bot" },
+        "L_240x92_7": { "layout": "L3B_4B_Top" },
+        "L_240x74x_5": { "layout": "L3B_Midfr" },
+        "L_240x93_13": { "layout": "L3B_Bot" },
+        "L_119x119_9": { "layout": "L3C_4C_Bot_L" },
+        "L_119x119_12": { "layout": "L3C_4C_Bot_R" },  
+        "L_240x59_7": { "layout": "L4A_Top" },
+        "L_119x82_1": { "layout": "L4B_Mid" },
+        "L_119x82_4": { "layout": "L4B_Mid" },
+        "L_240x59_5": { "layout": "L4A_Mid" },
+        "L_240x59_13": { "layout": "L4A_Bot" },
+        "L_240x85_7": { "layout": "L3B_4B_Top" },
+        "L_119x66_1": { "layout": "L4B_Mid" },
+        "L_119x66_4": { "layout": "L4B_Mid" },
+        "L_240x85_13": { "layout": "L4B_Bot" },
+        "L_119x119_3": { "layout": "L4C_Top" },
+        "L_119x119_6": { "layout": "L4C_Top" },
+        "x":0
+    }
+  </jsonData>
+  <layout id="L1">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="120" y="5" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="100" y="30" font="Gfx.FONT_NUMBER_MEDIUM" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="200" y="30" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="220" y="55" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data3Label" x="230" y="80" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data4Label" x="150" y="80" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <drawable id="DateValueGraph" class="Shared.Graph">
+      <param name="x">3</param>
+      <param name="y">132</param>
+      <param name="width">240</param>
+      <param name="height">100</param>
+  </drawable>
+  </layout>
+  <layout id="L2_3C_Top">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="120" y="5" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="100" y="40" font="Gfx.FONT_NUMBER_MEDIUM" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="160" y="50" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="170" y="50" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="Data3Label" x="160" y="85" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data4Label" x="170" y="85" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+  </layout>
+  <layout id="L2_Bot">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="120" y="2" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="110" y="45" font="Gfx.FONT_NUMBER_MEDIUM" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="170" y="30" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="180" y="30" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="Data3Label" x="190" y="62" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data4Label" x="120" y="85" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+  </layout>
+  <layout id="L3A_Top">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="120" y="5" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="100" y="30" font="Gfx.FONT_SYSTEM_NUMBER_MEDIUM" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="160" y="40" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="170" y="40" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+  </layout>
+  <layout id="L3A_Mid">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="120" y="5" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="90" y="40" font="Gfx.FONT_SYSTEM_NUMBER_MEDIUM" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="175" y="30" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="180" y="30" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="Data3Label" x="175" y="50" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data4Label" x="180" y="50" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+  </layout>
+  <layout id="L3A_Bot">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="120" y="5" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="120" y="35" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="145" y="30" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+  </layout>
+  <layout id="L3B_4B_Top">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="115" y="5" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="100" y="30" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="160" y="30" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="165" y="30" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="Data3Label" x="175" y="56" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data4Label" x="180" y="56" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+  </layout>
+  <layout id="L3B_Mid">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="120" y="5" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="90" y="20" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="180" y="20" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="190" y="20" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="Data3Label" x="180" y="45" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data4Label" x="190" y="45" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+  </layout> 
+  <layout id="L3B_Bot">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="120" y="5" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="120" y="25" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="145" y="25" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="Data2Label" x="125" y="50" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+  </layout>
+  <layout id="L3C_4C_Bot_L">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="60" y="2" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="65" y="28" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+    <label id="Data1Label" x="110" y="55" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="110" y="80" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+  </layout>
+  <layout id="L3C_4C_Bot_R">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="60" y="2" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="45" y="28" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+    <label id="Data1Label" x="15" y="55" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="Data2Label" x="15" y="80" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+  </layout>
+  <layout id="L4A_Top">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="120" y="2" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="115" y="15" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="165" y="25" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="170" y="25" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+  </layout>
+  <layout id="L4A_Mid">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="120" y="2" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="100" y="15" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="170" y="25" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="180" y="25" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+  </layout>
+  <layout id="L4A_Bot">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="120" y="2" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="120" y="15" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="125" y="15" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+  </layout>
+  <layout id="L4B_Mid">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="65" y="2" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="66" y="29" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="110" y="25" font="Gfx.FONT_SYSTEM_XTINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="110" y="45" font="Gfx.FONT_SYSTEM_XTINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+  </layout>
+  <layout id="L4B_Bot">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="120" y="2" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="115" y="6" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="165" y="20" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data4Label" x="173" y="20" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="Data1Label" x="120" y="50" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+  </layout>
+  <layout id="L4C_Top">
+    <drawable id="BackgroundDark" visible="false" />
+    <drawable id="BackgroundLight" visible="false" />
+    <label id="TitleLabel" x="60" y="60" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="GlucoseLabel" x="65" y="85" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+  </layout>
+</resources>

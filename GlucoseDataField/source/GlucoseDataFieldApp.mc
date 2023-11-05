@@ -26,7 +26,7 @@ class GlucoseDataFieldApp extends Application.AppBase {
   (:background)
   function getServiceDelegate() as Lang.Array<System.ServiceDelegate> {
     Log.i(TAG, "getServiceDelegate");
-    return [ new Shared.GlucoseServiceDelegate(server, 15 * 60) ];
+    return [ new Shared.GlucoseServiceDelegate(server, 111 * 60) ];
   }
 
   function onBackgroundData(result) as Void {
@@ -37,6 +37,7 @@ class GlucoseDataFieldApp extends Application.AppBase {
     }
     view.heartRateCollector.reset();
     server.onBackgroundData(result, data);
+    view.onNewGlucose();
     BackgroundScheduler.backgroundComplete(data.glucoseBuffer.getLastDateSec());
   }
 

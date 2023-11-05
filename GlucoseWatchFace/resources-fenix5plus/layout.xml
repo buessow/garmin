@@ -1,22 +1,17 @@
 <resources>
   <jsonData id="timeOverrides">
     { 
-      "deviceOverrides": [
-        {
-           "devices": ["epix2"],
-           "addMinuteY": 2
-        }
-      ]
+      "deviceOverrides": []
     }
   </jsonData>
   <layout id="WatchFace">
   <drawable id="BackgroundDark" visible="false" />
   <drawable id="BackgroundLight" visible="true" />
   <drawable id="DateValueGraph" class="Shared.Graph">
-  <param name="x">3</param>
-  <param name="y">132</param>
-  <param name="width">244</param>
-        <param name="height">74</param>
+      <param name="x">3</param>
+      <param name="y">132</param>
+      <param name="width">244</param>
+      <param name="height">74</param>
   </drawable>      
   <label id="DateLabel" x="center" y="10" 
         font="Graphics.FONT_SYSTEM_SMALL" 
