@@ -23,12 +23,9 @@ class BaseServer {
   function onData(
       msg as Dictionary<String, Object>, 
       data as Data) as Void{
-    data.glucoseBuffer.clear();
     var values = Shared.DeltaVarEncoder.decodeBase64(2, msg["encodedGlucose"] as String);
-    for (var i = 0; i < values.size(); i += 2) {
-      var dv = new Shared.DateValue(values[i], values[i+1]);
-      data.glucoseBuffer.add(dv);
-    }
+    data.glucoseBuffer = new DateValues(values, values.size() / 2);
+
     data.updateGlucose();
     data.setRemainingInsulin(msg["remainingInsulin"] as Float?);
     data.setTemporaryBasalRate(msg["temporaryBasalRate"] as Float?);

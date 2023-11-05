@@ -14,20 +14,62 @@ class DateValues {
       data = new [2*size];
     } else {
       data = values;
-      count = size;
+      count = 2 * size;
     }
+  }
+
+  function medianDeltaSec() as Number? {
+    if (size() < 2) {
+      return null;
+    }
+    var deltas = new [Util.min(20, size()) - 1];
+    for (var i = 0; i < deltas.size(); i++) {
+      var j = i + (size() - 1 - deltas.size());
+      deltas[i] = getDateSec(j+1) - getDateSec(j);
+    }
+    Arrays.qsort(deltas);
+    return deltas[deltas.size() / 2];
+  }
+
+  function medianDeltaMinute() as Number? {
+    var sec = medianDeltaSec();
+    if (sec == null) {
+      return null;
+    }
+    return ((sec / 60.0) + 0.5).toNumber();
   }
 
   function size() as Number {
     return count / 2;
   }
 
-  function clear() {
+  function clear() as Void {
     start = 0;
     count = 0;
   }
 
-  hidden function add1(value) {
+  function ensureSize(minSize as Number) as Void {
+    if (minSize > data.size()) {
+      resize(minSize);
+    }
+  }
+
+  function resize(newSize as Number) as Void {
+    if (newSize == data.size()) {
+      return;
+    }
+    var newData = new [2 * newSize];
+    var newCount = Util.min(count, 2 * newSize);
+    var s = start + count - newCount;
+    for (var i = 0; i < newCount; i++) {
+      newData[i] = data[(i + s) % data.size()];
+    }
+    data = newData;
+    start = 0;
+    count = newCount;
+  }
+
+  private function add1(value) as Void {
     if (value == null) {
       throw new InvalidValueException("null");
     }
@@ -40,19 +82,20 @@ class DateValues {
     }
   }
 
-  hidden function get1(i) {
-    if (i < 2 * size()) {
-      var v = data[(start + i) % data.size()];
-      if (v == null) {
-        throw new InvalidValueException("i=" + i);
-      }
-      return v;
-    } else {
-      throw new ValueOutOfBoundsException("i=" + i + " size=" + size());
-    }
+  private function get1(i) as Number {
+    return data[(start + i) % data.size()];
+    // if (i < size()) {
+    //   var v = data[(start + i) % data.size()];
+    //   if (v == null) {
+    //     throw new InvalidValueException("i=" + i);
+    //   }
+    //   return v;
+    // } else {
+    //   throw new ValueOutOfBoundsException("i=" + i + " size=" + size());
+    // }
   }
 
-  function truncateTo(first) {
+  function truncateTo(first) as Void {
     start = (start + 2 * first) % data.size();
     count -= 2 * first;
   }
@@ -62,7 +105,7 @@ class DateValues {
     add1(dateValue.value);
   }
 
-  function toHexString() {
+  function toHexString() as String {
     var s = "";
     for (var i = 0; i < count; i++) {
       s += get1(i).format("%08x");
@@ -70,7 +113,7 @@ class DateValues {
     return s;
   }
 
-  function fromHexString(s) {
+  function fromHexString(s as String) as Void {
     start = 0;
     count = 0;
     for (var i = 0; i < s.length() / 8; i++) {
@@ -78,23 +121,23 @@ class DateValues {
     }
   }
 
-  function get(i) {
+  function get(i) as DateValue {
     return new DateValue(getDateSec(i), getValue(i));
   }
 
-  function getDateSec(i) {
+  function getDateSec(i) as Number {
     return get1(2 * i);
   }
 
-  function getValue(i) {
+  function getValue(i) as Number {
     return get1(2 * i + 1);
   }
 
-  function getLastDateSec() {
+  function getLastDateSec() as Number? {
     return size() == 0 ? null : getDateSec(size() - 1);
   }
 
-  function getLastValue() {
+  function getLastValue() as DateValue? {
     return size() == 0 ? null : getValue(size() - 1);
   }
 }}

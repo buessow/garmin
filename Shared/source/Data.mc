@@ -9,7 +9,7 @@ using Toybox.Time.Gregorian as Calendar;
 module Shared {
 class Data {
   private static const TAG = "Data";
-  var glucoseBuffer = new Shared.DateValues(null, 24);   // never null
+  var glucoseBuffer = new Shared.DateValues(null, 120);   // never null
   var glucoseUnit as GlucoseUnit = mgdl;
   var errorMessage as String?;
   var requestTimeSec as Number?;
@@ -33,14 +33,14 @@ class Data {
   }
 
   private function restoreValues() {
-    Log.i(TAG, "restoreValues()");
     var glucoseBufferStr = Util.ifNull(Properties.getValue("GlucoseValues"), "");
+    Log.i(TAG, "restoreValues() " + glucoseBufferStr.length());
     if (glucoseBufferStr.length() > 0) {
       glucoseBuffer.fromHexString(glucoseBufferStr);
       var dateSec = glucoseBuffer.getDateSec(glucoseBuffer.size()-1);
       if (Util.abs(Util.nowSec() - dateSec) > 3600) {
         Log.i(TAG, "stored value too old " + Util.timeSecToString(dateSec));
-        glucoseBuffer.fromHexString("");  // clear
+        glucoseBuffer.clear();
       } else {
         remainingInsulin = Properties.getValue("RemainingInsulin");
         temporaryBasalRate = Properties.getValue("TemporaryBasalRate");
@@ -220,15 +220,18 @@ class Data {
 
   // Notify that glucoseBuffer was updated.
   function updateGlucose() as Void {
-    Log.i(TAG, "setGlucose");
-    if (glucoseBuffer.size() > 0) {
-      errorMessage = null;
-      Log.i(TAG, "lastGlucose: " + glucoseBuffer.get(glucoseBuffer.size() - 1));
-      Properties.setValue("GlucoseValues", glucoseBuffer.toHexString());
-
-    } else {
-      me.glucoseBuffer.clear();
-      errorMessage = "no value";
+    var hex = glucoseBuffer.toHexString();
+    var last = glucoseBuffer.getLastValue();
+    Log.i(TAG, "updateGlucose " + glucoseBuffer.size() + " values, last " + (last==null?"NULL":last));
+    Properties.setValue("GlucoseValues", hex);
+    var glucoseFrequencySec = Properties.getValue("GlucoseValueFrequencyOverrideSec");
+    if (glucoseFrequencySec == 0) {
+      glucoseFrequencySec = 60 * Util.ifNull(glucoseBuffer.medianDeltaMinute(), 0);
     }
+    if (glucoseFrequencySec != null && glucoseFrequencySec > 0) {
+      Log.i(TAG, "updateGlucose glucose frequency " + glucoseFrequencySec);
+      Properties.setValue("GlucoseValueFrequencySec", glucoseFrequencySec);
+    }
+    errorMessage = last == null ? "no value" : null;
   }
 }}

@@ -1,4 +1,5 @@
 using Shared;
+using Shared.Util;
 using Shared.BackgroundScheduler;
 using TestLib.Assert;
 using Toybox.Application.Properties;
@@ -24,14 +25,15 @@ class BackgroundSchedulerTest {
   (:test)
   function valueNeverRun(log) {
     try {
+      Properties.setValue("GlucoseValueFrequencySec", 300);
       var now = 30 * 60;
       var value = now - 2*60;
       var expect = value
           + BackgroundScheduler.readingFrequency()
           + BackgroundScheduler.extraReadingDelay();
       var next = BackgroundScheduler.getNextRunTime(now, value, null);
-      Assert.equal(expect, next);
-    } catch (e) {
+      Assert.equal(Util.epochToString(expect), Util.epochToString(next));
+    } catch (e) { 
       log.error(e.getErrorMessage());
       e.printStackTrace();
       throw e;

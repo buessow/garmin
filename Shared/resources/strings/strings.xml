@@ -2,5 +2,6 @@
     <string id="AAPSKeyTitle">AAPS key</string>
     <string id="GlucoseDeltaSecTitle">Glucose delta seconds</string>
     <string id="GlucoseValueFrequencySecTitle">Glucose value seconds</string>
+    <string id="GlucoseValueFrequencyOverrideSecTitle">Glucose value override seconds</string>
     <string id="GlucoseValueWaitSecTitle">Glucose wait seconds</string>
 </strings>

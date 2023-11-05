@@ -3,7 +3,10 @@
     <settingConfig type="numeric" min="1"/>
   </setting>
   <setting propertyKey="@Properties.GlucoseValueFrequencySec" title="@Strings.GlucoseValueFrequencySecTitle">
-    <settingConfig type="numeric"  min="1"/>
+    <settingConfig type="numeric"  min="0" readonly="true" />
+  </setting>
+  <setting propertyKey="@Properties.GlucoseValueFrequencyOverrideSec" title="@Strings.GlucoseValueFrequencyOverrideSecTitle">
+    <settingConfig type="numeric"  min="0"/>
   </setting>
   <setting propertyKey="@Properties.GlucoseValueWaitSec" title="@Strings.GlucoseValueWaitSecTitle">
     <settingConfig type="numeric"  min="0"/>

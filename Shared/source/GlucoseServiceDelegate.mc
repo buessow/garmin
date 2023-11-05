@@ -185,7 +185,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
       
       var timestamp = msg.data["timestamp"];
       if (Util.nowSec() - timestamp > 60) {
-        var key = msg.data["key"];
+        key = msg.data["key"];
         requestBloodGlucose(new Method(Toybox.Background, :exit));
       } else {
         Background.exit(msg.data);

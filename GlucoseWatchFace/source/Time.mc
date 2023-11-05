@@ -22,7 +22,6 @@ class Time extends Ui.Drawable {
   
   function initialize(params as Dictionary) {
     Drawable.initialize(params);
-    Log.i(TAG, "initialized " + params);
     addMinuteY = Util.ifNull(params.get(:addMinuteY), 0);
 
     var device = PartNumbers.map[System.getDeviceSettings().partNumber];

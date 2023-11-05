@@ -13,14 +13,13 @@ module Shared {
 class Graph extends Ui.Drawable {
   private const TAG = "Graph";
   private const TIME_RANGE_SEC = 120 * 60;
-  private const GLUCOSE_BAR_WIDTH_SEC = 5 * 60;
   private const HR_SAMPLING_PERIOD_SEC = 5 * 60;
-  private const VALUE_COUNT = TIME_RANGE_SEC / GLUCOSE_BAR_WIDTH_SEC;
   private const MIN_HEART_RATE = 30;
   private const MAX_HEART_RATE = 160;
-  private const GLUCOSE_BAR_PADDING = 2;
+  private const GLUCOSE_BAR_PADDING = 0;
   private const MINOR_X_AXIS_SEC = 30 * 60;
 
+  private var glucoseBarWidthSec = 5 * 60;
   private var initialXOffset as Number;
   private var initialWidth as Number;
   private var glucoseBarWidth as Number?;
@@ -49,6 +48,10 @@ class Graph extends Ui.Drawable {
     setAppearanceLight();
   }
 
+  function valueCount() {
+    return TIME_RANGE_SEC / glucoseBarWidthSec; 
+  }
+
   function setAppearanceLight() {
     bgColor = Gfx.COLOR_WHITE;
     axisColor = Gfx.COLOR_LT_GRAY;
@@ -63,15 +66,14 @@ class Graph extends Ui.Drawable {
 
   function setReadings(glucoseBuffer as Shared.DateValues) as Void {
     Log.i(TAG, "setReadings " + glucoseBuffer.size() + " values");
+    glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec");
     me.glucoseBuffer = glucoseBuffer;
     var startSec = Util.nowSec() - TIME_RANGE_SEC;
     maxGlucose = 180;
     firstValueIdx = 0;
     for (var i = 0; i < glucoseBuffer.size(); i++) {
       if (glucoseBuffer.getDateSec(i) >= startSec) {
-        if (glucoseBuffer.getValue(i) > maxGlucose) {
-          maxGlucose = glucoseBuffer.getValue(i);
-        }
+        maxGlucose = Util.max(maxGlucose, glucoseBuffer.getValue(i));
       } else {
         firstValueIdx++;
       }
@@ -84,9 +86,9 @@ class Graph extends Ui.Drawable {
     }
     xOffset = initialXOffset + leftOffset;
     width = initialWidth - leftOffset - rightOffset;
-    var totalPadding = GLUCOSE_BAR_PADDING * (VALUE_COUNT - 1);
-    glucoseBarWidth = Math.ceil((width - totalPadding) / VALUE_COUNT);
-    var totalBarWidth = glucoseBarWidth * VALUE_COUNT + totalPadding;
+    var totalPadding = GLUCOSE_BAR_PADDING * (valueCount() - 1);
+    glucoseBarWidth = Math.ceil((width - totalPadding) / valueCount());
+    var totalBarWidth = glucoseBarWidth * valueCount() + totalPadding;
     xOffset = xOffset - Util.max(0, totalBarWidth - width);
     Log.i(
         TAG, 
@@ -95,7 +97,7 @@ class Graph extends Ui.Drawable {
             "rightOffset"=> rightOffset, 
             "width" => width, 
             "glucoseBarWidth" => glucoseBarWidth,
-            "VALUE_COUNT" => VALUE_COUNT});
+            "valueCount" => valueCount()});
   }
 
   private function getBorderOffset(value) {
@@ -107,7 +109,7 @@ class Graph extends Ui.Drawable {
   }
 
   private function getX(startSec as Number, dateSec as Number) as Number {
-    var rel = (dateSec - startSec) / GLUCOSE_BAR_WIDTH_SEC * (GLUCOSE_BAR_PADDING + glucoseBarWidth);
+    var rel = (dateSec - startSec) / glucoseBarWidthSec * (GLUCOSE_BAR_PADDING + glucoseBarWidth);
     return rel;
   }
 
@@ -181,17 +183,18 @@ class Graph extends Ui.Drawable {
     dc.setPenWidth(2);
     dc.drawLine(0, yOffset, initialWidth, yOffset);
     dc.drawLine(xOffset, yOffset + height, xOffset + width, yOffset + height);
-    dc.setPenWidth(GLUCOSE_BAR_PADDING);
+    var lineWidth = Util.max(2, GLUCOSE_BAR_PADDING);
+    dc.setPenWidth(lineWidth);
     for (var dateSec = (startSec-1) / MINOR_X_AXIS_SEC * MINOR_X_AXIS_SEC;
          dateSec < startSec + TIME_RANGE_SEC;
          dateSec += MINOR_X_AXIS_SEC) {
       var x = getX(startSec, dateSec);
       dc.drawLine(
-          x + xOffset - GLUCOSE_BAR_PADDING, yOffset + height + 5,
-          x + xOffset - GLUCOSE_BAR_PADDING, yOffset + height);
+          x + xOffset - lineWidth, yOffset + height + 5,
+          x + xOffset - lineWidth, yOffset + height);
       dc.drawLine(
-          x + xOffset - GLUCOSE_BAR_PADDING, yOffset + 15,
-          x + xOffset - GLUCOSE_BAR_PADDING, yOffset);
+          x + xOffset - lineWidth, yOffset + 15,
+          x + xOffset - lineWidth, yOffset);
     }
   }
 
@@ -271,6 +274,7 @@ class Graph extends Ui.Drawable {
 
 
   function draw(dc) {
+    glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec");
     if (glucoseBuffer.size() == 0) {
       return;
     }
