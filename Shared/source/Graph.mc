@@ -16,10 +16,10 @@ class Graph extends Ui.Drawable {
   private const HR_SAMPLING_PERIOD_SEC = 5 * 60;
   private const MIN_HEART_RATE = 30;
   private const MAX_HEART_RATE = 160;
-  private const GLUCOSE_BAR_PADDING = 0;
   private const MINOR_X_AXIS_SEC = 30 * 60;
 
   private var glucoseBarWidthSec = 5 * 60;
+  private var glucoseBarPadding = 2;
   private var initialXOffset as Number;
   private var initialWidth as Number;
   private var glucoseBarWidth as Number?;
@@ -86,7 +86,7 @@ class Graph extends Ui.Drawable {
     }
     xOffset = initialXOffset + leftOffset;
     width = initialWidth - leftOffset - rightOffset;
-    var totalPadding = GLUCOSE_BAR_PADDING * (valueCount() - 1);
+    var totalPadding = glucoseBarPadding * (valueCount() - 1);
     glucoseBarWidth = Math.ceil((width - totalPadding) / valueCount());
     var totalBarWidth = glucoseBarWidth * valueCount() + totalPadding;
     xOffset = xOffset - Util.max(0, totalBarWidth - width);
@@ -109,7 +109,7 @@ class Graph extends Ui.Drawable {
   }
 
   private function getX(startSec as Number, dateSec as Number) as Number {
-    var rel = (dateSec - startSec) / glucoseBarWidthSec * (GLUCOSE_BAR_PADDING + glucoseBarWidth);
+    var rel = (dateSec - startSec) / glucoseBarWidthSec * (glucoseBarPadding + glucoseBarWidth);
     return rel;
   }
 
@@ -183,7 +183,7 @@ class Graph extends Ui.Drawable {
     dc.setPenWidth(2);
     dc.drawLine(0, yOffset, initialWidth, yOffset);
     dc.drawLine(xOffset, yOffset + height, xOffset + width, yOffset + height);
-    var lineWidth = Util.max(2, GLUCOSE_BAR_PADDING);
+    var lineWidth = Util.max(2, glucoseBarPadding);
     dc.setPenWidth(lineWidth);
     for (var dateSec = (startSec-1) / MINOR_X_AXIS_SEC * MINOR_X_AXIS_SEC;
          dateSec < startSec + TIME_RANGE_SEC;
@@ -272,9 +272,9 @@ class Graph extends Ui.Drawable {
     drawValue(dc, startSec, maxIdx);
   }
 
-
   function draw(dc) {
     glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec");
+    glucoseBarPadding = glucoseBarWidthSec < 300 ? 0 : 2;
     if (glucoseBuffer.size() == 0) {
       return;
     }
