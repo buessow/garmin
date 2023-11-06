@@ -131,28 +131,22 @@ class DataTest {
 
   (:test)
   function fallingMmoll(log) {
-    try {
-      DataTest.clearProperties();
-      Util.testNowSec = 1010;
-      var d = new Shared.Data();
-      d.glucoseBuffer.add(new Shared.DateValue(880, 100));
-      d.glucoseBuffer.add(new Shared.DateValue(1000, 120));
-      d.updateGlucose();
+    DataTest.clearProperties();
+    Util.testNowSec = 1010;
+    var d = new Shared.Data();
+    d.glucoseBuffer.add(new Shared.DateValue(880, 100));
+    d.glucoseBuffer.add(new Shared.DateValue(1000, 120));
+    d.updateGlucose();
 
-      d.requestTimeSec = 1100;
-      d.setGlucoseUnit(Shared.Data.mmoll);
+    d.requestTimeSec = 1100;
+    d.setGlucoseUnit(Shared.Data.mmoll);
 
-      Assert.equal(true, d.hasValue());
-      Assert.equal("6.7", d.getGlucoseStr());
-      Assert.equal(Shared.Data.mmoll, d.glucoseUnit);
-      Assert.equal("0:10", d.getGlucoseAgeStr());
-      Assert.equal("+0.56", d.getGlucoseDeltaPerMinuteStr());
-      Assert.equal(null, d.errorMessage);
-      return true;
-    } catch (e) {
-      log.error(e.getErrorMessage());
-      e.printStackTrace();
-      throw e;
-    }
+    Assert.equal(true, d.hasValue());
+    Assert.equal("6.7", d.getGlucoseStr());
+    Assert.equal(Shared.Data.mmoll, d.glucoseUnit);
+    Assert.equal("0:10", d.getGlucoseAgeStr());
+    Assert.equal("+0.56", d.getGlucoseDeltaPerMinuteStr());
+    Assert.equal(null, d.errorMessage);
+    return true;
   }
 }

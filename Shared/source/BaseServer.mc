@@ -35,7 +35,6 @@ class BaseServer {
       default: data.setGlucoseUnit(Data.mgdl); break;
     }
     data.connected = msg["connected"];
-    Log.i(TAG, "remaining: "  + data.remainingInsulin.toString());
   }
 
   function onBackgroundData(

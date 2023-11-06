@@ -18,7 +18,7 @@ class TestServer {
 }
 
 class FakeCommunication extends Shared.GlucoseServiceDelegate {
-  private static const TAG1 = "FakeGlFakeCommunicationucoseServiceDelegate";
+  private static const TAG1 = "FakeCommunication";
   var url as String? = null;
   var parameters;
   var options;
@@ -65,143 +65,119 @@ class GlucoseServiceDelegateTest {
 
   (:test)
   function onBloodGlucoseHTTP200(log) {
-    try {
-      GlucoseServiceDelegateTest.clearProperties();
-      Util.testNowSec = 1000;
-      Properties.setValue("Device", "Test23");
-      Properties.setValue("HeartRateStartSec", 880L);
-      Properties.setValue("HeartRateLastSec", 1000L);
-      Properties.setValue("HeartRateAvg", 112);
-      Properties.setValue("AAPSKey", "");
+    GlucoseServiceDelegateTest.clearProperties();
+    Util.testNowSec = 1000;
+    Properties.setValue("Device", "Test23");
+    Properties.setValue("HeartRateStartSec", 880L);
+    Properties.setValue("HeartRateLastSec", 1000L);
+    Properties.setValue("HeartRateAvg", 112);
+    Properties.setValue("AAPSKey", "");
 
-      var server = new Shared.GmwServer();
-      server.wait = true;
-      var comm = new FakeCommunication([{"foo" => "bar"}]);
-      var gsd = new Shared.GlucoseServiceDelegate(server);
-      gsd.makeWebRequest = comm.method(:makeWebRequest);
-      
-      var recv = new Receiver();
-      gsd.requestBloodGlucose(recv.method(:onResult));
+    var server = new Shared.GmwServer();
+    server.wait = true;
+    var comm = new FakeCommunication([{"foo" => "bar"}]);
+    var gsd = new Shared.GlucoseServiceDelegate(server, 10);
+    gsd.makeWebRequest = comm.method(:makeWebRequest);
+    
+    var recv = new Receiver();
+    gsd.requestBloodGlucose(recv.method(:onResult));
 
-      Assert.equal("http://127.0.0.1:28891/get", comm.url);
-      Assert.equal(
-          { "hrEnd" => 1000, "hr" => 112, "hrStart" => 880, "device" => "Test23", 
-            "wait" => 15, "manufacturer" => "garmin", "test" => false, "key" => ""}, 
-          comm.parameters);
-      Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
-      Assert.equal(200, recv.result["httpCode"]);
-      Assert.equal(null, recv.result["errorMessage"]);
-      Assert.equal(1000, recv.result["startTimeSec"]);
-      Assert.equal("bar", recv.result["foo"]);
+    Assert.equal("http://127.0.0.1:28891/get", comm.url);
+    Assert.equal(
+        { "hrEnd" => 1000, "hr" => 112, "hrStart" => 880, "device" => "Test23", "from" => 990, 
+          "wait" => 15, "manufacturer" => "garmin", "test" => false, "key" => ""}, 
+        comm.parameters);
+    Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
+    Assert.equal(200, recv.result["httpCode"]);
+    Assert.equal(null, recv.result["errorMessage"]);
+    Assert.equal(1000, recv.result["startTimeSec"]);
+    Assert.equal("bar", recv.result["foo"]);
 
-      return true;
-    } catch (e) {
-      log.error(e.getErrorMessage());
-      e.printStackTrace();
-      throw e;
-    }
+    return true;
   }
 
   (:test)
   function onBloodGlucoseHTTP400(log) {
-    try {
-      GlucoseServiceDelegateTest.clearProperties();
+    GlucoseServiceDelegateTest.clearProperties();
 
-      Util.testNowSec = 1000;
-      Application.getApp().clearProperties();
-      Properties.setValue("Device", "Test23");
-      Properties.setValue("AAPSKey", "k1");
-      var server = new Shared.GmwServer();
-      var comm = new FakeCommunication([400]);
-      var gsd = new Shared.GlucoseServiceDelegate(server);
-      gsd.makeWebRequest = comm.method(:makeWebRequest);
-      
-      var recv = new Receiver();
-      gsd.requestBloodGlucose(recv.method(:onResult));
+    Util.testNowSec = 1000;
+    Application.getApp().clearProperties();
+    Properties.setValue("Device", "Test23");
+    Properties.setValue("AAPSKey", "k1");
+    var server = new Shared.GmwServer();
+    var comm = new FakeCommunication([400]);
+    var gsd = new Shared.GlucoseServiceDelegate(server, 10);
+    gsd.makeWebRequest = comm.method(:makeWebRequest);
+    
+    var recv = new Receiver();
+    gsd.requestBloodGlucose(recv.method(:onResult));
 
-      Assert.equal("http://127.0.0.1:28891/get", comm.url);
-      Assert.equal(
-          {"device" => "Test23", "test" => false, "manufacturer" => "garmin", "key" => "k1"}, 
-          comm.parameters);
-      Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
-      Assert.equal(400, recv.result["httpCode"]);
-      Assert.equal("HTTP400", recv.result["errorMessage"]);
-      Assert.equal(1000, recv.result["startTimeSec"]);
+    Assert.equal("http://127.0.0.1:28891/get", comm.url);
+    Assert.equal(
+        {"device" => "Test23", "test" => false, "manufacturer" => "garmin", "from" => 990, "key" => "k1"}, 
+        comm.parameters);
+    Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
+    Assert.equal(400, recv.result["httpCode"]);
+    Assert.equal("HTTP400", recv.result["errorMessage"]);
+    Assert.equal(1000, recv.result["startTimeSec"]);
 
-      return true;
-    } catch (e) {
-      log.error(e.getErrorMessage());
-      e.printStackTrace();
-      throw e;
-    }
+    return true;
   }
 
   (:test)
   function postCarbs(log) {
-    try {
-      GlucoseServiceDelegateTest.clearProperties();
-      
-      Util.testNowSec = 1000;
-      Application.getApp().clearProperties();
-      Properties.setValue("Device", "Test23");
-      Properties.setValue("AAPSKey", "k2");
+    GlucoseServiceDelegateTest.clearProperties();
+    
+    Util.testNowSec = 1000;
+    Application.getApp().clearProperties();
+    Properties.setValue("Device", "Test23");
+    Properties.setValue("AAPSKey", "k2");
 
-      var server = new Shared.GmwServer();
-      var comm = new FakeCommunication([{}]);
-      var gsd = new Shared.GlucoseServiceDelegate(server);
-      gsd.makeWebRequest = comm.method(:makeWebRequest);
-      
-      var recv = new Receiver();
-      gsd.postCarbs(25, recv.method(:onResult));
+    var server = new Shared.GmwServer();
+    var comm = new FakeCommunication([{}]);
+    var gsd = new Shared.GlucoseServiceDelegate(server, 10);
+    gsd.makeWebRequest = comm.method(:makeWebRequest);
+    
+    var recv = new Receiver();
+    gsd.postCarbs(25, recv.method(:onResult));
 
-      Assert.equal("http://127.0.0.1:28891/carbs", comm.url);
-      Assert.equal(
-          { "carbs" => 25, "device" => "Test23", "test" => false, "manufacturer" => "garmin", "key" => "k2"}, 
-          comm.parameters);
-      Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
-      Assert.equal(200, recv.result["httpCode"]);
-      Assert.equal(null, recv.result["errorMessage"]);
-      Assert.equal(1000, recv.result["startTimeSec"]);
+    Assert.equal("http://127.0.0.1:28891/carbs", comm.url);
+    Assert.equal(
+        { "carbs" => 25, "device" => "Test23", "test" => false, "manufacturer" => "garmin", "key" => "k2"}, 
+        comm.parameters);
+    Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
+    Assert.equal(200, recv.result["httpCode"]);
+    Assert.equal(null, recv.result["errorMessage"]);
+    Assert.equal(1000, recv.result["startTimeSec"]);
 
-      return true;
-    } catch (e) {
-      log.error(e.getErrorMessage());
-      e.printStackTrace();
-      throw e;
-    }
+    return true;
   }
 
   (:test)
   function connectPump(log) {
-    try {
-      GlucoseServiceDelegateTest.clearProperties();
-      Util.testNowSec = 1000;
-      Application.getApp().clearProperties();
-      Properties.setValue("Device", "Test23");
-      Properties.setValue("AAPSKey", "k2");
+    GlucoseServiceDelegateTest.clearProperties();
+    Util.testNowSec = 1000;
+    Application.getApp().clearProperties();
+    Properties.setValue("Device", "Test23");
+    Properties.setValue("AAPSKey", "k2");
 
-      var server = new Shared.GmwServer();
-      var comm = new FakeCommunication([{}]);
-      var gsd = new Shared.GlucoseServiceDelegate(server);
-      gsd.makeWebRequest = comm.method(:makeWebRequest);
-      
-      var recv = new Receiver();
-      gsd.connectPump(30, recv.method(:onResult));
+    var server = new Shared.GmwServer();
+    var comm = new FakeCommunication([{}]);
+    var gsd = new Shared.GlucoseServiceDelegate(server, 10);
+    gsd.makeWebRequest = comm.method(:makeWebRequest);
+    
+    var recv = new Receiver();
+    gsd.connectPump(30, recv.method(:onResult));
 
-      Assert.equal("http://127.0.0.1:28891/connect", comm.url);
-      Assert.equal(
-          { "device" => "Test23", "disconnectMinutes" => 30, "manufacturer" => "garmin", "test" => false, "key" => "k2"}, 
-          comm.parameters);
-      Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
-      Assert.equal(200, recv.result["httpCode"]);
-      Assert.equal(null, recv.result["errorMessage"]);
-      Assert.equal(1000, recv.result["startTimeSec"]);
+    Assert.equal("http://127.0.0.1:28891/connect", comm.url);
+    Assert.equal(
+        { "device" => "Test23", "disconnectMinutes" => 30, "manufacturer" => "garmin", "test" => false, "key" => "k2"}, 
+        comm.parameters);
+    Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
+    Assert.equal(200, recv.result["httpCode"]);
+    Assert.equal(null, recv.result["errorMessage"]);
+    Assert.equal(1000, recv.result["startTimeSec"]);
 
-      return true;
-    } catch (e) {
-      log.error(e.getErrorMessage());
-      e.printStackTrace();
-      throw e;
-    }
+    return true;
   }
 }

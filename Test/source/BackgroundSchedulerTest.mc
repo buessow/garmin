@@ -10,15 +10,9 @@ class BackgroundSchedulerTest {
 
   (:test)
   function noValueNeverRun(log) {
-    try {
-      var now = 1000;
-      var next = BackgroundScheduler.getNextRunTime(now, null, null);
-      Assert.equal(now + BackgroundScheduler.IMMEDIATE_SCHEDULING_DELAY, next);
-    } catch (e) {
-      log.error(e.getErrorMessage());
-      e.printStackTrace();
-      throw e;
-    }
+    var now = 1000;
+    var next = BackgroundScheduler.getNextRunTime(now, null, null);
+    Assert.equal(now + BackgroundScheduler.IMMEDIATE_SCHEDULING_DELAY, next);
     return true;
   }
 
@@ -75,21 +69,16 @@ class BackgroundSchedulerTest {
 
   (:test)
   function valueRanInacceptableDelay(log) {
-    try {
-      var now = 300;
-      var val = now - 5*60;
-      var ran = val 
-          + BackgroundScheduler.ACCEPTABLE_EXTRA_DELAY 
-	        + BackgroundScheduler.extraReadingDelay() + 1;
-      var next = BackgroundScheduler.getNextRunTime(now, val, ran);
-      Assert.equal(
-          val + 2*BackgroundScheduler.readingFrequency()
-              + BackgroundScheduler.extraReadingDelay(),
-          next);
-    } catch (e) {
-      e.printStackTrace();
-      throw e;
-    }
+    var now = 300;
+    var val = now - 5*60;
+    var ran = val 
+        + BackgroundScheduler.ACCEPTABLE_EXTRA_DELAY 
+        + BackgroundScheduler.extraReadingDelay() + 1;
+    var next = BackgroundScheduler.getNextRunTime(now, val, ran);
+    Assert.equal(
+        val + 2*BackgroundScheduler.readingFrequency()
+            + BackgroundScheduler.extraReadingDelay(),
+        next);
     return true;
   }
 
@@ -104,9 +93,22 @@ class BackgroundSchedulerTest {
       Assert.equal(
           val + BackgroundScheduler.MIN_SCHEDULE_DELAY + 10,
           next);
-    } catch (e) {
-      e.printStackTrace();
-      throw e;
+    } finally {
+      Properties.setValue("GlucoseValueFrequencySec", 300);
+    }
+    return true;
+  }
+
+  (:test)
+  function valueRanMinutelyFreqExtraWait(log) {
+    Properties.setValue("GlucoseValueWaitSec", 5);
+    Properties.setValue("GlucoseValueFrequencySec", 60);
+    try {
+      var now = 300;
+      var val = 120;
+      var ran = 140;
+      var next = BackgroundScheduler.getNextRunTime(now, val, ran);
+      Assert.equal(120 + 300 + 60 + 5, next);
     } finally {
       Properties.setValue("GlucoseValueFrequencySec", 300);
     }

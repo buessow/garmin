@@ -37,6 +37,7 @@ class Data {
     Log.i(TAG, "restoreValues() " + glucoseBufferStr.length());
     if (glucoseBufferStr.length() > 0) {
       glucoseBuffer.fromHexString(glucoseBufferStr);
+    Log.i(TAG, "restoreValues() " + glucoseBufferStr.length() + " size " + glucoseBuffer.size());
       var dateSec = glucoseBuffer.getDateSec(glucoseBuffer.size()-1);
       if (Util.abs(Util.nowSec() - dateSec) > 3600) {
         Log.i(TAG, "stored value too old " + Util.timeSecToString(dateSec));
@@ -222,14 +223,15 @@ class Data {
   function updateGlucose() as Void {
     var hex = glucoseBuffer.toHexString();
     var last = glucoseBuffer.getLastValue();
-    Log.i(TAG, "updateGlucose " + glucoseBuffer.size() + " values, last " + (last==null?"NULL":last));
     Properties.setValue("GlucoseValues", hex);
     var glucoseFrequencySec = Properties.getValue("GlucoseValueFrequencyOverrideSec");
     if (glucoseFrequencySec == 0) {
       glucoseFrequencySec = 60 * Util.ifNull(glucoseBuffer.medianDeltaMinute(), 0);
     }
+    Log.i(TAG, 
+      "updateGlucose " + glucoseBuffer.size() + " values, " +
+      "last " + (last==null?"NULL":last) + " freq " + glucoseFrequencySec);
     if (glucoseFrequencySec != null && glucoseFrequencySec > 0) {
-      Log.i(TAG, "updateGlucose glucose frequency " + glucoseFrequencySec);
       Properties.setValue("GlucoseValueFrequencySec", glucoseFrequencySec);
     }
     errorMessage = last == null ? "no value" : null;

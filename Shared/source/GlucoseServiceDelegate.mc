@@ -59,6 +59,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   // @Param parameters (Dictionary)
   //        Request/URL parameters. These will be added to the URL
   //        with ? & delemiters.
+  // @Param glucoseValueIntervalSec (Number) for how much time should we retrieve glucose values.
   function initialize(server as GmwServer, glucoseValueIntervalSec as Number) {
     System.ServiceDelegate.initialize();
     me.glucoseValueIntervalSec = glucoseValueIntervalSec;

@@ -96,7 +96,6 @@ module BackgroundScheduler {
       // Compute the time of the most recent reading before nextRunTimeSec.
       var freq = readingFrequency().toDouble();
       extraDelaySec -= (Math.floor(extraDelaySec / freq) * freq).toNumber();
-      Log.i(TAG, "extraDelaySec " + extraDelaySec + " " + ACCEPTABLE_EXTRA_DELAY + extraReadingDelay());
       if (extraDelaySec < ACCEPTABLE_EXTRA_DELAY) {
         // We would access the next value ACCEPTABLE_EXTRA_DELAY sec
 	      // after it's available. That should be acceptable.
@@ -106,7 +105,7 @@ module BackgroundScheduler {
         // that we're better synchronized with the CGM schedule. For 5 minute
         // frequency like Dexcom G6, this would be always another 5min.
         return nextValueSec + 
-            (Math.ceil(extraDelaySec / freq) * freq).toNumber();
+            (Math.ceil((nextRunTimeSec - nextValueSec) / freq) * freq).toNumber();
       }
 
     } else {
@@ -153,8 +152,8 @@ module BackgroundScheduler {
         nextScheduleTimeSec = Util.max(nextScheduleTimeSec, nowSec + 1);
         Log.i(TAG, "schedule temporal event at " + Util.timeSecToString(nextScheduleTimeSec));
         try {
-          registered = true;
           Background.registerForTemporalEvent(new Time.Moment(nextScheduleTimeSec as Number));
+          registered = true;
         } catch (e) {
           Log.e(TAG, e.getErrorMessage());
           e.printStackTrace();
@@ -215,14 +214,14 @@ module BackgroundScheduler {
       if (System.getDeviceSettings().phoneConnected &&
           (lastRunTime == null ||
            runTime.value() - lastRunTime.value() > 5 * 60)) {
-	if (!registered) {
-	  registered = true;
-	  Background.registerForTemporalEvent(runTime);
-	  Log.i(TAG, "registered event at " + Util.momentToString(runTime));
-	}
-	return true;
+        if (!registered) {
+          registered = true;
+          Background.registerForTemporalEvent(runTime);
+          Log.i(TAG, "registered event at " + Util.momentToString(runTime));
+        }
+        return true;
       } else {
-	Log.i(TAG, "skip registered event last " + Util.momentToString(lastRunTime));
+        Log.i(TAG, "skip registered event last " + Util.momentToString(lastRunTime));
       }
     } catch (e) {
       Log.e(TAG, "ex: " + e.getErrorMessage());
