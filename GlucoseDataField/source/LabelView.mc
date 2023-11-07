@@ -77,12 +77,17 @@ class LabelView extends Ui.DataField {
     }
   }
 
-  private function setLabel(id as String, text as String) {
-    var textView = findDrawableById(id) as Ui.Text?;
+  private function setLabelColor(id as String, text as String?, color as Number) as Void {
+    var textView = findDrawableById(id) as Ui.Text or Ui.TextArea or Null;
     if (textView != null) {
-      textView.setColor(0xffffff & ~getBackgroundColor());
-      textView.setText(text);
+      textView.setVisible(text != null);
+      textView.setColor(color);
+      textView.setText(Util.ifNull(text, ""));
     }
+  }
+
+  private function setLabel(id as String, text as String?) as Void {
+    setLabelColor(id, text, 0xffffff & ~getBackgroundColor());
   }
 
   function onUpdate(dc as Gfx.Dc) as Void {
@@ -95,10 +100,19 @@ class LabelView extends Ui.DataField {
     (findDrawableById("TitleLabel") as Ui.Text).setColor(0xffffff & ~getBackgroundColor());
 
     setLabel("GlucoseLabel", data.getGlucoseStr());
-    setLabel("Data1Label", data.getGlucoseDeltaPerMinuteStr());
     setLabel("Data2Label", data.getGlucoseAgeStr());
-    setLabel("Data3Label", data.getRemainingInsulinStr());
-    setLabel("Data4Label", "20%");
+
+    if (data.errorMessage == null) {
+      setLabel("Data1Label", data.getGlucoseDeltaPerMinuteStr());
+      setLabel("Data3Label", data.getRemainingInsulinStr());
+      setLabel("Data4Label", data.getBasalCorrectionStr());
+      setLabel("ErrorLabel", null);
+    } else {
+      setLabel("Data1Label", null);
+      setLabel("Data3Label", null);
+      setLabel("Data4Label", null);
+      setLabelColor("ErrorLabel", data.errorMessage, Gfx.COLOR_RED);
+    }
  
     Ui.DataField.onUpdate(dc);
   }

@@ -17,7 +17,7 @@ class Data {
   var temporaryBasalRate as Float?;
   var profile as String?;
   var connected = true;
-  private var fakeMode = false;
+  private var fakeMode = true;
 
    enum GlucoseUnit {
      mgdl = 1,

@@ -38,7 +38,8 @@
     <label id="Data1Label" x="120" y="40" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <label id="Data2Label" x="185" y="40" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <label id="Data3Label" x="175" y="80" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
-    <label id="Data4Label" x="180" y="80" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="Data4Label" x="190" y="80" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="ErrorLabel" x="10" y="90" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <drawable id="DateValueGraph" class="Shared.Graph">
       <param name="x">3</param>
       <param name="y">132</param>
@@ -55,6 +56,7 @@
     <label id="Data2Label" x="180" y="35" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <label id="Data3Label" x="175" y="80" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data4Label" x="180" y="80" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="ErrorLabel" x="10" y="90" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
   </layout>
   <layout id="L2_Bot">
     <drawable id="BackgroundDark" visible="false" />
@@ -65,14 +67,18 @@
     <label id="Data2Label" x="190" y="30" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <label id="Data3Label" x="200" y="62" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data4Label" x="130" y="95" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+    <text-area id="ErrorLabel" x="80" y="80" width="100" height="60" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
   </layout>
   <layout id="L3A_Top">
     <drawable id="BackgroundDark" visible="false" />
     <drawable id="BackgroundLight" visible="false" />
-    <label id="TitleLabel" x="130" y="5" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
+    <label id="TitleLabel" x="50%" y="5" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
     <label id="GlucoseLabel" x="100" y="30" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data1Label" x="160" y="40" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data2Label" x="180" y="40" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <text-area id="ErrorLabel" x="101" y="22" width="90" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
   </layout>
   <layout id="L3A_Mid">
     <drawable id="BackgroundDark" visible="false" />
@@ -83,6 +89,8 @@
     <label id="Data2Label" x="180" y="30" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <label id="Data3Label" x="175" y="60" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data4Label" x="180" y="60" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <text-area id="ErrorLabel" x="103" y="25" width="90" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
   </layout>
   <layout id="L3A_Bot">
     <drawable id="BackgroundDark" visible="false" />
@@ -90,6 +98,8 @@
     <label id="TitleLabel" x="130" y="5" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
     <label id="GlucoseLabel" x="140" y="25" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data1Label" x="145" y="35" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <text-area id="ErrorLabel" x="141" y="25" width="110" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
   </layout>
   <layout id="L3B_4B_Top">
     <drawable id="BackgroundDark" visible="false" />
@@ -100,6 +110,8 @@
     <label id="Data2Label" x="180" y="30" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <label id="Data3Label" x="175" y="60" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data4Label" x="180" y="60" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <text-area id="ErrorLabel" x="103" y="25" width="90" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />  
   </layout>
   <layout id="L3B_Mid">
     <drawable id="BackgroundDark" visible="false" />
@@ -110,6 +122,8 @@
     <label id="Data2Label" x="200" y="30" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <label id="Data3Label" x="190" y="55" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data4Label" x="200" y="55" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <text-area id="ErrorLabel" x="92" y="22" width="100" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />  
   </layout>
   <layout id="L3B_Midfr">
     <drawable id="BackgroundDark" visible="false" />
@@ -120,6 +134,8 @@
     <label id="Data2Label" x="200" y="30" font="Gfx.FONT_SYSTEM_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <label id="Data3Label" x="190" y="50" font="Gfx.FONT_SYSTEM_XTINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data4Label" x="200" y="50" font="Gfx.FONT_SYSTEM_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <text-area id="ErrorLabel" x="103" y="22" width="100" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />  
   </layout>  
   <layout id="L3B_Bot">
     <drawable id="BackgroundDark" visible="false" />
@@ -128,6 +144,8 @@
     <label id="GlucoseLabel" x="130" y="25" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data1Label" x="145" y="25" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <label id="Data2Label" x="145" y="58" font="Gfx.FONT_SYSTEM_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <text-area id="ErrorLabel" x="133" y="21" width="120" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />  
   </layout>
   <layout id="L3C_4C_Bot_L">
     <drawable id="BackgroundDark" visible="false" />
@@ -136,6 +154,8 @@
     <label id="GlucoseLabel" x="65" y="15" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_CENTER" />
     <label id="Data1Label" x="120" y="60" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data2Label" x="120" y="85" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <text-area id="ErrorLabel" x="25" y="60" width="105" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
   </layout>
   <layout id="L3C_4C_Bot_R">
     <drawable id="BackgroundDark" visible="false" />
@@ -144,6 +164,8 @@
     <label id="GlucoseLabel" x="45" y="15" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_CENTER" />
     <label id="Data1Label" x="15" y="60" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <label id="Data2Label" x="15" y="85" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <text-area id="ErrorLabel" x="2" y="60" width="105" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
   </layout>
   <layout id="L4A_Top">
     <drawable id="BackgroundDark" visible="false" />
@@ -152,21 +174,27 @@
     <label id="GlucoseLabel" x="115" y="15" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data1Label" x="170" y="25" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data2Label" x="175" y="25" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <text-area id="ErrorLabel" x="117" y="20" width="105" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />  
   </layout>
   <layout id="L4A_Mid">
     <drawable id="BackgroundDark" visible="false" />
     <drawable id="BackgroundLight" visible="false" />
     <label id="TitleLabel" x="130" y="2" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
     <label id="GlucoseLabel" x="100" y="15" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
-    <label id="Data1Label" x="170" y="30" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
-    <label id="Data2Label" x="180" y="30" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="Data1Label" x="175" y="30" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data2Label" x="195" y="30" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <text-area id="ErrorLabel" x="102" y="20" width="105" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />  
   </layout>
   <layout id="L4A_Bot">
     <drawable id="BackgroundDark" visible="false" />
     <drawable id="BackgroundLight" visible="false" />
     <label id="TitleLabel" x="130" y="2" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
-    <label id="GlucoseLabel" x="125" y="15" font="Gfx.FONT_SYSTEM_MEDIUM" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
-    <label id="Data1Label" x="130" y="25" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <label id="GlucoseLabel" x="110" y="15" font="Gfx.FONT_SYSTEM_MEDIUM" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <label id="Data1Label" x="150" y="15" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
+    <text-area id="ErrorLabel" x="111" y="20" width="105" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />  
   </layout>
   <layout id="L4B_Mid">
     <drawable id="BackgroundDark" visible="false" />
@@ -175,6 +203,8 @@
     <label id="GlucoseLabel" x="66" y="16" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data1Label" x="120" y="20" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data2Label" x="120" y="45" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <text-area id="ErrorLabel" x="67" y="20" width="140" height="30" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />  
   </layout>
   <layout id="L4B_Bot">
     <drawable id="BackgroundDark" visible="false" />
@@ -184,12 +214,16 @@
     <label id="Data2Label" x="165" y="30" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data4Label" x="173" y="30" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <label id="Data1Label" x="130" y="60" font="Gfx.FONT_SYSTEM_SMALL" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+    <text-area id="ErrorLabel" x="70" y="55" width="120" height="90" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />  
   </layout>
   <layout id="L4C_Top">
     <drawable id="BackgroundDark" visible="false" />
     <drawable id="BackgroundLight" visible="false" />
     <label id="TitleLabel" x="60" y="60" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
     <label id="GlucoseLabel" x="65" y="70" font="Gfx.FONT_SYSTEM_NUMBER_MILD" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+    <text-area id="ErrorLabel" x="2" y="110" width="140" height="30" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
   </layout>
   <layout id="L5_6_Mid_L">
     <drawable id="BackgroundDark" visible="false" />
@@ -198,6 +232,8 @@
     <label id="GlucoseLabel" x="65" y="20" font="Gfx.FONT_SYSTEM_LARGE" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data1Label" x="127" y="15" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data2Label" x="127" y="35" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <text-area id="ErrorLabel" x="62" y="15" width="80" height="30" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />  
   </layout>
   <layout id="L5_6_Mid_R">
     <drawable id="BackgroundDark" visible="false" />
@@ -206,5 +242,7 @@
     <label id="GlucoseLabel" x="60" y="20" font="Gfx.FONT_SYSTEM_LARGE" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data1Label" x="120" y="15" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
     <label id="Data2Label" x="120" y="35" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_RIGHT" />
+    <text-area id="ErrorLabel" x="62" y="15" width="80" height="30" 
+        font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />  
   </layout>
 </resources>
