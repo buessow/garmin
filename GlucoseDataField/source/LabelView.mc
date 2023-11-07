@@ -20,6 +20,36 @@ class LabelView extends Ui.DataField {
   var heartRateCollector = new DataFieldHeartRateCollector();
   private var graph as Shared.Graph?;
 
+  private static var layoutSymbols as Dictionary<String, Symbol> = {
+        "L1" => :L1,
+        "L2_3C_Top" => :L2_3C_Top,
+        "L2_Bot" => :L2_Bot,
+        "L3A_Top" => :L3A_Top,
+        "L3A_Mid" => :L3A_Mid,
+        "L3A_Bot" => :L3A_Bot,
+        "L3B_4B_Top" => :L3B_4B_Top,
+        "L3B_Mid" => :L3B_Mid,
+        "L3B_Midfr" => :L3B_Midfr,
+        "L3B_Bot" => :L3B_Bot,
+        "L3C_4C_Bot_L" => :L3C_4C_Bot_L,
+        "L3C_4C_Bot_R" => :L3C_4C_Bot_R,        
+        "L4A_Top" => :L4A_Top,
+        "L4A_Mid" => :L4A_Mid,
+        "L4A_Bot" => :L4A_Bot,
+        "L4B_Mid" => :L4B_Mid,
+        "L4B_Bot" => :L4B_Bot,
+        "L4C_Top" => :L4C_Top,
+        "L5_6_Mid_L" => :L5_6_Mid_L,
+        "L5_6_Mid_R" => :L5_6_Mid_R,
+
+        "Rect_1" => :Rect_1,
+        "Rect_1_2" => :Rect_1_2,
+        "Rect_1_3" => :Rect_1_3,
+        "Rect_1_4" => :Rect_1_4,
+        "Rect_2_5" => :Rect_2_5,
+        "Rect_1_5" => :Rect_1_5,
+        "Rect_1_10" => :Rect_1_10
+  };
   
   function initialize(data as Shared.Data) {
     Ui.DataField.initialize();
@@ -33,30 +63,15 @@ class LabelView extends Ui.DataField {
     var layouts =  Application.loadResource(Rez.JsonData.Layouts);
     try {
       var layoutId = layouts[sizeStr]["layout"] as String?;
-      if (log) { Log.i(TAG, "onLayout " + sizeStr + " " + layoutId); }
-      switch(layoutId) {
-        case "L1": setLayout(Rez.Layouts.L1(dc)); break;
-        case "L2_3C_Top": setLayout(Rez.Layouts.L2_3C_Top(dc)); break;
-        case "L2_Bot": setLayout(Rez.Layouts.L2_Bot(dc)); break;
-        case "L3A_Top": setLayout(Rez.Layouts.L3A_Top(dc)); break;
-        case "L3A_Mid": setLayout(Rez.Layouts.L3A_Mid(dc)); break;
-        case "L3A_Bot": setLayout(Rez.Layouts.L3A_Bot(dc)); break;
-        case "L3B_4B_Top": setLayout(Rez.Layouts.L3B_4B_Top(dc)); break;
-        case "L3B_Mid": setLayout(Rez.Layouts.L3B_Mid(dc)); break;
-        case "L3B_Midfr": setLayout(Rez.Layouts.L3B_Midfr(dc)); break;
-        case "L3B_Bot": setLayout(Rez.Layouts.L3B_Bot(dc)); break;
-        case "L3C_4C_Bot_L": setLayout(Rez.Layouts.L3C_4C_Bot_L(dc)); break;
-        case "L3C_4C_Bot_R": setLayout(Rez.Layouts.L3C_4C_Bot_R(dc)); break;        
-        case "L4A_Top": setLayout(Rez.Layouts.L4A_Top(dc)); break;
-        case "L4A_Mid": setLayout(Rez.Layouts.L4A_Mid(dc)); break;
-        case "L4A_Bot": setLayout(Rez.Layouts.L4A_Bot(dc)); break;
-        case "L4B_Mid": setLayout(Rez.Layouts.L4B_Mid(dc)); break;
-        case "L4B_Bot": setLayout(Rez.Layouts.L4B_Bot(dc)); break;
-        case "L4C_Top": setLayout(Rez.Layouts.L4C_Top(dc)); break;
-        case "L5_6_Mid_L": setLayout(Rez.Layouts.L5_6_Mid_L(dc)); break;
-        case "L5_6_Mid_R": setLayout(Rez.Layouts.L5_6_Mid_R(dc)); break;
-        default: throw new Exception();
+      var layoutSymbol = layoutSymbols[layoutId];
+      var defined = Rez.Layouts has layoutSymbol ? "" : " undef";
+      if (log) { Log.i(TAG, "onLayout " + sizeStr + " " + layoutId + " " + (layoutSymbol==null ? "??" : "ok") + defined); }
+
+      if (Rez.Layouts has layoutSymbol) {
+        var layout = new Method(Rez.Layouts, layoutSymbol);
+        setLayout(layout.invoke(dc));
       }
+
     } catch (e) {
       if (log) { Log.i(TAG, "onLayout " + sizeStr + " not found"); }
     }  
@@ -99,20 +114,33 @@ class LabelView extends Ui.DataField {
     heartRateCollector.sample();
     (findDrawableById("TitleLabel") as Ui.Text).setColor(0xffffff & ~getBackgroundColor());
 
+// data.errorMessage = "Enable Garmin in AAPS config";
     setLabel("GlucoseLabel", data.getGlucoseStr());
+    var connected = System.getDeviceSettings().phoneConnected;
+    setLabelColor(
+      "ConnectedLabel", 
+      connected ? "C" : "D",
+      connected ? Gfx.COLOR_GREEN : Gfx.COLOR_RED);
     setLabel("Data2Label", data.getGlucoseAgeStr());
 
     if (data.errorMessage == null) {
+      setLabel("GlucoseUnitLabel", data.getGlucoseUnitStr());
       setLabel("Data1Label", data.getGlucoseDeltaPerMinuteStr());
       setLabel("Data3Label", data.getRemainingInsulinStr());
       setLabel("Data4Label", data.getBasalCorrectionStr());
       setLabel("ErrorLabel", null);
     } else {
+      setLabel("GlucoseUnitLabel", null);
       setLabel("Data1Label", null);
       setLabel("Data3Label", null);
       setLabel("Data4Label", null);
       setLabelColor("ErrorLabel", data.errorMessage, Gfx.COLOR_RED);
     }
+
+ 
+
+
+
  
     Ui.DataField.onUpdate(dc);
   }

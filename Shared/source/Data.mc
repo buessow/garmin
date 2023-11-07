@@ -17,7 +17,7 @@ class Data {
   var temporaryBasalRate as Float?;
   var profile as String?;
   var connected = true;
-  private var fakeMode = true;
+  private var fakeMode = false;
 
    enum GlucoseUnit {
      mgdl = 1,
@@ -34,7 +34,6 @@ class Data {
 
   private function restoreValues() {
     var glucoseBufferStr = Util.ifNull(Properties.getValue("GlucoseValues"), "");
-    Log.i(TAG, "restoreValues() " + glucoseBufferStr.length());
     if (glucoseBufferStr.length() > 0) {
       glucoseBuffer.fromHexString(glucoseBufferStr);
     Log.i(TAG, "restoreValues() " + glucoseBufferStr.length() + " size " + glucoseBuffer.size());
