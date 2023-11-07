@@ -16,19 +16,3 @@ filegroup(
 	  'source/OverpassLookup.mc',
 	 ],
 )
-
-#monkeyc_binary(
-#  name = 'fenix5plus', 
-#  manifest = 'manifest.xml',
-#  device = 'fenix5plus',
-#  resources = [':resources'],
-#  srcs = [':sources'],
-#)
-#
-#monkeyc_binary(
-#  name = 'fenix7', 
-#  manifest = 'manifest.xml',
-#  device = 'fenix7',
-#  resources = [':resources'],
-#  srcs = [':sources'],
-#)

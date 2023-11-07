@@ -35,7 +35,7 @@ def _monkeyc_binary_impl(ctx):
   ]
   profile = ctx.var['COMPILATION_MODE'] == 'dbg'
   ctx.actions.run_shell(
-    inputs = ctx.files.jungles + ctx.files.srcs + ctx.files.resources,
+    inputs = ctx.files.jungles + ctx.files.srcs + ctx.files.resources + ctx.files.manifest,
     outputs = outputs,
     progress_message = 'Building %s.prg' % ctx.attr.name,
     execution_requirements = { 'no-sandbox': 'True' },
@@ -68,7 +68,7 @@ def _monkeyc_package_impl(ctx):
   prg_file = ctx.actions.declare_file(prg + ".iq")
   outputs = [prg_file]
   ctx.actions.run_shell(
-    inputs = ctx.files.jungles + ctx.files.srcs + ctx.files.resources,
+    inputs = ctx.files.jungles + ctx.files.srcs + ctx.files.resources + ctx.files.manifest,
     outputs = outputs,
     progress_message = 'Building %s.iq' % ctx.attr.name,
     execution_requirements = { 'no-sandbox': 'True' },
@@ -92,6 +92,7 @@ monkeyc_binary = rule(
     'srcs': attr.label_list(mandatory=True, allow_files=['.mc']),
     'resources': attr.label_list(default=[], allow_files=True),
     'jungles': attr.label(mandatory=True, allow_single_file=True),
+    'manifest': attr.label(mandatory=True, allow_single_file=True),
     'test': attr.bool(default=False),
   },
   executable = True,
@@ -103,6 +104,7 @@ monkeyc_package = rule(
     'srcs': attr.label_list(mandatory=True, allow_files=['.mc']),
     'resources': attr.label_list(default=[], allow_files=True),
     'jungles': attr.label(mandatory=True, allow_single_file=True),
+    'manifest': attr.label(mandatory=True, allow_single_file=True),
   },
   executable = False,
 )

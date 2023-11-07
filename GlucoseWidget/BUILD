@@ -9,6 +9,7 @@ filegroup(
 monkeyc_binary(
   name = 'GlucoseWidget', 
   jungles = 'monkey.jungle',
+  manifest = 'manifest.xml',
   srcs = ['//Shared', ':sources'],
   resources = glob(['resources*/**/*.xml'], exclude_directories=1, allow_empty=True),
 )

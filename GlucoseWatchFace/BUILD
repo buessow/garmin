@@ -20,6 +20,7 @@ filegroup(
 monkeyc_binary(
   name = 'GlucoseWatchFace', 
   jungles = 'monkey.jungle',
+  manifest = 'manifest.xml',
   resources = [':resources'],
   srcs = [':sources'],
 )
@@ -27,6 +28,7 @@ monkeyc_binary(
 monkeyc_binary(
   name = 'test', 
   jungles = 'monkey.jungle',
+  manifest = 'manifest.xml',
   resources = [':resources'],
   srcs = [':sources'],
   test = True,
@@ -35,6 +37,7 @@ monkeyc_binary(
 monkeyc_package(
   name = 'package', 
   jungles = 'monkey.jungle',
+  manifest = 'manifest.xml',
   resources = [':resources'],
   srcs = [':sources'],
 )

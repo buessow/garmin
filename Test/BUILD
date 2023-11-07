@@ -13,6 +13,7 @@ filegroup(
 monkeyc_binary(
   name = 'Test', 
   jungles = 'monkey.jungle',
+  manifest = 'manifest.xml',
   resources = ['//Shared:Resources', ':resources'],
   test = True,
   srcs = ['//Shared',

@@ -16,6 +16,7 @@ filegroup(
 monkeyc_binary(
   name = 'GlucoseDataField', 
   jungles = 'monkey.jungle',
+  manifest = 'manifest.xml',
   resources = ['//Shared:Resources', ':resources'],
   srcs = ['//Shared', ':sources'],
 )
@@ -23,6 +24,7 @@ monkeyc_binary(
 monkeyc_package(
   name = 'package', 
   jungles = 'monkey.jungle',
+  manifest = 'manifest.xml',
   resources = [':resources'],
   srcs = [':sources'],
 )
