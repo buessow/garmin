@@ -6,7 +6,7 @@
 	minSdkVersion="3.3.1" 
 	name="@Strings.AppName" 
 	type="datafield" 
-	version="1.0.3.pre">
+	version="1.0.4.pre">
         <iq:products>
             <!-- 240x240 -->
             <iq:product id='descentmk2s'/>
