@@ -37,7 +37,6 @@ class Graph extends Ui.Drawable {
   private var axisColor;
 
   function initialize(params) {
-    Log.i(TAG, "initialize");
     Drawable.initialize(params);
     me.circular = Sys.getDeviceSettings().screenShape == Sys.SCREEN_SHAPE_ROUND;
     me.initialXOffset = params.get(:x).toNumber();
@@ -65,7 +64,7 @@ class Graph extends Ui.Drawable {
   }
 
   function setReadings(glucoseBuffer as Shared.DateValues) as Void {
-    Log.i(TAG, "setReadings " + glucoseBuffer.size() + " values");
+    // Log.i(TAG, "setReadings " + glucoseBuffer.size() + " values");
     glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec");
     glucoseBarPadding = glucoseBarWidthSec < 300 ? 0 : 2;
     me.glucoseBuffer = glucoseBuffer;
@@ -96,6 +95,7 @@ class Graph extends Ui.Drawable {
         "graph dimensions: " + { 
             "leftOffset"=>leftOffset,
             "rightOffset"=> rightOffset, 
+            "xOffset" => xOffset,
             "width" => width, 
             "glucoseBarWidth" => glucoseBarWidth,
             "valueCount" => valueCount()});
