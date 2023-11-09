@@ -288,7 +288,9 @@ class Graph extends Ui.Drawable {
       }
     }
 
-    drawTimeAxis(dc, startSec);
+    if (circular) {
+      drawTimeAxis(dc, startSec);
+    }
     drawGlucose(dc, startSec);
     drawHeartRate(dc, startSec, nowSec);
     drawMinMax(dc, startSec);
