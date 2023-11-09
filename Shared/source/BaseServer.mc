@@ -1,23 +1,16 @@
 import Toybox.Lang;
 
 using Toybox.Application.Properties;
-using Toybox.Attention;
+using Toybox.FitContributor;
+using Toybox.WatchUi as Ui;
 
 module Shared {
 
 (:background)
 class BaseServer {
   private const TAG = "BaseServer";
-  hidden var glucoseField;
 
   function initialize() {
-  }
-
-  (:fitContributor)
-  function initGlucoseField(view) {
-    glucoseField = view.createField(
-        "Glucose", 243, Toybox.FitContributor.DATA_TYPE_SINT32,
-        {:units => "mgdl", :mesgType => Toybox.FitContributor.MESG_TYPE_RECORD });
   }
 
   function onData(
@@ -34,6 +27,7 @@ class BaseServer {
       case "mmoll": data.setGlucoseUnit(Data.mmoll); break;
       default: data.setGlucoseUnit(Data.mgdl); break;
     }
+
     data.connected = msg["connected"];
   }
 
@@ -73,9 +67,6 @@ class BaseServer {
     try {
       if (code == 200) {
         onData(result, data);
-        if (glucoseField != null && data.hasValue()) {
-          glucoseField.setData(data.glucoseBuffer.getLastValue());
-        }
       } else {
         data.errorMessage = result["errorMessage"];
       }
@@ -94,9 +85,6 @@ class BaseServer {
     Properties.setValue("AAPSKey", key);
     if (result.hasKey("encodedGlucose")) {
       onData(result, data);
-    }
-    if (glucoseField != null && data.hasValue()) {
-      glucoseField.setData(data.glucoseBuffer.getLastValue());
     }
   }
 }

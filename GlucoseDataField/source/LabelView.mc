@@ -4,6 +4,7 @@ using Shared;
 using Shared.BackgroundScheduler;
 using Shared.Log;
 using Shared.Util;
+using Toybox.Activity;
 using Toybox.Application;
 using Toybox.Application.Properties;
 using Toybox.Graphics as Gfx;
@@ -19,6 +20,7 @@ class LabelView extends Ui.DataField {
   private var sizes as Dictionary<String, Boolean> = {};
   var heartRateCollector = new DataFieldHeartRateCollector();
   private var graph as Shared.Graph?;
+  var onTimerStopCallback;
 
   private static var layoutSymbols as Dictionary<String, Symbol> = {
         "L1" => :L1,
@@ -51,9 +53,10 @@ class LabelView extends Ui.DataField {
         "Rect_1_10" => :Rect_1_10
   };
   
-  function initialize(data as Shared.Data) {
+  function initialize(data as Shared.Data, onTimerStopCallback) {
     Ui.DataField.initialize();
     me.data = data;
+    me.onTimerStopCallback = onTimerStopCallback;
   }
 
   function onLayout(dc as Gfx.Dc) as Void {
@@ -105,13 +108,20 @@ class LabelView extends Ui.DataField {
     setLabelColor(id, text, 0xffffff & ~getBackgroundColor());
   }
 
+  function compute(info as Activity.Info) as Void {
+    BackgroundScheduler.schedule2(data.glucoseBuffer.getLastDateSec(), 2);
+    heartRateCollector.sample(info);
+  }
+
+  function onTimerStop() as Void {
+    onTimerStopCallback.invoke();
+  }
+
   function onUpdate(dc as Gfx.Dc) as Void {
     var light = getBackgroundColor() == Gfx.COLOR_WHITE;
     findDrawableById("BackgroundLight").setVisible(light);
     findDrawableById("BackgroundDark").setVisible(!light);
     
-    BackgroundScheduler.schedule2(data.glucoseBuffer.getLastDateSec(), 2);
-    heartRateCollector.sample();
     (findDrawableById("TitleLabel") as Ui.Text).setColor(0xffffff & ~getBackgroundColor());
 
 // data.errorMessage = "Enable Garmin in AAPS config";
@@ -135,13 +145,7 @@ class LabelView extends Ui.DataField {
       setLabel("Data3Label", null);
       setLabel("Data4Label", null);
       setLabelColor("ErrorLabel", data.errorMessage, Gfx.COLOR_RED);
-    }
-
- 
-
-
-
- 
+    } 
     Ui.DataField.onUpdate(dc);
   }
 }

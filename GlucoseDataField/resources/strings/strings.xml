@@ -1,8 +1,10 @@
 <strings>
     <string id="AppName">AAPS Glucose Field</string>
     <string id="FieldName">Glucose</string>
-    <string id="glucose_label">Blood Glucose</string>
-    <string id="glucose_units">mg/dl</string>
+    <string id="GlucoseMgDlLabel">Blood Glucose (mg/dl)</string>
+    <string id="GlucoseMmolLLabel">Blood Glucose (mmol/l)</string>
+    <string id="GlucoseMinLabel">Blood Glucose Min</string>
+    <string id="GlucoseMaxLabel">Blood Glucose Max</string>
     <string id="GlucoseUnitSettingsTitle">Glucose Unit</string>
     <string id="GlucoseUnitMgDl">mg/dl</string>
     <string id="GlucoseUnitMmolL">mmol/l</string>

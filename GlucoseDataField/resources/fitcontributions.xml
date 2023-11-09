@@ -1,5 +1,38 @@
 <fitContributions>
-	<fitField id="243" displayInChart="true" sortOrder = "2" precision="1"
-	 chartTitle="@Strings.glucose_label" dataLabel="@Strings.glucose_label"
-	 unitLabel="@Strings.glucose_units" fillColor="#00FF00" />
+	<fitField id="1" 
+		displayInChart="true" sortOrder = "0" precision="1"
+	 	chartTitle="@Strings.GlucoseMgDlLabel" 
+		dataLabel="@Strings.GlucoseMgDlLabel"
+	 	unitLabel="@Strings.FieldName" 
+		fillColor="#FF0000" />
+	<fitField id="2" 
+		displayInChart="false" sortOrder = "1" precision="1"
+	 	chartTitle="@Strings.GlucoseMinLabel" 
+		dataLabel="@Strings.GlucoseMinLabel"
+	 	unitLabel="@Strings.GlucoseUnitMgDl" 
+		displayInActivitySummary="true" /> 
+	<fitField id="3" 
+		displayInChart="false" sortOrder = "1" precision="1"
+	 	chartTitle="@Strings.GlucoseMaxLabel" 
+		dataLabel="@Strings.GlucoseMaxLabel"
+	 	unitLabel="@Strings.GlucoseUnitMgDl" 
+		displayInActivitySummary="true" />
+	<fitField id="4" 
+		displayInChart="true" sortOrder = "0" precision="1"
+	 	chartTitle="@Strings.GlucoseMmolLLabel" 
+		dataLabel="@Strings.GlucoseMmolLLabel"
+	 	unitLabel="@Strings.GlucoseUnitMmolL" 
+		fillColor="#FF0000" />
+	<fitField id="5" 
+		displayInChart="false" sortOrder = "1" precision="1"
+	 	chartTitle="@Strings.GlucoseMinLabel" 
+		dataLabel="@Strings.GlucoseMinLabel"
+	 	unitLabel="@Strings.GlucoseUnitMmolL" 
+		displayInActivitySummary="true" />
+	<fitField id="6" 
+		displayInChart="false" sortOrder = "1" precision="1"
+	 	chartTitle="@Strings.GlucoseMaxLabel" 
+		dataLabel="@Strings.GlucoseMaxLabel"
+	 	unitLabel="@Strings.GlucoseUnitMmolL" 
+		displayInActivitySummary="true" />
  </fitContributions>

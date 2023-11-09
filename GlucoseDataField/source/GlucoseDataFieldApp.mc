@@ -14,6 +14,7 @@ class GlucoseDataFieldApp extends Application.AppBase {
   private var server as Shared.GmwServer or Null;
   private var view as LabelView?;
   private var data as Shared.Data?;
+  private var fit as GlucoseFitContributor?;
 
   (:background)
   function initialize() {
@@ -38,6 +39,9 @@ class GlucoseDataFieldApp extends Application.AppBase {
     view.heartRateCollector.reset();
     server.onBackgroundData(result, data);
     view.onNewGlucose();
+    if (data.hasValue() && fit != null) {
+      fit.onGlucose(data.glucoseBuffer.getLastValue());
+    }
     BackgroundScheduler.backgroundComplete(data.glucoseBuffer.getLastDateSec());
   }
 
@@ -47,11 +51,18 @@ class GlucoseDataFieldApp extends Application.AppBase {
   function onStop(state as Lang.Dictionary or Null) as Void {
   }
 
+  function onTimerStop() as Void {
+    if (fit != null) {
+      fit.onTimerStop();
+    }
+  }
+
   function getInitialView() as Lang.Array<Ui.Views or Ui.InputDelegates> or Null {
     Properties.setValue("Device", System.getDeviceSettings().partNumber + "_DF");
     data = new Shared.Data();
-    view = new LabelView(data);
+    view = new LabelView(data, method(:onTimerStop));
     server.init2();
+    fit = new GlucoseFitContributor(view, data.hasValue() ? data.glucoseBuffer.getLastValue() : null);
     Background.registerForPhoneAppMessageEvent();
     BackgroundScheduler.registerTemporalEventIfConnectedIn(new Time.Duration(2));
 

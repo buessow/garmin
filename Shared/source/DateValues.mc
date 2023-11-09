@@ -137,7 +137,7 @@ class DateValues {
     return size() == 0 ? null : getDateSec(size() - 1);
   }
 
-  function getLastValue() as DateValue? {
+  function getLastValue() as Number? {
     return size() == 0 ? null : getValue(size() - 1);
   }
 }}

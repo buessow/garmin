@@ -28,8 +28,7 @@ class DataFieldHeartRateCollector {
     }
   }
 
-  function sample() as Void {
-    var info = Activity.getActivityInfo();
+  function sample(info as Activity.Info) as Void {
     var hr = info == null ? null : info.currentHeartRate;
     var nowSec = Util.nowSec();
     if (hr != null && hr > 0 && nowSec > startSec) {
