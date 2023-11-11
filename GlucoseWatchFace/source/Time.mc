@@ -14,21 +14,21 @@ using Toybox.WatchUi as Ui;
 // of certain parameters using the "timeOverrides" jsonData property.
 class Time extends Ui.Drawable {
   private static const TAG = "Time";
-  private var hourFont as Gfx.FontDefinition;
-  private var minuteFont as Gfx.FontDefinition;
-  private var minuteY as Number;
-  private var hourMinuteSpace as Number;
-  private var addMinuteY as Number = 0;
+  protected var hourFont as Gfx.FontDefinition;
+  protected var minuteFont as Gfx.FontDefinition;
+  protected var minuteY as Number;
+  protected var hourMinuteSpace as Number;
+  protected var addMinuteY as Number = 0;
   
   function initialize(params as Dictionary) {
     Drawable.initialize(params);
     addMinuteY = Util.ifNull(params.get(:addMinuteY), 0);
 
     var device = PartNumbers.map[System.getDeviceSettings().partNumber];
-    var overrides = Application.loadResource(Rez.JsonData.timeOverrides);
-    var deviceOverrides = overrides["deviceOverrides"];
+    var overrides = Application.loadResource(Rez.JsonData.timeOverrides) as Dictionary<String, Object>;
+    var deviceOverrides = overrides["deviceOverrides"] as Array;
     for (var i = 0; i < deviceOverrides.size(); i++) {
-      var override = deviceOverrides[i];
+      var override = deviceOverrides[i] as Dictionary<String, Array<String>>;
       if (override["devices"].indexOf(device) != -1) {
         Log.i(TAG, "override " + device + " " + override);
         addMinuteY += Util.ifNull(override["addMinuteY"], 0);

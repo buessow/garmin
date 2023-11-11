@@ -184,15 +184,18 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
 
   function onPhoneAppMessage(msg as Comm.PhoneAppMessage) as Void {
     try {
-      msg.data["channel"] = "phoneApp";
-      Log.i(TAG, "onPhoneAppMessage " + msg.data);
+      var msgData = msg.data instanceof Dictionary 
+          ? (msg.data as Dictionary<Object, Object>)
+          : { "message" => msg.data };
+      msgData["channel"] = "phoneApp";
+      Log.i(TAG, "onPhoneAppMessage " + msgData);
       
-      var timestamp = msg.data["timestamp"];
-      if (Util.nowSec() - timestamp > 60) {
-        key = msg.data["key"];
+      var timestamp = msgData["timestamp"] as Number?;
+      if (timestamp == null || Util.nowSec() - timestamp > 60) {
+        key = msgData["key"] as String?;
         requestBloodGlucose(new Method(Toybox.Background, :exit));
       } else {
-        Background.exit(msg.data);
+        Background.exit(msgData);
       }
     } catch (e) {
       Log.e(TAG, "onPhoneAppMessage ex: " + (e == null ? "NULL" : e.getErrorMessage()));

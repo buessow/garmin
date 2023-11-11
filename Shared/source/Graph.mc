@@ -26,7 +26,6 @@ class Graph extends Ui.Drawable {
   private var firstValueIdx = 0;
   private var xOffset = 3;
   private var yOffset = 120;
-  var width;
   var height = 86;
   private var glucoseBuffer as Shared.DateValues = new Shared.DateValues(null, 2);
   private var maxGlucose as Number?;
@@ -82,27 +81,30 @@ class Graph extends Ui.Drawable {
   }
 
   private function computeOffsetAndWidth() {
-    var leftOffset = 0;
     var rightOffset = 0;
     if (firstValueIdx < glucoseBuffer.size()) {
-      leftOffset = getBorderOffset(glucoseBuffer.getValue(firstValueIdx));
       rightOffset = getBorderOffset(glucoseBuffer.getLastValue());
     }
     
-    var w = initialWidth - leftOffset - rightOffset;
-    var valueWidth = Math.ceil(w + glucoseBarPadding) / (valueCount().toDouble()).toFloat();
+    var w = initialWidth - rightOffset;
+    var valueWidth = Math.ceil((w + glucoseBarPadding) / valueCount().toDouble()).toNumber();
     glucoseBarWidth = valueWidth - glucoseBarPadding;
-    width = valueWidth * valueCount() - glucoseBarPadding;
-    xOffset = leftOffset + initialWidth - width - 1;
+    if (glucoseBarWidth <= glucoseBarPadding) {
+      glucoseBarWidth += glucoseBarPadding;
+      glucoseBarPadding = 0;
+      glucoseBarWidth = Util.max(1, glucoseBarWidth);
+    }
+    var width = valueWidth * valueCount() - glucoseBarPadding;
+    xOffset = initialXOffset + initialWidth - width - 1;
 
     Log.i(
         TAG, 
         "graph: " + { 
-            "leftOffset" => leftOffset,
             "rightOffset" => rightOffset, 
             "xOffset" => xOffset,
             "width" => width, 
             "glucoseBarWidth" => glucoseBarWidth,
+            "glucoseBarPadding" => glucoseBarPadding,
             "valueCount" => valueCount()});
   }
 
@@ -186,8 +188,6 @@ class Graph extends Ui.Drawable {
       var w = glucoseBarWidth;
       var y = getYForGlucose(glucoseBuffer.getValue(i));
       var h = height - y;
-//      Log.i(TAG, "draw " + glucoseBuffer.getValue(i)
-//          + " x=" + x + " y=" + y + " h=" + h);
       dc.setColor(Gfx.COLOR_DK_BLUE, bgColor);
       dc.fillRectangle(xOffset + x, yOffset + y, w, h);
       dc.setColor(Gfx.COLOR_BLUE, bgColor);
