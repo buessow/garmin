@@ -4,6 +4,7 @@ using Shared;
 using Shared.BackgroundScheduler;
 using Shared.Log;
 using Shared.Util;
+using Shared.PartNumbers;
 using Toybox.Activity;
 using Toybox.Application;
 using Toybox.Application.Properties;
@@ -50,7 +51,10 @@ class LabelView extends Ui.DataField {
         "Rect_1_4" => :Rect_1_4,
         "Rect_2_5" => :Rect_2_5,
         "Rect_1_5" => :Rect_1_5,
-        "Rect_1_10" => :Rect_1_10
+        "Rect_1_10" => :Rect_1_10,
+
+        "Rect_1_10_edge540" => :Rect_1_10_edgeX40,
+        "Rect_1_10_edge840" => :Rect_1_10_edgeX40
   };
   
   function initialize(data as Shared.Data, onTimerStopCallback) {
@@ -60,26 +64,33 @@ class LabelView extends Ui.DataField {
   }
 
   function onLayout(dc as Gfx.Dc) as Void {
+    var device = PartNumbers.map[System.getDeviceSettings().partNumber];
     var sizeStr = "L_" + dc.getWidth() + "x" + dc.getHeight() + "_" + getObscurityFlags();
     var log = !sizes.hasKey(sizeStr);
     sizes[sizeStr] = true;
     var layouts =  Application.loadResource(Rez.JsonData.Layouts);
+    var layoutSymbol = null;
     try {
       var layoutId = layouts[sizeStr]["layout"] as String?;
-      var layoutSymbol = layoutSymbols[layoutId];
+      layoutSymbol = Util.ifNull(layoutSymbols[layoutId + "_" + device], layoutSymbols[layoutId]);
       var defined = Rez.Layouts has layoutSymbol ? "" : " undef";
       if (log) { Log.i(TAG, "onLayout " + sizeStr + " " + layoutId + " " + (layoutSymbol==null ? "??" : "ok") + defined); }
-
-      if (Rez.Layouts has layoutSymbol) {
-        var layout = new Method(Rez.Layouts, layoutSymbol);
-        setLayout(layout.invoke(dc));
-      }
-
     } catch (e) {
       if (log) { Log.i(TAG, "onLayout " + sizeStr + " not found"); }
-    }  
+    }
 
-    graph = findDrawableById("DateValueGraph") as Shared.Graph;
+    // Fallback in case we didn't find anything. Physical devices sometimes have different
+    // field dimensions than simulator.
+    if (layoutSymbol == null) {
+      layoutSymbol = Rez.Layouts has :Rect_1_10 ? :Rect_1_10 : :L1;
+    }
+
+    if (Rez.Layouts has layoutSymbol) {
+      var layout = new Method(Rez.Layouts, layoutSymbol);
+      setLayout(layout.invoke(dc));
+    }
+
+    graph = findDrawableById("DateValueGraph") as Shared.Graph?;
     if (graph != null) {
       graph.isMmolL = data.glucoseUnit == Shared.Data.mmoll;
       graph.setReadings(data.glucoseBuffer);
@@ -124,7 +135,6 @@ class LabelView extends Ui.DataField {
     
     (findDrawableById("TitleLabel") as Ui.Text).setColor(0xffffff & ~getBackgroundColor());
 
-// data.errorMessage = "Enable Garmin in AAPS config";
     setLabel("GlucoseLabel", data.getGlucoseStr());
     var connected = System.getDeviceSettings().phoneConnected;
     setLabelColor(

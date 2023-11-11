@@ -6,7 +6,7 @@
 	minSdkVersion="3.3.1" 
 	name="@Strings.AppName" 
 	type="datafield" 
-	version="1.0.8.pre">
+	version="1.0.9.pre">
         <iq:products>
             <!-- 240x240 -->
             <iq:product id='descentmk2s'/>
@@ -35,7 +35,12 @@
             <iq:product id='fr255'/>
             <iq:product id='fr255m'/>
             <iq:product id='fr955'/>
-            <!-- 282x470 (Edge 1030/1040) -->
+            <!-- 246x322 (Edge 5xx/8xx) -->
+            <iq:product id='edge530'/>
+            <iq:product id='edge540'/>
+            <iq:product id='edge830'/>
+            <iq:product id='edge840'/>
+            <!-- 282x470 (Edge 10xx) -->
             <iq:product id='edge1030'/>
             <iq:product id='edge1030bontrager'/>
             <iq:product id='edge1030plus'/>

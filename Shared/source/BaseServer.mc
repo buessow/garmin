@@ -13,9 +13,7 @@ class BaseServer {
   function initialize() {
   }
 
-  function onData(
-      msg as Dictionary<String, Object>, 
-      data as Data) as Void{
+  function onData(msg as Dictionary<String, Object>, data as Data) as Void{
     var values = Shared.DeltaVarEncoder.decodeBase64(2, msg["encodedGlucose"] as String);
     data.glucoseBuffer = new DateValues(values, values.size() / 2);
 
@@ -28,7 +26,9 @@ class BaseServer {
       default: data.setGlucoseUnit(Data.mgdl); break;
     }
 
-    data.connected = msg["connected"];
+    if (msg["connected"] instanceof Boolean) {
+      data.connected = msg["connected"] as Boolean;
+    }
   }
 
   function onBackgroundData(
@@ -36,12 +36,12 @@ class BaseServer {
       data as Data) as Void {
     if (result == null) {
       Log.e(TAG, "onBackgroundData NULL result");
-      data.errorMessage = "null result type";
+      data.onError("null result");
       return;
     }
     if (!(result instanceof Dictionary)) {
       Log.e(TAG, "onBackgroundData bad result type " +  result.toString());
-      data.errorMessage = "bad result type";
+      data.onError("bad result type");
       return;
     }
     var channel = result["channel"];
@@ -68,12 +68,12 @@ class BaseServer {
       if (code == 200) {
         onData(result, data);
       } else {
-        data.errorMessage = result["errorMessage"];
+        data.onError(result["errorMessage"]);
       }
     } catch (e) {
       Log.e(TAG, "ex ");
       e.printStackTrace();
-      data.errorMessage = e.getErrorMessage();
+      data.onError(e.getErrorMessage());
     }
   }
 

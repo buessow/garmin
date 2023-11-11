@@ -1,6 +1,6 @@
 project.manifest = manifest.xml
 base.sourcePath = source;../Shared/source
-base.excludeAnnotations = exclude;partNumbers
+base.excludeAnnotations = exclude
 base.resourcePath = resources;../Shared/resources
 fenix5xplus.resourcePath = $(fenix5plus.resourcePath)
 fenix5splus.resourcePath = $(fenix5plus.resourcePath)

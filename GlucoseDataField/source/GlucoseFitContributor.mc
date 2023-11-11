@@ -56,8 +56,8 @@ class GlucoseFitContributor {
     }
   }
 
-  function onGlucose(glucose as Number) as Void {
-    if (glucoseField != null) {
+  function onGlucose(glucose as Number?) as Void {
+    if (glucoseField != null && glucose != null) {
       Log.i(TAG, "glucoseField.setData " + glucose);
       glucoseField.setData(glucose);
       glucoseMmollField.setData(glucose / 18.0);

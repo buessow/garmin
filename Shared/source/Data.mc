@@ -9,15 +9,21 @@ using Toybox.Time.Gregorian as Calendar;
 module Shared {
 class Data {
   private static const TAG = "Data";
-  var glucoseBuffer = new Shared.DateValues(null, 120);   // never null
+  var glucoseBuffer as Shared.DateValues = new Shared.DateValues(null, 120);
   var glucoseUnit as GlucoseUnit = mgdl;
   var errorMessage as String?;
   var requestTimeSec as Number?;
   var remainingInsulin as Float?;
   var temporaryBasalRate as Float?;
   var profile as String?;
-  var connected = true;
-  private var fakeMode = false;
+  var connected as Boolean = true;
+  private var fakeMode as FakeMode = normal;
+
+  enum FakeMode {
+    normal = 1,
+    fakeValues = 2,
+    fakeError = 3,
+  }
 
    enum GlucoseUnit {
      mgdl = 1,
@@ -27,6 +33,9 @@ class Data {
   function initialize() {
     try {
       restoreValues();
+      if (fakeMode == fakeError) {
+        errorMessage = "Enable Garmin in AAPS config";
+      }
     } catch (e) {
       Log.i(TAG, "restored failed: " + e.getErrorMessage());
     }
@@ -36,7 +45,6 @@ class Data {
     var glucoseBufferStr = Util.ifNull(Properties.getValue("GlucoseValues"), "");
     if (glucoseBufferStr.length() > 0) {
       glucoseBuffer.fromHexString(glucoseBufferStr);
-    Log.i(TAG, "restoreValues() " + glucoseBufferStr.length() + " size " + glucoseBuffer.size());
       var dateSec = glucoseBuffer.getDateSec(glucoseBuffer.size()-1);
       if (Util.abs(Util.nowSec() - dateSec) > 3600) {
         Log.i(TAG, "stored value too old " + Util.timeSecToString(dateSec));
@@ -45,10 +53,10 @@ class Data {
         remainingInsulin = Properties.getValue("RemainingInsulin");
         temporaryBasalRate = Properties.getValue("TemporaryBasalRate");
         profile = Properties.getValue("BasalProfile");
-        Log.i(TAG, "restored " + glucoseBuffer.get(glucoseBuffer.size() - 1));
+        Log.i(TAG, "restored "+ glucoseBuffer.size() + " " + glucoseBuffer.get(glucoseBuffer.size() - 1));
       }
     }
-    if (glucoseBuffer.size() == 0) {
+    if (!hasValue()) {
       Log.i(TAG, "no glucose stored");
       errorMessage = "no value";
     }
@@ -58,7 +66,8 @@ class Data {
 
   // Returns true iff we have a blood glucose reading.
   function hasValue() as Boolean {
-    return glucoseBuffer.size() > 0 && (Util.nowSec() - glucoseBuffer.getLastDateSec()) < 16 * 60;
+    return fakeMode == fakeValues 
+        || glucoseBuffer.size() > 0 && (Util.nowSec() - glucoseBuffer.getLastDateSec()) < 16 * 60;
   }
 
   function setProfile(profile as String?) as Void {
@@ -72,7 +81,7 @@ class Data {
   }
 
   function getBasalCorrectionStr() as String {
-    if (fakeMode) { return "S10%"; }
+    if (fakeMode != normal) { return "S10%"; }
     if (temporaryBasalRate == null || profile == null) {
       return  "-";
     }
@@ -106,7 +115,7 @@ class Data {
   // @Returns Toybox.Lang.String
   function getGlucoseStr() as String {
     var glucose = null;
-    if (fakeMode) { 
+    if (fakeMode == fakeValues) { 
       glucose = (Util.nowSec() % 30)*10 + Util.nowSec() % 11; 
     } else {
       if (!hasValue()) { return "-"; }
@@ -138,7 +147,7 @@ class Data {
   }
 
   function getGlucoseTimeStr() as String {
-    if (fakeMode) { return "3:14"; }
+    if (fakeMode != normal) { return "3:14"; }
     if (hasValue()) {
        return "_:__";
      } else {
@@ -166,7 +175,7 @@ class Data {
   //
   // @Returns Toybox.Lang.String
   function getGlucoseAgeStr() as String {
-    if (fakeMode) { return "3:14"; }
+    if (fakeMode != normal) { return "3:14"; }
     if (!hasValue() || getGlucoseAgeSec() > 26 * 60) {
       return "_:__";
     }
@@ -202,8 +211,8 @@ class Data {
   //
   // @Returns Toybox.Lang.String
   function getGlucoseDeltaPerMinuteStr() as String {
-    if (fakeMode) { return "-0.05"; }
-    if (!hasValue()) {
+    if (fakeMode == fakeValues) { return "-0.05"; }
+    if (!hasValue() || fakeMode != normal) {
       return "+_.__";
     }
     var deltaPerMinute = getGlucoseDeltaPerMinute();
@@ -233,6 +242,12 @@ class Data {
     if (glucoseFrequencySec != null && glucoseFrequencySec > 0) {
       Properties.setValue("GlucoseValueFrequencySec", glucoseFrequencySec);
     }
-    errorMessage = last == null ? "no value" : null;
+    onError(last == null ? "no value" : null);
+  }
+
+  function onError(errorMessage as String?) as Void {
+    if (fakeMode == normal) {
+      me.errorMessage = errorMessage;
+    }
   }
 }}
