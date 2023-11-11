@@ -12,30 +12,7 @@
         "L_282x92_0": { "layout": "Rect_1_5" },
         "L_282x93_0": { "layout": "Rect_1_5" },
         "L_140x92_0": { "layout": "Rect_1_10" },
-        "L_140x93_0": { "layout": "Rect_1_10" },
-        
-        "L_260x129_13": { "layout": "L2_Bot" },
-        "L_260x92_5": { "layout": "L3A_Mid" },
-        "L_260x83_7": { "layout": "L3A_Top" },
-        "L_260x91_5": { "layout": "L3A_Mid" },
-        "L_260x82_13": { "layout": "L3A_Bot" },
-        "L_260x82_5": { "layout": "L3B_Mid" },
-        "L_260x87_13": { "layout": "L3B_Bot" },
-        "L_260x92_7": { "layout": "L3B_4B_Top" },
-        "L_260x74_5": { "layout": "L3B_Midfr" },
-        "L_260x93_13": { "layout": "L3B_Bot" },
-        "L_129x129_9": { "layout": "L3C_4C_Bot_L" },
-        "L_129x129_12": { "layout": "L3C_4C_Bot_R" },  
-        "L_260x64_5": { "layout": "L4A_Mid" },
-        "L_260x64_13": { "layout": "L4A_Bot" },
-        "L_129x72_1": { "layout": "L4B_Mid" },
-        "L_129x72_4": { "layout": "L4B_Mid" },
-        "L_260x92_13": { "layout": "L4B_Bot" },
-        "L_129x129_3": { "layout": "L4C_Top" },
-        "L_129x129_6": { "layout": "L4C_Top" },
-        "L_129x64_1": { "layout": "L5_6_Mid_L" },
-        "L_129x64_4": { "layout": "L5_6_Mid_R" },
-        "x":0
+        "L_140x93_0": { "layout": "Rect_1_10" }
     }
   </jsonData>
   <layout id="Rect_1">

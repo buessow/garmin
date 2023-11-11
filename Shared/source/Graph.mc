@@ -29,7 +29,7 @@ class Graph extends Ui.Drawable {
   var width;
   var height = 86;
   private var glucoseBuffer as Shared.DateValues = new Shared.DateValues(null, 2);
-  private var maxGlucose;
+  private var maxGlucose as Number?;
   private var circular;
   var isMmolL as Boolean?;
   private var bgColor;
@@ -63,42 +63,58 @@ class Graph extends Ui.Drawable {
     hrColor = Gfx.COLOR_LT_GRAY;
   }
 
-  function setReadings(glucoseBuffer as Shared.DateValues) as Void {
-    // Log.i(TAG, "setReadings " + glucoseBuffer.size() + " values");
-    glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec");
-    glucoseBarPadding = glucoseBarWidthSec < 300 ? 0 : 2;
-    me.glucoseBuffer = glucoseBuffer;
-    var startSec = Util.nowSec() - TIME_RANGE_SEC;
-    maxGlucose = 180;
+  private function computeFirstIndex(startSec as Number) as Void {
     firstValueIdx = 0;
     for (var i = 0; i < glucoseBuffer.size(); i++) {
-      if (glucoseBuffer.getDateSec(i) >= startSec) {
-        maxGlucose = Util.max(maxGlucose, glucoseBuffer.getValue(i));
-      } else {
+      if (glucoseBuffer.getDateSec(i) < startSec) {
         firstValueIdx++;
+      } else {
+        return;
       }
     }
+  }
+
+  private function computeMaxGlucose() as Void {
+    maxGlucose = 180;
+    for (var i = firstValueIdx; i < glucoseBuffer.size(); i++) {
+      maxGlucose = Util.max(maxGlucose, glucoseBuffer.getValue(i));
+    }
+  }
+
+  private function computeOffsetAndWidth() {
     var leftOffset = 0;
     var rightOffset = 0;
     if (firstValueIdx < glucoseBuffer.size()) {
       leftOffset = getBorderOffset(glucoseBuffer.getValue(firstValueIdx));
       rightOffset = getBorderOffset(glucoseBuffer.getLastValue());
     }
-    xOffset = initialXOffset + leftOffset;
-    width = initialWidth - leftOffset - rightOffset;
-    var totalPadding = glucoseBarPadding * (valueCount() - 1);
-    glucoseBarWidth = Math.ceil((width - totalPadding) / valueCount());
-    var totalBarWidth = glucoseBarWidth * valueCount() + totalPadding;
-    xOffset = xOffset - Util.max(0, totalBarWidth - width);
+    
+    var w = initialWidth - leftOffset - rightOffset;
+    var valueWidth = Math.ceil(w + glucoseBarPadding) / (valueCount().toDouble()).toFloat();
+    glucoseBarWidth = valueWidth - glucoseBarPadding;
+    width = valueWidth * valueCount() - glucoseBarPadding;
+    xOffset = leftOffset + initialWidth - width - 1;
+
     Log.i(
         TAG, 
-        "graph dimensions: " + { 
-            "leftOffset"=>leftOffset,
-            "rightOffset"=> rightOffset, 
+        "graph: " + { 
+            "leftOffset" => leftOffset,
+            "rightOffset" => rightOffset, 
             "xOffset" => xOffset,
             "width" => width, 
             "glucoseBarWidth" => glucoseBarWidth,
             "valueCount" => valueCount()});
+  }
+
+  function setReadings(glucoseBuffer as Shared.DateValues) as Void {
+    glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec");
+    glucoseBarPadding = glucoseBarWidthSec < 300 ? 0 : 2;
+    me.glucoseBuffer = glucoseBuffer;
+
+    var startSec = Util.nowSec() - TIME_RANGE_SEC;
+    computeFirstIndex(startSec);
+    computeMaxGlucose();
+    computeOffsetAndWidth();
   }
 
   private function getBorderOffset(value) {
@@ -162,12 +178,12 @@ class Graph extends Ui.Drawable {
   }
 
   private function drawGlucose(dc, startSec) {
-    if (glucoseBuffer == null || glucoseBuffer.size() <= firstValueIdx) {
+    if (glucoseBuffer == null) {
       return;
     }
     for (var i = firstValueIdx; i < glucoseBuffer.size(); i++) {
       var x = getX(startSec, glucoseBuffer.getDateSec(i));
-      var w = (x + glucoseBarWidth).toNumber() - x.toNumber();
+      var w = glucoseBarWidth;
       var y = getYForGlucose(glucoseBuffer.getValue(i));
       var h = height - y;
 //      Log.i(TAG, "draw " + glucoseBuffer.getValue(i)
