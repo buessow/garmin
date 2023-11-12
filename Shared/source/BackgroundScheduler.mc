@@ -62,7 +62,10 @@ module BackgroundScheduler {
   // @Returns Toybox.Lang.Integer
   //          Time we should run the background task next in seconds
   //          since the epoch.
-  function getNextRunTime(nowSec, lastGlucoseTimeSec, lastRunTimeSec) as Number {
+  function getNextRunTime(
+      nowSec as Number, 
+      lastGlucoseTimeSec as Number?, 
+      lastRunTimeSec as Number?) as Number {
     var nextRunTimeSec = lastRunTimeSec == null
                        ? nowSec + IMMEDIATE_SCHEDULING_DELAY
                        : lastRunTimeSec + MIN_SCHEDULE_DELAY;
@@ -115,7 +118,7 @@ module BackgroundScheduler {
     }
   }
 
-  function scheduleTime(nowSec, lastGlucoseTimeSec) {
+  function scheduleTime(nowSec as Number, lastGlucoseTimeSec as Number?) as Number {
     var lastRunTime = Background.getLastTemporalEventTime();
     var nextRunTimeSec = getNextRunTime(
         nowSec,
@@ -127,7 +130,7 @@ module BackgroundScheduler {
     return nextRunTimeSec;
   }
 
-  function backgroundComplete(lastDateSec) {
+  function backgroundComplete(lastDateSec as Number?) as Void {
     registered = false;
     nextScheduleTimeSec = scheduleTime(Util.nowSec(), lastDateSec);
   }

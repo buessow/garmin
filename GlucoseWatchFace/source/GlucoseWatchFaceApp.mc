@@ -1,3 +1,5 @@
+import Toybox.Lang;
+
 using Shared;
 using Shared.BackgroundScheduler;
 using Shared.Log;
@@ -9,10 +11,10 @@ using Toybox.WatchUi as Ui;
 
 (:background)
 class GlucoseWatchFaceApp extends Application.AppBase {
-  hidden var TAG = "GlucoseWatchFaceApp";
-  hidden var data;
-  hidden var server;
-  hidden var view;
+  private var TAG = "GlucoseWatchFaceApp";
+  private var data;
+  private var server;
+  private var view;
 
   function initialize() {
     Log.i(TAG, "initialize");
@@ -32,27 +34,25 @@ class GlucoseWatchFaceApp extends Application.AppBase {
         data = new Shared.Data();
       }
       server.onBackgroundData(result, data);
-      BackgroundScheduler.backgroundComplete(view.data.glucoseBuffer.getLastDateSec());
+      BackgroundScheduler.backgroundComplete(data.glucoseBuffer.getLastDateSec());
       if (view != null) {
         view.setReadings();
       }
     } catch (e) {
       e.printStackTrace();
-      Log.i(
-          TAG,
-          "onBackgroundData " + Util.ifNull(e.getErrorMessage(), "NULL"));
+      Log.i(TAG, "onBackgroundData " + Util.ifNull(e.getErrorMessage(), "NULL"));
     }
   }
 
-  function onStart(state) {
+  function onStart(state) as Void {
     Log.i(TAG, "onStart");
   }
 
-  function onStop(state) {
+  function onStop(state) as Void {
     Log.i(TAG, "onStop");
   }
 
-  function getInitialView() {
+  function getInitialView() as Array<Ui.Views or Ui.InputDelegates> or Null {
     Background.registerForPhoneAppMessageEvent();
     Properties.setValue("Device", System.getDeviceSettings().partNumber + "_WF");
     server.init2();
