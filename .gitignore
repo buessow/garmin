@@ -2,3 +2,4 @@ bazel-*
 .*.swp
 *.mir
 bin/
+bin-*/
