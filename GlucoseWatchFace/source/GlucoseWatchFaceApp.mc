@@ -64,6 +64,11 @@ class GlucoseWatchFaceApp extends Application.AppBase {
     return [ view ];
   }
 
+  function getSettingsView() as Array<Ui.Views or Ui.InputDelegates> or Null{
+    Log.i(TAG, "getSettingsView");
+    return new GlucoseWatchFaceSettings().get();
+  }
+
   function onSettingsChanged() {
     view.updateSettings();
     Ui.requestUpdate();

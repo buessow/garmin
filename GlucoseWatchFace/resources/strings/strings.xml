@@ -1,7 +1,10 @@
 <strings>
     <string id="AppName">AAPS Glucose Watch</string>
+    <string id="SettingsTitle">AAPS Watch</string>
     <string id="MilitaryFormatTitle">Military Format for 24 Hour Time</string>
     <string id="AppearanceTitle">Appearance</string>
     <string id="AppearanceDark">dark</string>
     <string id="AppearanceLight">light</string>
+    <string id="VersionTitle">Version</string>
+    <string id="BuildTimeTitle">Build Time</string>
 </strings>
