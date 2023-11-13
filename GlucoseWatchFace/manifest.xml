@@ -2,12 +2,12 @@
     <!-- preview: id="c9e90ee7e6924829a8b45e7dafff5cb4" -->
     <!-- production: id="662dfcf7-f5a1-47de-8bd3-7f09574adb11" -->
     <iq:application entry="GlucoseWatchFaceApp" 
-                    id="c9e90ee7e6924829a8b45e7dafff5cb4"
+                    id="662dfcf7-f5a1-47de-8bd3-7f09574adb11"
                     minSdkVersion="3.3.1" 
                     launcherIcon="@Drawables.LauncherIcon"
                     name="@Strings.AppName" 
                     type="watchface" 
-                    version="1.1.6.pre">
+                    version="1.1.6">
         <iq:products>
             <iq:product id='legacyherocaptainmarvel'/>
             <iq:product id='fenixchronos'/>
