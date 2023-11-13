@@ -18,6 +18,7 @@ class Messenger {
   var onCarbsStart;
   var onCarbsDone;
   var onConnectDone;
+  private var delegate = new Shared.GlucoseServiceDelegate(server, 7200);
 
   function initialize(data, onGlucose) {
     Log.i(TAG, "init");
@@ -35,7 +36,6 @@ class Messenger {
   }
 
   function getGlucose() {
-    var delegate = server.getServiceDelegate();
     delegate.requestBloodGlucose(method(:getGlucoseResult));
   }
 
@@ -53,7 +53,6 @@ class Messenger {
   }
 
   function postCarbs(carbs) {
-    var delegate = server.getServiceDelegate();
     delegate.postCarbs(carbs, method(:onPostCarbsResult));
     if (onCarbsStart != null) {
       onCarbsStart.invoke(carbs);
@@ -70,7 +69,6 @@ class Messenger {
     if (view != null) {
       view.connecting();
     }
-    var delegate = server.getServiceDelegate();
     delegate.connectPump(disconnectMinutes, method(:onConnectResult));
   }
 

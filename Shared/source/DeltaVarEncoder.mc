@@ -3,6 +3,7 @@ import Toybox.Lang;
 using Toybox.StringUtil as StringUtil;
 
 module Shared {
+(:glance)
 module DeltaVarEncoder {
 
   function zigzagEncode (i as Long) as Long {

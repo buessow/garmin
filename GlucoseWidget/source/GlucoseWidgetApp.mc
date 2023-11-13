@@ -15,10 +15,6 @@ class GlucoseWidgetApp extends Application.AppBase {
   function initialize() {
     AppBase.initialize();
     Log.i(TAG, "initialize");
-    if (Application.getApp().getProperty("Device") == null) {
-      Application.getApp().setProperty(
-          "Device", System.getDeviceSettings().partNumber + "_Widget");
-    }
   }
 
   function onGlucose() {
@@ -58,6 +54,11 @@ class GlucoseWidgetApp extends Application.AppBase {
   }
 
   function getInitialView() {
+    if (Application.getApp().getProperty("Device") == null) {
+      Application.getApp().setProperty(
+          "Device", System.getDeviceSettings().partNumber + "_Widget");
+    }
+
     try {
       data = new Shared.Data();
       messenger = new Messenger(data, method(:onGlucose));

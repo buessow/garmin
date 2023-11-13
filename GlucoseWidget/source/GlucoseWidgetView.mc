@@ -69,6 +69,7 @@ class GlucoseWidgetView extends Ui.View {
     Ui.requestUpdate();
   }
 
+  (:noShowConnected)
   hidden function updateConnected(dc as Gfx.Dc, connected as Lang.Boolean) as Void {
   }
 
