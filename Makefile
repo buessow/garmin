@@ -3,6 +3,8 @@ DEVELOPER_KEY='/Users/robertbuessow/StudioProjects/developer_key'
 device ?= fenix7
 opt ?= 2
 
+.NOPARALELL:
+
 shared_dep = Shared/source/*.mc Shared/resource/*/*
 
 %/resources/_version.xml: %/manifest.xml
