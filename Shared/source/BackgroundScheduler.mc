@@ -143,7 +143,7 @@ module BackgroundScheduler {
       }
       return;
     }
-    if (registered) {
+    if (registered && nextScheduleTimeSec != null && nowSec - nextScheduleTimeSec < 10) {
       return;
     }
     if (nextScheduleTimeSec == null) {
@@ -166,11 +166,11 @@ module BackgroundScheduler {
     }
   }
 
-  function tryRegisterTemporalEventIn(d) {
+  function tryRegisterTemporalEventIn(d as Time.Duration) as Void {
     tryRegisterTemporalEventAt(Time.now().add(d));
   }
 
-  function tryRegisterTemporalEventAt(t) {
+  function tryRegisterTemporalEventAt(t as Time.Moment) as Void {
     var nowSec = Util.nowSec();
     if (nowSec % 10 != 0) { return; }
     Log.i(TAG, "try schedule event at " + Util.momentToString(t));
@@ -180,6 +180,7 @@ module BackgroundScheduler {
     if (t.value() - lastSec < 5 * 60) { return; }
     try {
       Background.registerForTemporalEvent(t);
+      nextScheduleTimeSec = t.value();
       Log.i(TAG, "scheduled event at " + Util.momentToString(t));
     } catch (e) {
       Log.e(TAG, e.getErrorMessage());

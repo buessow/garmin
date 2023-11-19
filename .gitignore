@@ -3,3 +3,4 @@ bazel-*
 *.mir
 bin/
 bin-*/
+_version.xml
