@@ -8,6 +8,12 @@
 		},
 		{
 			"path": "../GlucoseWidget"
+		},
+		{
+			"path": "../Test"
+		},
+		{
+			"path": "../TestLib"
 		}
 	],
 	"settings": {}

@@ -103,7 +103,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     var url = server.url + methodName;
     putIfNotNull(parameters, "device", Properties.getValue("Device"));
     parameters["manufacturer"] = "garmin";
-    parameters["test"] = Util.stringEndsWith(parameters["device"], "Sim").toString();
+    parameters["version"] = Properties.getValue("AppVersion");
     parameters["key"] = key;
     var stats = System.getSystemStats();
     Log.i(TAG, 
@@ -149,13 +149,12 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
       callback as Method(result as Dictionary<String, Object>) as Void) {
     var result = obj instanceof Dictionary ? obj : { "message" => obj };
     result["httpCode"] = code;
+    result["channel"] = "http";
     if (code != 200) {
       Log.i(TAG, "set error " + getErrorMessage(code));
       result["errorMessage"] = getErrorMessage(code);
     }
     result["startTimeSec"] = startTime;
-    result["channel"] = "http";
-    result["key"] = key;
     
     if (callback != null) {
       callback.invoke(result);
@@ -183,20 +182,26 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   }
 
   function onPhoneAppMessage(msg as Comm.PhoneAppMessage) as Void {
+    onPhoneAppMessage2(msg, new Method(Toybox.Background, :exit));
+  }
+
+  function onPhoneAppMessage2(
+    msg as Comm.PhoneAppMessage,
+    callback as Method(result as Dictionary<String, Object>) as Void) as Void {
     try {
       var msgData = msg.data instanceof Dictionary 
           ? (msg.data as Dictionary<Object, Object>)
           : { "message" => msg.data };
       msgData["channel"] = "phoneApp";
-      Log.i(TAG, "onPhoneAppMessage " + msgData);
+      key = msgData["key"];
       
-      var timestamp = msgData["timestamp"] as Number?;
-      if (timestamp == null || Util.nowSec() - timestamp > 60) {
-        key = msgData["key"] as String?;
-        requestBloodGlucose(new Method(Toybox.Background, :exit));
-      } else {
-        Background.exit(msgData);
-      }
+      // var timestamp = msgData["timestamp"] as Number?;
+      // if (timestamp == null || Util.nowSec() - timestamp > 60) {
+      //   key = msgData["key"] as String?;
+      //   requestBloodGlucose(callback);
+      // } else {
+        callback.invoke(msgData);
+      // }
     } catch (e) {
       Log.e(TAG, "onPhoneAppMessage ex: " + (e == null ? "NULL" : e.getErrorMessage()));
       if (e != null) {

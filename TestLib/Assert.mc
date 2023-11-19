@@ -39,7 +39,7 @@ function dictSubset(d1 as Dictionary, d2 as Dictionary) as Boolean {
   for (var i = 0; i < keys.size(); i++) {
     var key = keys[i];
     var v1 = d1.get(key).toString();
-    var v2 = d2.get(key).toString();
+    var v2 = d2.hasKey(key) ? d2.get(key).toString() : "NULL";
     if (!v1.equals(v2)) { 
       Sys.println("Mismatch for '" + key + "'" + " '" + v1 + "' != '" + v2 + "'");
       return false; 

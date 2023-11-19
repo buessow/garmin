@@ -72,6 +72,7 @@ class GlucoseServiceDelegateTest {
     Properties.setValue("HeartRateLastSec", 1000L);
     Properties.setValue("HeartRateAvg", 112);
     Properties.setValue("AAPSKey", "");
+    Properties.setValue("AppVersion", "3");
 
     var server = new Shared.GmwServer();
     server.wait = true;
@@ -85,7 +86,7 @@ class GlucoseServiceDelegateTest {
     Assert.equal("http://127.0.0.1:28891/get", comm.url);
     Assert.equal(
         { "hrEnd" => 1000, "hr" => 112, "hrStart" => 880, "device" => "Test23", "from" => 990, 
-          "wait" => 15, "manufacturer" => "garmin", "test" => false, "key" => ""}, 
+          "wait" => 15, "manufacturer" => "garmin", "key" => "", "version" => "3"}, 
         comm.parameters);
     Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
     Assert.equal(200, recv.result["httpCode"]);
@@ -104,6 +105,7 @@ class GlucoseServiceDelegateTest {
     Application.getApp().clearProperties();
     Properties.setValue("Device", "Test23");
     Properties.setValue("AAPSKey", "k1");
+    Properties.setValue("AppVersion", "3");
     var server = new Shared.GmwServer();
     var comm = new FakeCommunication([400]);
     var gsd = new Shared.GlucoseServiceDelegate(server, 10);
@@ -114,7 +116,7 @@ class GlucoseServiceDelegateTest {
 
     Assert.equal("http://127.0.0.1:28891/get", comm.url);
     Assert.equal(
-        {"device" => "Test23", "test" => false, "manufacturer" => "garmin", "from" => 990, "key" => "k1"}, 
+        {"device" => "Test23", "manufacturer" => "garmin", "from" => 990, "key" => "k1", "version" => "3"}, 
         comm.parameters);
     Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
     Assert.equal(400, recv.result["httpCode"]);
@@ -132,6 +134,7 @@ class GlucoseServiceDelegateTest {
     Application.getApp().clearProperties();
     Properties.setValue("Device", "Test23");
     Properties.setValue("AAPSKey", "k2");
+    Properties.setValue("AppVersion", "3");
 
     var server = new Shared.GmwServer();
     var comm = new FakeCommunication([{}]);
@@ -143,7 +146,7 @@ class GlucoseServiceDelegateTest {
 
     Assert.equal("http://127.0.0.1:28891/carbs", comm.url);
     Assert.equal(
-        { "carbs" => 25, "device" => "Test23", "test" => false, "manufacturer" => "garmin", "key" => "k2"}, 
+        { "carbs" => 25, "device" => "Test23", "manufacturer" => "garmin", "key" => "k2", "version" => "3"}, 
         comm.parameters);
     Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
     Assert.equal(200, recv.result["httpCode"]);
@@ -160,6 +163,7 @@ class GlucoseServiceDelegateTest {
     Application.getApp().clearProperties();
     Properties.setValue("Device", "Test23");
     Properties.setValue("AAPSKey", "k2");
+    Properties.setValue("AppVersion", "3");
 
     var server = new Shared.GmwServer();
     var comm = new FakeCommunication([{}]);
@@ -171,7 +175,7 @@ class GlucoseServiceDelegateTest {
 
     Assert.equal("http://127.0.0.1:28891/connect", comm.url);
     Assert.equal(
-        { "device" => "Test23", "disconnectMinutes" => 30, "manufacturer" => "garmin", "test" => false, "key" => "k2"}, 
+        { "device" => "Test23", "disconnectMinutes" => 30, "manufacturer" => "garmin", "key" => "k2", "version" => "3"}, 
         comm.parameters);
     Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
     Assert.equal(200, recv.result["httpCode"]);
