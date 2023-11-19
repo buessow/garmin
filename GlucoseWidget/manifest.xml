@@ -7,7 +7,7 @@
         id="928fe19a4d3a4259b50cb6f9ddaf0f4a" 
         minSdkVersion="3.3.0" 
         launcherIcon="@Drawables.LauncherIcon" 
-        name="@Strings.AppName" type="widget" version="1.0.3.pre">
+        name="@Strings.AppName" type="widget" version="1.0.4.pre">
         <iq:products>
             <iq:product id="edge1030"/>
             <iq:product id="edge1030plus"/>
