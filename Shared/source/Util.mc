@@ -33,12 +33,16 @@ module Util {
   }
 
   function stringEndsWith(s as String?, suffix as String?) as Boolean {
-    return s != null && (
-      suffix == null || suffix.length() == 0 ||
-      s.substring(s.length() - suffix.length(), s.length()).equals(suffix));
+    if (s == null) { return false; }
+    if (suffix == null || suffix.length == 0) { return true; }
+    return (s.substring(s.length() - suffix.length(), s.length()) as String).equals(suffix);
   }
 
-  function ifNull(a, b) {
+  function ifNull(a as Object?, b as Object) as Object {
+    return a == null ? b : a;
+  }
+
+  function ifNullNumber(a as Number?, b as Number) as Number {
     return a == null ? b : a;
   }
 
@@ -46,8 +50,7 @@ module Util {
     var s = "";
     var theSep = "";
     for (var i = 0; i < array.size(); i++) {
-      var v = array[i] instanceof Lang.Char ? array[i].toNumber() : array[i];
-      s = s + theSep + v;
+      s = s + theSep + array[i];
       theSep = sep;
     }
     return s;
@@ -62,7 +65,7 @@ module Util {
       return "NULL";
     }
     var info = Time.Gregorian.info(m, Time.FORMAT_SHORT);
-    return info.year.format("%04d") + "-" + info.month.format("%02d") + "-" +
+    return info.year.format("%04d") + "-" + (info.month as Number).format("%02d") + "-" +
            info.day.format("%02d") + "T" +
            info.hour.format("%02d") + ":" + info.min.format("%02d") + ":" +
            info.sec.format("%02d");

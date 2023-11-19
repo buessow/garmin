@@ -22,7 +22,7 @@ class Time extends Ui.Drawable {
   
   function initialize(params as Dictionary) {
     Drawable.initialize(params);
-    addMinuteY = Util.ifNull(params.get(:addMinuteY), 0);
+    addMinuteY = Util.ifNull(params.get(:addMinuteY), 0) as Number;
 
     var device = PartNumbers.map[System.getDeviceSettings().partNumber];
     var overrides = Application.loadResource(Rez.JsonData.timeOverrides) as Dictionary<String, Object>;
@@ -31,10 +31,10 @@ class Time extends Ui.Drawable {
       var override = deviceOverrides[i] as Dictionary<String, Array<String>>;
       if (override["devices"].indexOf(device) != -1) {
         Log.i(TAG, "override " + device + " " + override);
-        addMinuteY += Util.ifNull(override["addMinuteY"], 0);
+        addMinuteY += Util.ifNull(override["addMinuteY"], 0) as Number;
         setLocation(
-            Util.ifNull(override["locX"], locX),
-            Util.ifNull(override["locY"], locY));
+            Util.ifNullNumber(override["locX"], locX),
+            Util.ifNullNumber(override["locY"], locY));
       }
     }
     hourFont = params.get(:hourFont) as Gfx.FontDefinition;

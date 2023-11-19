@@ -42,7 +42,7 @@ class Data {
   }
 
   private function restoreValues() {
-    var glucoseBufferStr = Util.ifNull(Properties.getValue("GlucoseValues"), "");
+    var glucoseBufferStr = Util.ifNull(Properties.getValue("GlucoseValues"), "") as String;
     if (glucoseBufferStr.length() > 0) {
       glucoseBuffer.fromHexString(glucoseBufferStr);
       var dateSec = glucoseBuffer.getDateSec(glucoseBuffer.size()-1);
@@ -232,9 +232,9 @@ class Data {
     var hex = glucoseBuffer.toHexString();
     var last = glucoseBuffer.getLastValue();
     Properties.setValue("GlucoseValues", hex);
-    var glucoseFrequencySec = Properties.getValue("GlucoseValueFrequencyOverrideSec");
+    var glucoseFrequencySec = Properties.getValue("GlucoseValueFrequencyOverrideSec") as Number;
     if (glucoseFrequencySec == 0) {
-      glucoseFrequencySec = 60 * Util.ifNull(glucoseBuffer.medianDeltaMinute(), 0);
+      glucoseFrequencySec = 60 * (Util.ifNull(glucoseBuffer.medianDeltaMinute(), 0) as Number);
     }
     Log.i(TAG, 
       "updateGlucose " + glucoseBuffer.size() + " values, " +

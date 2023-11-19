@@ -27,12 +27,12 @@ module BackgroundScheduler {
   // The phone doesn't get new readings immediately, so add some
   // slack to avoid that we try to get it just before it's available.  
   function extraReadingDelay() as Number {
-    return Util.ifNull(Properties.getValue("GlucoseValueWaitSec"), 5);
+    return Util.ifNull(Properties.getValue("GlucoseValueWaitSec"), 5) as Number;
   }
 
   // Frequency at which the CGMprovides glucose readings. The default is 5 min.
   function readingFrequency() as Number {
-    return Util.ifNull(Properties.getValue("GlucoseValueFrequencySec"), 300);
+    return Util.ifNull(Properties.getValue("GlucoseValueFrequencySec"), 300) as Number;
   }
 
   // Computes when we expect the next value, usually 5 minutes plus a bit

@@ -2,6 +2,7 @@
 DEVELOPER_KEY='/Users/robertbuessow/StudioProjects/developer_key'
 device ?= fenix7
 opt ?= 2
+MONKEYC_FLAGS=--private-key $(DEVELOPER_KEY) --typecheck 2
 
 .NOPARALELL:
 
@@ -13,11 +14,11 @@ shared_dep = Shared/source/*.mc Shared/resource/*/*
 
 bin-$(device)/%.prg: %/monkey.jungle %/manifest.xml %/source/*.mc %/resources/_version.xml %/resources*/* $(shared_dep)
 	[ -d "$(@D)" ] || mkdir "$(@D)"
-	monkeyc --jungle $< --output $@ --private-key $(DEVELOPER_KEY) --warn --optimization $(opt) --device $(device) $(test_flag)
+	monkeyc --jungle $< --output $@ $(MONKEYC_FLAGS) --optimization $(opt) --device $(device) $(test_flag)
 
 bin/%.iq: %/monkey.jungle %/manifest.xml %/source/*.mc %/resources/_version.xml %/resources*/* $(shared_dep)
 	[ -d "$(@D)" ] || mkdir "$(@D)"
-	monkeyc --jungle $< --output $@ --private-key $(DEVELOPER_KEY) --warn --optimization 3pz --package-app --release
+	monkeyc --jungle $< --output $@ $(MONKEYC_FLAGS) --optimization 3pz --package-app --release
 
 GlucoseDataField: bin-$(device)/GlucoseDataField.prg
 GlucoseWidget: bin-$(device)/GlucoseWidget.prg
@@ -41,4 +42,5 @@ test: bin-$(device)/Test.prg
 .PHONY: clean
 clean:
 	rm -rf bin-*
+	rm -rf bin
 	rm */resources/_version.xml

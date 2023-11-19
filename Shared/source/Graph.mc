@@ -18,45 +18,45 @@ class Graph extends Ui.Drawable {
   private const MAX_HEART_RATE = 160;
   private const MINOR_X_AXIS_SEC = 30 * 60;
 
-  private var glucoseBarWidthSec = 5 * 60;
-  private var glucoseBarPadding = 2;
+  private var glucoseBarWidthSec as Number = 5 * 60;
+  private var glucoseBarPadding as Number = 2;
   private var initialXOffset as Number;
   private var initialWidth as Number;
-  private var glucoseBarWidth as Number?;
-  private var firstValueIdx = 0;
-  private var xOffset = 3;
-  private var yOffset = 120;
-  var height = 86;
+  private var glucoseBarWidth as Number = 0;
+  private var firstValueIdx as Number = 0;
+  private var xOffset as Number = 3;
+  private var yOffset as Number = 120;
+  var height as Number = 86;
   private var glucoseBuffer as Shared.DateValues = new Shared.DateValues(null, 2);
   private var maxGlucose as Number?;
-  private var circular;
+  private var circular as Boolean;
   var isMmolL as Boolean?;
-  private var bgColor;
-  private var hrColor;
-  private var axisColor;
+  private var bgColor as Number = Gfx.COLOR_BLACK;
+  private var hrColor as Number = Gfx.COLOR_WHITE;
+  private var axisColor as Number = Gfx.COLOR_LT_GRAY;
 
-  function initialize(params) {
+  function initialize(params as  { :x as Number, :identifier as Object, :locX as Numeric, :locY as Numeric, :width as Numeric, :height as Numeric, :visible as Boolean }) {
     Drawable.initialize(params);
     me.circular = Sys.getDeviceSettings().screenShape == Sys.SCREEN_SHAPE_ROUND;
-    me.initialXOffset = params.get(:x).toNumber();
-    me.yOffset = params.get(:y).toNumber();
-    me.initialWidth = params.get(:width).toNumber();
+    me.initialXOffset = params.get(:x) as Number;
+    me.yOffset = params.get(:y) as Number;
+    me.initialWidth = params.get(:width) as Number;
     me.width = initialWidth;
-    me.height = params.get(:height).toNumber();
+    me.height = params.get(:height) as Number;
     setAppearanceLight();
   }
 
-  function valueCount() {
+  function valueCount() as Number {
     return TIME_RANGE_SEC / glucoseBarWidthSec; 
   }
 
-  function setAppearanceLight() {
+  function setAppearanceLight() as Void {
     bgColor = Gfx.COLOR_WHITE;
     axisColor = Gfx.COLOR_LT_GRAY;
     hrColor = Gfx.COLOR_DK_GRAY;
   }
 
-  function setAppearanceDark() {
+  function setAppearanceDark() as Void {
     bgColor = Gfx.COLOR_BLACK;
     axisColor = Gfx.COLOR_DK_GRAY;
     hrColor = Gfx.COLOR_LT_GRAY;
@@ -76,14 +76,14 @@ class Graph extends Ui.Drawable {
   private function computeMaxGlucose() as Void {
     maxGlucose = 180;
     for (var i = firstValueIdx; i < glucoseBuffer.size(); i++) {
-      maxGlucose = Util.max(maxGlucose, glucoseBuffer.getValue(i));
+      maxGlucose = Util.max(maxGlucose as Number, glucoseBuffer.getValue(i) as Number) as Number;
     }
   }
 
-  private function computeOffsetAndWidth() {
+  private function computeOffsetAndWidth() as Void {
     var rightOffset = 0;
     if (firstValueIdx < glucoseBuffer.size()) {
-      rightOffset = getBorderOffset(glucoseBuffer.getLastValue());
+      rightOffset = getBorderOffset(glucoseBuffer.getLastValue() as Number);
     }
     
     var w = initialWidth - rightOffset;
@@ -109,7 +109,7 @@ class Graph extends Ui.Drawable {
   }
 
   function setReadings(glucoseBuffer as Shared.DateValues) as Void {
-    glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec");
+    glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec") as Number;
     glucoseBarPadding = glucoseBarWidthSec < 300 ? 0 : 2;
     me.glucoseBuffer = glucoseBuffer;
 
@@ -119,12 +119,12 @@ class Graph extends Ui.Drawable {
     computeOffsetAndWidth();
   }
 
-  private function getBorderOffset(value) {
+  private function getBorderOffset(value as Number) as Number {
     if (!circular) { return 0; }
     var y = Util.min(height, getYForGlucose(value));
     var r = initialWidth / 2;
     var o = r - Math.sqrt(r*r - y*y);  // Pythagoras' theorem
-    return Math.ceil(o);
+    return Math.ceil(o).toNumber();
   }
 
   private function getX(startSec as Number, dateSec as Number) as Number {
@@ -133,7 +133,7 @@ class Graph extends Ui.Drawable {
   }
 
   private function getYForGlucose(glucose as Number) as Number {
-    return height * (maxGlucose - glucose) / (maxGlucose - 40);
+    return height * ((maxGlucose as Number) - glucose) / ((maxGlucose as Number) - 40);
   }
 
   private function getYForHR(hr as Number) as Number {
@@ -153,7 +153,7 @@ class Graph extends Ui.Drawable {
     }
   }
 
-  private function drawValue(dc, startSec, i) {
+  private function drawValue(dc as Gfx.Dc, startSec as Number, i as Number) as Void {
     var x = getX(startSec, glucoseBuffer.getDateSec(i));
     var y = getYForGlucose(glucoseBuffer.getValue(i));
     var justification;
@@ -179,7 +179,7 @@ class Graph extends Ui.Drawable {
         justification);
   }
 
-  private function drawGlucose(dc, startSec) {
+  private function drawGlucose(dc as Gfx.Dc, startSec as Number) as Void {
     if (glucoseBuffer == null) {
       return;
     }
@@ -195,7 +195,7 @@ class Graph extends Ui.Drawable {
     }
   }
 
-  private function drawTimeAxis(dc, startSec) {
+  private function drawTimeAxis(dc as Gfx.Dc, startSec as Number) as Void {
     dc.setColor(axisColor, Gfx.COLOR_TRANSPARENT);
     dc.setPenWidth(2);
     dc.drawLine(0, yOffset, initialWidth, yOffset);
@@ -215,7 +215,7 @@ class Graph extends Ui.Drawable {
     }
   }
 
-  private function drawHeartRate(dc, startSec, nowSec) {
+  private function drawHeartRate(dc as Gfx.Dc, startSec as Number, nowSec as Number) as Void {
     if (!(Toybox has :SensorHistory)) {
       return;
     }
@@ -223,28 +223,31 @@ class Graph extends Ui.Drawable {
         :period => new Time.Duration(TIME_RANGE_SEC),
         :order => SensorHistory.ORDER_OLDEST_FIRST });
     var val;
+    var hr;
     do {
       val = it.next();
       if (val == null) {
         Log.i(TAG, "no heart rate values");
         return;
       }
-    } while (val.data == null );
+      hr = val.data;
+    } while (hr == null);
     var prevX = getX(startSec, val.when.value());
-    var prevY = getYForHR(val.data);
+    var prevY = getYForHR(hr.toNumber());
     dc.setColor(hrColor, bgColor);
     dc.setPenWidth(2);
     var count = 0;
     var sum = 0;
     var minute = val.when.value() / 60;
-    var minuteSum = val.data;
+    var minuteSum = hr.toNumber();
     var minuteCount = 1;
     for (val = it.next(); val != null; val = it.next()) {
-      if (val.data == null) {
+      hr = val.data;
+      if (hr == null) {
         continue;
       }
       minuteCount++;
-      minuteSum += val.data;
+      minuteSum += hr.toNumber();
       if (val.when.value() / 60 == minute) {
         continue;
       }
@@ -254,9 +257,6 @@ class Graph extends Ui.Drawable {
       }
       var x = getX(startSec, 60  * minute);
       var y = getYForHR(minuteSum / minuteCount);
-//      Log.i(TAG, "draw HR " + val.data
-//               + " prevX=" + prevX + " prevY=" + prevY
-//               + " x=" + x + " y=" + y);
       dc.drawLine(xOffset + prevX, yOffset + prevY, xOffset + x, yOffset + y);
       prevX = x;
       prevY = y;
@@ -271,7 +271,7 @@ class Graph extends Ui.Drawable {
     }
   }
 
-  function drawMinMax(dc, startSec) {
+  function drawMinMax(dc as Gfx.Dc, startSec as Number) as Void {
     if (glucoseBuffer == null || glucoseBuffer.size() <= firstValueIdx) {
       return;
     }
@@ -289,8 +289,8 @@ class Graph extends Ui.Drawable {
     drawValue(dc, startSec, maxIdx);
   }
 
-  function draw(dc) {
-    glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec");
+  function draw(dc as Gfx.Dc) as Void {
+    glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec") as Number;
     glucoseBarPadding = glucoseBarWidthSec < 300 ? 0 : 2;
     if (glucoseBuffer.size() == 0) {
       return;
