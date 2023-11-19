@@ -1,6 +1,7 @@
 using Shared;
 using Shared.Log;
 using Toybox.Application;
+using Toybox.Application.Properties;
 using Toybox.System as Sys;
 
 (:glance)
@@ -54,10 +55,8 @@ class GlucoseWidgetApp extends Application.AppBase {
   }
 
   function getInitialView() {
-    if (Application.getApp().getProperty("Device") == null) {
-      Application.getApp().setProperty(
-          "Device", System.getDeviceSettings().partNumber + "_Widget");
-    }
+    Properties.setValue("Device", System.getDeviceSettings().partNumber + "_Widget");
+    Properties.setValue("AppVersion", "wi_" + Application.loadResource(Rez.Strings.Version));
 
     try {
       data = new Shared.Data();
@@ -68,15 +67,15 @@ class GlucoseWidgetApp extends Application.AppBase {
       var settings = Sys.getDeviceSettings();
       Log.i(TAG, "getInitialView widget");
       if (!(settings has :isGlanceModeEnabled && settings.isGlanceModeEnabled)) {
-	view = new GlucoseWidgetView(data);
-	messenger.view = view;
-	messenger.onCarbsStart = view.method(:postCarbsStart);
-	messenger.onCarbsDone = view.method(:postCarbsDone);
-	return [ view, new InputHandler(messenger) ];
+        view = new GlucoseWidgetView(data);
+        messenger.view = view;
+        messenger.onCarbsStart = view.method(:postCarbsStart);
+        messenger.onCarbsDone = view.method(:postCarbsDone);
+        return [ view, new InputHandler(messenger) ];
       } else {
-	Log.i(TAG, "getInitialView glance");
-	inputHandler = new InputHandler(messenger);
-	return inputHandler.getViewAndDelegate();
+        Log.i(TAG, "getInitialView glance");
+        inputHandler = new InputHandler(messenger);
+        return inputHandler.getViewAndDelegate();
       }
     } catch (e) {
       Log.e(TAG, e.getErrorMessage());

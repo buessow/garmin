@@ -1,11 +1,13 @@
+<?xml version="1.0"?>
 <iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
-    <iq:application entry="GlucoseWidgetApp" 
-                    id="928fe19a4d3a4259b50cb6f9ddaf0f4a" 
-		    minSdkVersion="3.3.0" 
-		    launcherIcon="@Drawables.LauncherIcon" 
-		    name="@Strings.AppName" 
-		    type="widget" 
-		    version="1.0.0">
+    <!-- pre id="928fe19a4d3a4259b50cb6f9ddaf0f4a" -->
+    <!-- prod id="4bddcc1740084a1fab83a3b2e2fcf55b"-->
+    <iq:application 
+        entry="GlucoseWidgetApp" 
+        id="928fe19a4d3a4259b50cb6f9ddaf0f4a" 
+        minSdkVersion="3.3.0" 
+        launcherIcon="@Drawables.LauncherIcon" 
+        name="@Strings.AppName" type="widget" version="1.0.2.pre">
         <iq:products>
             <iq:product id="edge1030"/>
             <iq:product id="edge1030plus"/>
@@ -20,5 +22,6 @@
         <iq:languages>
             <iq:language>eng</iq:language>
         </iq:languages>
+        <iq:barrels/>
     </iq:application>
 </iq:manifest>

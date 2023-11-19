@@ -1,10 +1,10 @@
 <resources>
   <layout id="MainLayout">
       <drawable id="DateValueGraph" class="Shared.Graph">
-	<param name="x">3</param>
-	<param name="y">140</param>
-	<param name="width">254</param>
-	<param name="height">96</param>
+		<param name="x">3</param>
+		<param name="y">140</param>
+		<param name="width">254</param>
+		<param name="height">96</param>
       </drawable>      
 
       <label x="center" y="5" 
@@ -29,11 +29,7 @@
 	     justification="Graphics.TEXT_JUSTIFY_LEFT" />
   </layout>
   <drawable-list id="Connected" x="220" y="70" width="20" height="20">
-      <shape type="rectangle"
-	     x="left"
-	     y="top"
-	     width="100%"
-	     height="100%" />
+      <shape type="rectangle" x="left" y="top" width="100%" height="100%" color="Gfx.COLOR_YELLOW" />
   </drawable-list>
   <layout id="GlanceLayout" scope="glance">
       <label x="center" y="5"

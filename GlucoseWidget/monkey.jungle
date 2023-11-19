@@ -2,4 +2,4 @@ project.manifest = manifest.xml
 base.sourcePath = source;../Shared/source
 base.excludeAnnotations = showConnected;fitContributor
 base.resourcePath = resources;../Shared/resources
-base.excludeAnnotations = fitContributor;noShowConnected
+base.excludeAnnotations = fitContributor;showConnected

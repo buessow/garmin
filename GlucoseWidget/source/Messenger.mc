@@ -1,6 +1,7 @@
 using Shared.Log;
 using Shared.Util;
 using Toybox.Lang;
+using Toybox.Communications as Comm;
 using Toybox.Time as Time;
 using Toybox.Timer as Timer;
 using Toybox.WatchUi as Ui;
@@ -24,6 +25,7 @@ class Messenger {
     Log.i(TAG, "init");
     me.data = data;
     me.onGlucose = onGlucose;
+    Comm.registerForPhoneAppMessages(method(:onPhoneAppMessage));
     getGlucose();
     new Timer.Timer().start(method(:onTime), 1000, true);
   }
@@ -41,7 +43,7 @@ class Messenger {
 
   function getGlucoseResult(result) {
     try {
-      Log.i(TAG, "onResult");
+      Log.i(TAG, "onResult " + result["channel"] + " " + result);
       server.onBackgroundData(result, data);
       if (data.hasValue()) {
         onGlucose.invoke();
@@ -50,6 +52,10 @@ class Messenger {
     } catch (e) {
       e.printStackTrace();
     }
+  }
+
+  function onPhoneAppMessage(msg as Comm.Message) as Void {
+    delegate.onPhoneAppMessage2(msg, method(:getGlucoseResult));
   }
 
   function postCarbs(carbs) {

@@ -1,3 +1,5 @@
+import Toybox.Lang;
+
 using Shared;
 using Shared.Log;
 using Shared.Util;
@@ -20,9 +22,13 @@ class GlucoseWidgetView extends Ui.View {
     return findDrawableById(id) as Ui.Text;
   }
 
+  private var drawables as Array<Ui.Drawable> = [];
+
   function onLayout(dc) {
-    setLayout(Rez.Layouts.MainLayout(dc));
+    drawables = Rez.Layouts.MainLayout(dc);
+    setLayout(drawables);
     graph = findDrawableById("DateValueGraph");
+    findTextById("PostCarbsResultLabel").setText(Rez.Strings.Version);
   }
 
   function onGlucose() {
@@ -37,6 +43,15 @@ class GlucoseWidgetView extends Ui.View {
     }
   }
 
+  private function resetButtons() {
+    for (var i = 0; i < drawables.size(); i++) {
+      var d = drawables[i];
+      if (d instanceof Ui.Button) {
+        d.setState(:stateDefault);
+      }
+    }
+  }
+
   function connecting() {
     Log.i(TAG, "connecting");
     data.connected = null;
@@ -45,6 +60,7 @@ class GlucoseWidgetView extends Ui.View {
 
   function setCarbs(carbs) {
     findTextById("Carbs").setText(carbs.toString());
+    resetButtons();
     Ui.requestUpdate();
   }
 
@@ -78,9 +94,10 @@ class GlucoseWidgetView extends Ui.View {
     connected = data.connected;
     var c = new Rez.Drawables.Connected();
     dc.setColor(
-	connected == null ? Gfx.COLOR_YELLOW :
-	connected ? Gfx.COLOR_GREEN : Gfx.COLOR_RED,
-	Gfx.COLOR_TRANSPARENT);
+    connected == null 
+              ? Gfx.COLOR_YELLOW 
+              : connected ? Gfx.COLOR_GREEN : Gfx.COLOR_RED,
+    Gfx.COLOR_TRANSPARENT);
     c.draw(dc);
   }
 

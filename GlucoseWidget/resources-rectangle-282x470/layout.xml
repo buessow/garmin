@@ -31,26 +31,30 @@
            font="Graphics.FONT_SYSTEM_SMALL" 
            justification="Graphics.TEXT_JUSTIFY_RIGHT" />
                               
-     <button x="190" y="220" width="50" height="50" behavior="onDone">
-        <state id="stateDefault" bitmap="@Drawables.CarbDone"/>
-	<state id="stateSelected" bitmap="@Drawables.CarbSave"/>
+    <button x="190" y="220" width="80" height="40" behavior="onDone">
+      <state id="stateDefault" bitmap="@Drawables.CarbDone"/>
+      <state id="stateSelected" bitmap="@Drawables.CarbSave"/>
     </button>  
- 
-    <button x="10" y="150" width="50" height="180" behavior="onPlus5">
-        <state id="stateDefault" bitmap="@Drawables.Carb5g"/>
+
+    <button x="10" y="150" width="80" height="40" behavior="onPlus5">
+      <state id="stateDefault" bitmap="@Drawables.Carb5g"/>
+      <state id="stateSelected" color="Gfx.COLOR_RED"/>
     </button>
-    <button x="100" y="150" width="50" height="20" behavior="onPlus10">
-        <state id="stateDefault" bitmap="@Drawables.Carb10g"/>
+    <button x="100" y="150" width="80" height="40" behavior="onPlus10">
+      <state id="stateDefault" bitmap="@Drawables.Carb10g"/>
+      <state id="stateSelected" color="Gfx.COLOR_RED"/>
     </button>
-    <button x="190" y="150" width="50" height="50" behavior="onPlus20">
-        <state id="stateDefault" bitmap="@Drawables.Carb20g"/>
+    <button x="190" y="150" width="80" height="40" behavior="onPlus20">
+      <state id="stateDefault" bitmap="@Drawables.Carb20g"/>
+      <state id="stateSelected" color="Gfx.COLOR_RED"/>
     </button>  
     <label id="Carbs" x="90" y="220" 
-           font="Gfx.FONT_LARGE" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT"
-           text="0" />
-    <button x="100" y="220" width="50" height="50" behavior="onReset">
-        <state id="stateDefault" bitmap="@Drawables.CarbReset"/>
+      font="Gfx.FONT_LARGE" 
+      justification="Graphics.TEXT_JUSTIFY_RIGHT"
+      text="0" />
+    <button x="100" y="220" width="80" height="40" behavior="onReset">
+      <state id="stateDefault" bitmap="@Drawables.CarbReset"/>
+      <state id="stateSelected" bitmap="@Drawables.CarbReset"/>
     </button>  
 
     <label id="PostCarbsResultLabel" x="10" y="270"

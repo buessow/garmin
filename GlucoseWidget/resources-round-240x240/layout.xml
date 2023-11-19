@@ -26,4 +26,5 @@
            text="-" 
            font="Graphics.FONT_XTINY" 
            justification="Graphics.TEXT_JUSTIFY_LEFT" />
+    <label id="GlucoseAge" visible="false" />
 </layout>

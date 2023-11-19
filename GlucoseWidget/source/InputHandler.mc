@@ -18,6 +18,11 @@ class InputHandler extends Ui.BehaviorDelegate {
     me.timer = new Timer.Timer();
   }
 
+  function onSelect() {
+    Log.i(TAG, "onSelect");
+    return Ui.BehaviorDelegate.onSelect();
+  }
+
   function onConnect() {
     Log.i(TAG, "onConnect " + messenger.data.connected);
     if (connectMenutItem != null) {
@@ -29,6 +34,7 @@ class InputHandler extends Ui.BehaviorDelegate {
   function onPlus5() {
     Log.i(TAG, "+5g");
     addCarbs(5);
+    return true;
   }
 
   function onPlus10() {
@@ -39,11 +45,13 @@ class InputHandler extends Ui.BehaviorDelegate {
   function onPlus20() {
     Log.i(TAG, "+20g");
     addCarbs(20);
+    return true;
   }
 
   function onReset() {
     Log.i(TAG, "reset");
     addCarbs(-carbs);
+    return true;
   }
 
   function onDone() {
@@ -60,6 +68,7 @@ class InputHandler extends Ui.BehaviorDelegate {
     if (postCarbs > 0) {
       messenger.postCarbs(postCarbs);
     }
+    return true;
   }
 
   hidden function addCarbs(amount) {
@@ -75,19 +84,19 @@ class InputHandler extends Ui.BehaviorDelegate {
     var menu = new Ui.Menu2({:title => "Action"});
     if (messenger.data.connected != null) {
       connectMenutItem = new Ui.ToggleMenuItem(
-	  "connected", 
-	  "pump status", 
-	  :connect, 
-	  messenger.data.connected, 
-	  {});
+          "connected", 
+          "pump status", 
+          :connect, 
+          messenger.data.connected, 
+          {});
       menu.addItem(connectMenutItem);
     }
     for (var i = 5; i <= 60; i += 5) {
       menu.addItem(new Ui.MenuItem(
-	  "eat " + i.toString() + "g", 
-	  "carbohydrates", 
-	   i, 
-	  {}));
+          "eat " + i.toString() + "g", 
+          "carbohydrates", 
+          i, 
+          {}));
     }
     return menu;
   }
@@ -116,7 +125,7 @@ class InputHandler extends Ui.BehaviorDelegate {
         messenger.connectPump((item as Ui.ToggleMenuItem).isEnabled() ? 0 : 30);
       } else if (item.getId() instanceof Lang.Number) {
         messenger.postCarbs(item.getId());
-	Ui.popView(Ui.SLIDE_IMMEDIATE);
+      	Ui.popView(Ui.SLIDE_IMMEDIATE);
       }
     }
 
@@ -139,8 +148,8 @@ class InputHandler extends Ui.BehaviorDelegate {
     } else if (ev.getKey() == Ui.KEY_UP) {
       Log.i(TAG, "connect " + Util.ifNull(messenger.data.connected, "NULL"));
       if (messenger.data.connected != null) {
-	var delay = messenger.data.connected ? 30 :0;
-	messenger.connectPump(delay);
+        var delay = messenger.data.connected ? 30 :0;
+        messenger.connectPump(delay);
       }
     } else if (ev.getKey() == Ui.KEY_DOWN) {
       Ui.pushView(
