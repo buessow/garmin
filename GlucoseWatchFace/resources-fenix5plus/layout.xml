@@ -5,8 +5,8 @@
     }
   </jsonData>
   <layout id="WatchFace">
-  <drawable id="BackgroundDark" visible="false" />
-  <drawable id="BackgroundLight" visible="true" />
+  <drawable id="BackgroundDark" visible="true" />
+  <drawable id="BackgroundLight" visible="false" />
   <drawable id="DateValueGraph" class="Shared.Graph">
       <param name="x">3</param>
       <param name="y">132</param>

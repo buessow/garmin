@@ -38,11 +38,18 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
     Ui.requestUpdate();
   }
 
+  private function setVisible(id as String, visible as Boolean) as Void {
+    var drawable = View.findDrawableById(id);
+    if (drawable != null) {
+      drawable.setVisible(visible);
+    }
+  }
+
   function updateSettings() {
     Log.i(TAG, "update settings '" + Properties.getValue("Appearance") + "'");
     var light = Properties.getValue("Appearance") == 1;
-    View.findDrawableById("BackgroundDark").setVisible(!light);
-    View.findDrawableById("BackgroundLight").setVisible(light);
+    setVisible("BackgroundDark", !light);
+    setVisible("BackgroundLight", light);
     if (light) {
       graph.setAppearanceLight();
       fgColor = Gfx.COLOR_BLACK;
