@@ -15,5 +15,5 @@
   <property id="GlucoseValueFrequencySec" type="number">60</property>
   <property id="GlucoseValueFrequencyOverrideSec" type="number">0</property>
   <property id="GlucoseValueWaitSec" type="number">5</property>
-  <property id="AppVersion" type="string">@Strings.Version</property>
+  <property id="AppVersion" type="string"></property>
 </properties>
