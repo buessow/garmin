@@ -1,5 +1,6 @@
 project.manifest = manifest.xml
 base.sourcePath = source;../Shared/source
 base.excludeAnnotations = showConnected;fitContributor
+# fenix6.excludeAnnotations = $(base.excludeAnnotations);graph
 base.resourcePath = resources;../Shared/resources
-base.excludeAnnotations = fitContributor;showConnected
+base.excludeAnnotations = fitContributor;showConnected;pumpControl;exclude
