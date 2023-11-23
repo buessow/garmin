@@ -6,8 +6,8 @@ using Toybox.Time as Time;
 using Toybox.Time.Gregorian as Gregorian;
 
 module Shared {
-(:background, :glance)
 module Log {
+  (:background, :glance)
   function log(severity as String, tag as String, message as String) as Void {
     var timeInfo = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
     Sys.println(Lang.format(
@@ -22,14 +22,17 @@ module Log {
           tag, message ]));
   }
 
+  (:background, :glance)
   public function v(tag as String, message as String) as Void {
     log("V", tag, message);
   }
 
+  (:background, :glance)
   public function i(tag as String, message as String) as Void {
     log("I", tag, message);
   }
 
+  (:background, :glance)
   public function e(tag as String, message as String) as Void {
     log("E", tag, message);
   }

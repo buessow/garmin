@@ -5,11 +5,10 @@ using Toybox.FitContributor;
 using Toybox.WatchUi as Ui;
 
 module Shared {
-
-(:background)
 class BaseServer {
   private const TAG = "BaseServer";
 
+  (:background, :glance)
   function initialize() {
   }
 
@@ -63,7 +62,6 @@ class BaseServer {
       Log.i(TAG, "Got key '" + key + "'");
       Properties.setValue("AAPSKey", key);
     }
-    data.requestTimeSec = result["startTimeSec"];
     try {
       if (code == 200) {
         onData(result, data);

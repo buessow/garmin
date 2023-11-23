@@ -8,8 +8,8 @@ using Toybox.System as Sys;
 using Toybox.Time;
 using Toybox.WatchUi as Ui;
 
-(:graph)
 module Shared {
+(:graph)
 class Graph extends Ui.Drawable {
   private const TAG = "Graph";
   private const TIME_RANGE_SEC = 120 * 60;

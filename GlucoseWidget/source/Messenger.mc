@@ -6,7 +6,6 @@ using Toybox.Time as Time;
 using Toybox.Timer as Timer;
 using Toybox.WatchUi as Ui;
 
-(:glance)
 class Messenger {
   hidden static const TAG = "Messenger";
   hidden static const ALERT_INTERVAL_SEC = 60;
@@ -19,8 +18,9 @@ class Messenger {
   var onCarbsStart;
   var onCarbsDone;
   var onConnectDone;
-  private var delegate = new Shared.GlucoseServiceDelegate(server, 7200);
+  private var delegate = new Shared.GlucoseServiceDelegate(server, 900);
 
+  (:glance)
   function initialize(data, onGlucose) {
     Log.i(TAG, "init");
     me.data = data;

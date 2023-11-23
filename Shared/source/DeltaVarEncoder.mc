@@ -3,24 +3,27 @@ import Toybox.Lang;
 using Toybox.StringUtil as StringUtil;
 
 module Shared {
-(:glance)
 module DeltaVarEncoder {
 
+  (:glance)
   function zigzagEncode (i as Long) as Long {
     return (i >> 31) ^ (i << 1);
   }
 
+  (:glance)
   function zigzagDecode (i as Long) as Long {
     // emulate >>> 1
     var x = (i >> 1) & 0x7fffffff;
     return x ^ (-1 * (i & 1));
   }
 
+  (:glance)
   function get(data as ByteArray, pos as Number) {
     var wi = pos % data.size();
     return data[wi];
   }
 
+  (:glance)
   function readDelta(
       data as ByteArray, 
       posRef as Array<Number>) as Number or Null {
@@ -43,6 +46,7 @@ module DeltaVarEncoder {
     return zigzagDecode(value).toNumber();
   }
 
+  (:glance)
   function decodeBase64(entrySize as Number, dataBase64 as String) 
       as Array<Number> {
     var a = [] as Array<Number>;

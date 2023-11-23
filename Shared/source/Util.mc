@@ -7,7 +7,6 @@ module Shared {
 module Util {
   var testNowSec as Number? = null;
 
-  (:background)
   function nowSec() as Number {
     if (testNowSec == null) {
       return Time.now().value();
@@ -46,6 +45,7 @@ module Util {
     return a == null ? b : a;
   }
 
+  (:exclude)
   function join(sep as String, array as Array<String>) as String {
     var s = "";
     var theSep = "";

@@ -25,15 +25,19 @@ class GlucoseWidgetView extends Ui.View {
   private var drawables as Array<Ui.Drawable> = [];
 
   function onLayout(dc) {
-    drawables = Rez.Layouts.MainLayout(dc);
-    setLayout(drawables);
+    if (Rez.Layouts has :MainLayout) {
+      drawables = Rez.Layouts.MainLayout(dc);
+      setLayout(drawables);
+    }
     graph = findDrawableById("DateValueGraph");
     findTextById("PostCarbsResultLabel").setText(Rez.Strings.Version);
   }
 
   function onGlucose() {
     if (data.glucoseBuffer != null and graph != null) {
-      graph.setReadings(data.glucoseBuffer);
+      if (graph != null) {
+        graph.setReadings(data.glucoseBuffer);
+      }
       graph.isMmolL = data.glucoseUnit == Shared.Data.mmoll;
       findTextById("GlucoseLabel").setText(data.getGlucoseStr());
       findTextById("GlucoseDelta").setText(data.getGlucoseDeltaPerMinuteStr());

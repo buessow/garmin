@@ -1,12 +1,12 @@
 import Toybox.Lang;
 
 module Shared {
-(:glance)
 class DateValues {
   var data as Array<Number>;
   var start = 0;
   var count = 0;
 
+  (:glance)
   function initialize(
       values as Array<Number>?, 
       size as Number) {
@@ -39,21 +39,25 @@ class DateValues {
     return ((sec / 60.0) + 0.5).toNumber();
   }
 
+  (:glance)
   function size() as Number {
     return count / 2;
   }
 
+  (:glance)
   function clear() as Void {
     start = 0;
     count = 0;
   }
 
+  (:glance)
   function ensureSize(minSize as Number) as Void {
     if (minSize > data.size()) {
       resize(minSize);
     }
   }
 
+  (:glance)
   function resize(newSize as Number) as Void {
     if (newSize == data.size()) {
       return;
@@ -69,6 +73,7 @@ class DateValues {
     count = newCount;
   }
 
+  (:glance)
   private function add1(value) as Void {
     if (value == null) {
       throw new InvalidValueException("null");
@@ -82,6 +87,7 @@ class DateValues {
     }
   }
 
+  (:glance)
   private function get1(i) as Number {
     return data[(start + i) % data.size()];
     // if (i < size()) {
@@ -95,16 +101,19 @@ class DateValues {
     // }
   }
 
+  (:glance)
   function truncateTo(first) as Void {
     start = (start + 2 * first) % data.size();
     count -= 2 * first;
   }
 
+  (:glance)
   function add(dateValue) {
     add1(dateValue.dateSec);
     add1(dateValue.value);
   }
 
+  (:glance)
   function toHexString() as String {
     var s = "";
     for (var i = 0; i < count; i++) {
@@ -113,6 +122,7 @@ class DateValues {
     return s;
   }
 
+  (:glance)
   function fromHexString(s as String) as Void {
     start = 0;
     count = 0;
@@ -121,22 +131,27 @@ class DateValues {
     }
   }
 
+  (:glance)
   function get(i) as DateValue {
     return new DateValue(getDateSec(i), getValue(i));
   }
 
+  (:glance)
   function getDateSec(i) as Number {
     return get1(2 * i);
   }
 
+  (:glance)
   function getValue(i) as Number {
     return get1(2 * i + 1);
   }
 
+  (:glance)
   function getLastDateSec() as Number? {
     return size() == 0 ? null : getDateSec(size() - 1);
   }
 
+  (:glance)
   function getLastValue() as Number? {
     return size() == 0 ? null : getValue(size() - 1);
   }

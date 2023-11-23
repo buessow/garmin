@@ -4,7 +4,6 @@ using Toybox.Application;
 using Toybox.Application.Properties;
 using Toybox.System as Sys;
 
-(:glance)
 class GlucoseWidgetApp extends Application.AppBase {
   hidden const TAG = "GlucoseWidgetApp";
   var data;
