@@ -72,7 +72,7 @@ class LabelView extends Ui.DataField {
     var layoutSymbol = null;
     try {
       var layoutId = layouts[sizeStr]["layout"] as String?;
-      layoutSymbol = Util.ifNull(layoutSymbols[layoutId + "_" + device], layoutSymbols[layoutId]);
+      layoutSymbol = Util.ifNull(layoutSymbols[layoutId + "_" + device], layoutSymbols[layoutId]) as Symbol;
       var defined = Rez.Layouts has layoutSymbol ? "" : " undef";
       if (log) { Log.i(TAG, "onLayout " + sizeStr + " " + layoutId + " " + (layoutSymbol==null ? "??" : "ok") + defined); }
     } catch (e) {
@@ -111,7 +111,7 @@ class LabelView extends Ui.DataField {
     if (textView != null) {
       textView.setVisible(text != null);
       textView.setColor(color);
-      textView.setText(Util.ifNull(text, ""));
+      textView.setText(Util.ifNull(text, "") as String);
     }
   }
 
