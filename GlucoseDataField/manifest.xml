@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
     <!-- pre id="1107ca6c2d5644b998d4bcb3793f2b7c" -->
-    <!-- prod id="815c7328-c212-48c4-93ad-9ac4682fe6b3"-->
+    <!-- prod id="815c7328c21248c493ad9ac4682fe6b3"-->
     <iq:application 
         entry="GlucoseDataFieldApp" 
-        id="815c7328-c212-48c4-93ad-9ac4682fe6b3" 
+        id="1107ca6c2d5644b998d4bcb3793f2b7c" 
         launcherIcon="@Drawables.LauncherIcon" 
         minSdkVersion="3.3.1" 
         name="@Strings.AppName" 
         type="datafield" 
-        version="1.0.10">
+        version="1.0.11.pre">
         <iq:products>
             <iq:product id="descentmk2s"/>
             <iq:product id="fenix5plus"/>
