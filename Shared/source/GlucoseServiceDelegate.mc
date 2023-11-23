@@ -11,7 +11,6 @@ module Shared {
 class GlucoseServiceDelegate extends System.ServiceDelegate {
   private static const TAG = "GlucoseServiceDelegate";
   private var server as GmwServer;
-  private var startTime as Number?;
   private var methodName as String?;
   private var callback as (Method(result as Dictionary<String, Object>) as Void)?;
   var makeWebRequest = new Method(Comm, :makeWebRequest);
@@ -99,7 +98,6 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
       parameters as Dictionary<String, String>) as Void {
     me.methodName = methodName;
     me.callback = callback;
-    startTime = Util.nowSec();
     var url = server.url + methodName;
     putIfNotNull(parameters, "device", Properties.getValue("Device"));
     parameters["manufacturer"] = "garmin";
@@ -154,7 +152,6 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
       Log.i(TAG, "set error " + getErrorMessage(code));
       result["errorMessage"] = getErrorMessage(code);
     }
-    result["startTimeSec"] = startTime;
     
     if (callback != null) {
       callback.invoke(result);

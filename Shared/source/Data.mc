@@ -5,14 +5,12 @@ using Toybox.Application.Properties;
 using Toybox.Time;
 using Toybox.Time.Gregorian as Calendar;
 
-(:glance)
 module Shared {
 class Data {
   private static const TAG = "Data";
-  var glucoseBuffer as Shared.DateValues = new Shared.DateValues(null, 120);
+  var glucoseBuffer as Shared.DateValues = new Shared.DateValues(null, 13);
   var glucoseUnit as GlucoseUnit = mgdl;
   var errorMessage as String?;
-  var requestTimeSec as Number?;
   var remainingInsulin as Float?;
   var temporaryBasalRate as Float?;
   var profile as String?;
@@ -30,6 +28,7 @@ class Data {
      mmoll = 2,
    }
 
+  (:glance)
   function initialize() {
     try {
       restoreValues();

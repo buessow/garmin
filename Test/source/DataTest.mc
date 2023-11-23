@@ -118,7 +118,6 @@ class DataTest {
       d.glucoseBuffer.add(new Shared.DateValue(880, 133));
       d.glucoseBuffer.add(new Shared.DateValue(1000, 153));
       d.updateGlucose();
-      d.requestTimeSec = 1100;
 
       Assert.equal("+10.0", d.getGlucoseDeltaPerMinuteStr());
       return true;
@@ -138,7 +137,6 @@ class DataTest {
     d.glucoseBuffer.add(new Shared.DateValue(1000, 120));
     d.updateGlucose();
 
-    d.requestTimeSec = 1100;
     d.setGlucoseUnit(Shared.Data.mmoll);
 
     Assert.equal(true, d.hasValue());
