@@ -12,18 +12,18 @@ class DataFieldHeartRateCollector {
   private const TAG = "HeartRateCollector";
   private var startSec as Number;
   private var lastSec as Number;
-  private var avg as Float;
+  private var avg as Number;
 
   function initialize() {
     var now = Util.nowSec();
-    startSec = Util.ifNull(Properties.getValue("HeartRateStartSec"), 0);
+    startSec = Util.ifNullNumber(Properties.getValue("HeartRateStartSec"), 0);
     if (now - startSec > 300) {
       startSec = Util.nowSec();
       lastSec = startSec;
-      avg = 0.0;
+      avg = 0;
     } else {
-      lastSec = Util.ifNull(Properties.getValue("HeartRateLastSec"), 0);
-      avg = Util.ifNull(Properties.getValue("HeartRateAvg"), 0);
+      lastSec = Util.ifNullNumber(Properties.getValue("HeartRateLastSec"), 0);
+      avg = Util.ifNullNumber(Properties.getValue("HeartRateAvg"), 0);
       Log.i(TAG, "restored " + avg + " from " + (now - lastSec) + "s");
     }
   }
@@ -32,12 +32,13 @@ class DataFieldHeartRateCollector {
     var hr = info == null ? null : info.currentHeartRate;
     var nowSec = Util.nowSec();
     if (hr != null && hr > 0 && nowSec > startSec) {
-      record(nowSec, hr.toFloat());
+      record(nowSec, hr);
     }
   }
 
-  function record(dateSec as Number, hr as Float) as Void {
-    avg = ((lastSec - startSec) * avg + (dateSec - lastSec) * hr) / (dateSec - startSec);
+  private function record(dateSec as Number, hr as Number) as Void {
+    avg = Math.round((
+        (lastSec - startSec) * avg + (dateSec - lastSec) * hr) / (dateSec - startSec)).toNumber();
     lastSec = dateSec;
     if (dateSec - startSec > 60 &&
         BackgroundScheduler.nextScheduleTimeSec - dateSec < 5 && avg > 10 && avg < 300) {
@@ -48,7 +49,7 @@ class DataFieldHeartRateCollector {
   function reset() as Void {
     startSec = Util.nowSec();
     lastSec = startSec;
-    avg = 0.0;
+    avg = 0;
   }
 
   function store() as Void {
