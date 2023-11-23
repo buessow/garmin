@@ -3,12 +3,11 @@ using Shared.Util;
 using Toybox.Graphics as Gfx;
 using Toybox.WatchUi as Ui;
 
-(:glance)
 class GlucoseGlance extends Ui.GlanceView {
   hidden static const TAG = "GlucoseGlance";
   hidden var data;
 
-
+  (:glance)
   function initialize(data) {
     Ui.GlanceView.initialize();
     Log.i(TAG, "initialize");
@@ -39,33 +38,39 @@ class GlucoseGlance extends Ui.GlanceView {
     // dc.drawRectangle(0, 0, dc.getWidth()-1, dc.getHeight()-1);
     var fontHeight = dc.getFontHeight(Gfx.FONT_GLANCE);
     var xMargin = 12;
+    dc.drawText(
+        xMargin,
+        0, 
+        Gfx.FONT_GLANCE,
+        "GLUCOSE",
+        Gfx.TEXT_JUSTIFY_LEFT);
+    drawText2(
+        dc,
+        xMargin,
+        dc.getHeight() / 3, 
+        data.getGlucoseStr(),
+        Gfx.FONT_GLANCE_NUMBER,
+        data.getGlucoseUnitStr(),
+        Gfx.FONT_GLANCE);
+    var xValue = (100 * dc.getWidth()) / 160;
     var yMargin = 2;
     dc.drawText(
-	xMargin,
-	0, 
-	Gfx.FONT_GLANCE,
-	"GLUCOSE",
-	Gfx.TEXT_JUSTIFY_LEFT);
-    drawText2(
-	dc,
-	xMargin,
-	fontHeight,
-	data.getGlucoseStr(),
-	Gfx.FONT_GLANCE_NUMBER,
-	data.getGlucoseUnitStr(),
-	Gfx.FONT_GLANCE);
-    var xValue = 110;
+        xValue, 
+        yMargin, 
+        Gfx.FONT_GLANCE, 
+        data.getGlucoseAgeStr(),
+        Gfx.TEXT_JUSTIFY_LEFT);
+      dc.drawText(
+        xValue,
+        dc.getHeight() / 2 - fontHeight / 2,
+        Gfx.FONT_GLANCE, 
+        data.getGlucoseDeltaPerMinuteStr(),
+        Gfx.TEXT_JUSTIFY_LEFT);
     dc.drawText(
-	xValue, 
-	dc.getHeight() - 2 * fontHeight - yMargin, 
-	Gfx.FONT_GLANCE, 
-        data.getGlucoseDeltaPerMinute() != null ? data.getGlucoseDeltaPerMinuteStr() : "",
-	Gfx.TEXT_JUSTIFY_LEFT);
-    dc.drawText(
-	xValue, 
-	dc.getHeight() - fontHeight - yMargin,
-	Gfx.FONT_GLANCE, 
-	data.getRemainingInsulinStr(),
-	Gfx.TEXT_JUSTIFY_LEFT);
+        xValue, 
+        dc.getHeight() - fontHeight - yMargin,
+        Gfx.FONT_GLANCE, 
+        data.getRemainingInsulinStr(),
+        Gfx.TEXT_JUSTIFY_LEFT);
   }
 }
