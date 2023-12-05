@@ -20,9 +20,10 @@ class BaseServer {
     data.setRemainingInsulin(msg["remainingInsulin"] as Float?);
     data.setTemporaryBasalRate(msg["temporaryBasalRate"] as Float?);
     data.setProfile(msg["profile"] as String?);
-    switch (msg["glucoseUnit"]) {
-      case "mmoll": data.setGlucoseUnit(Data.mmoll); break;
-      default: data.setGlucoseUnit(Data.mgdl); break;
+    if (msg["glucoseUnit"] != null && "mmoll".equals(msg["glucoseUnit"])) {
+      data.setGlucoseUnit(Data.mmoll); 
+    } else {
+      data.setGlucoseUnit(Data.mgdl);
     }
 
     if (msg["connected"] instanceof Boolean) {

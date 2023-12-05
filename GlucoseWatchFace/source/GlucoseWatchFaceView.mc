@@ -38,8 +38,9 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
     Ui.requestUpdate();
   }
 
-  private function setVisible(id as String, visible as Boolean) as Void {
+  private function setVisible(id as String, visible as Boolean?) as Void {
     var drawable = View.findDrawableById(id);
+    if (visible == null) { return; }
     if (drawable != null) {
       drawable.setVisible(visible);
     }
