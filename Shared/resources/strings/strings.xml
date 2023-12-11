@@ -4,4 +4,5 @@
     <string id="GlucoseValueFrequencySecTitle">Glucose value seconds</string>
     <string id="GlucoseValueFrequencyOverrideSecTitle">Glucose value override seconds</string>
     <string id="GlucoseValueWaitSecTitle">Glucose wait seconds</string>
+    <string id="ShowTotalRemainingInsulin">Show total insulin on board</string>
 </strings>

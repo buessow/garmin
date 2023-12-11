@@ -10,8 +10,11 @@ class Data {
   private static const TAG = "Data";
   var glucoseBuffer as Shared.DateValues = new Shared.DateValues(null, 13);
   var glucoseUnit as GlucoseUnit = mgdl;
+  var targetGlucoseLow as Number?;
+  var targetGlucoseHigh as Number?;
   var errorMessage as String?;
   var remainingInsulin as Float?;
+  var remainingBasalInsulin as Float?;
   var temporaryBasalRate as Float?;
   var profile as String?;
   var connected as Boolean = true;
@@ -50,7 +53,10 @@ class Data {
         glucoseBuffer.clear();
       } else {
         remainingInsulin = Properties.getValue("RemainingInsulin");
+        remainingBasalInsulin = Properties.getValue("RemainingBasalInsulin");
         temporaryBasalRate = Properties.getValue("TemporaryBasalRate");
+        targetGlucoseLow = Properties.getValue("TargetGlucoseLow");
+        targetGlucoseHigh = Properties.getValue("TargetGlucoseHigh");
         profile = Properties.getValue("BasalProfile");
         Log.i(TAG, "restored "+ glucoseBuffer.size() + " " + glucoseBuffer.get(glucoseBuffer.size() - 1));
       }
@@ -96,16 +102,29 @@ class Data {
     return s;
   }
 
-  function setRemainingInsulin(remainingInsulin as Float) as Void {
+  function setRemainingInsulin(remainingInsulin as Float?, remainingBasalInsulin as Float?) as Void {
     me.remainingInsulin = remainingInsulin;
+    me.remainingBasalInsulin = remainingBasalInsulin;
     Properties.setValue("RemainingInsulin", remainingInsulin);
+    Properties.setValue("RemainingBasalInsulin", remainingBasalInsulin);
   }
 
   function getRemainingInsulinStr() as String {
     if (remainingInsulin == null) {
       return "iob -";
     }
-    return "iob " + remainingInsulin.format("%0.1f");
+    var r = remainingInsulin;
+    if (Properties.getValue("ShowTotalRemainingInsulin") and remainingBasalInsulin != null) {
+      r += remainingBasalInsulin;
+    }
+    return "iob " + r.format("%0.1f");
+  }
+
+  function setTargetGlucose(low as Number?, high as Number?) as Void {
+    targetGlucoseLow = low;
+    targetGlucoseHigh = high;
+    Properties.setValue("TargetGlucoseLow", targetGlucoseLow);
+    Properties.setValue("TargetGlucoseHigh", targetGlucoseHigh);
   }
 
   // Returns the last glucose reading formatted in the selected

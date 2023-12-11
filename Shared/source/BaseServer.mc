@@ -17,7 +17,7 @@ class BaseServer {
     data.glucoseBuffer = new DateValues(values, values.size() / 2);
 
     data.updateGlucose();
-    data.setRemainingInsulin(msg["remainingInsulin"] as Float?);
+    data.setRemainingInsulin(msg["remainingInsulin"] as Float?, msg["remainingBasalInsulin"] as Float?);
     data.setTemporaryBasalRate(msg["temporaryBasalRate"] as Float?);
     data.setProfile(msg["profile"] as String?);
     if (msg["glucoseUnit"] != null && "mmoll".equals(msg["glucoseUnit"])) {
