@@ -5,4 +5,7 @@
       <listEntry value="1">@Strings.AppearanceLight</listEntry>
     </settingConfig>
   </setting>
+  <setting propertyKey="@Properties.ShowTargetGlucoseInGraph" title="@Strings.ShowTargetGlucoseInGraph">
+    <settingConfig type="boolean" />
+  </setting>
 </settings>

@@ -14,6 +14,7 @@ class Graph extends Ui.Drawable {
   private const TAG = "Graph";
   private const TIME_RANGE_SEC = 120 * 60;
   private const HR_SAMPLING_PERIOD_SEC = 5 * 60;
+  private const MIN_GLUCOSE = 40;
   private const MIN_HEART_RATE = 30;
   private const MAX_HEART_RATE = 160;
   private const MINOR_X_AXIS_SEC = 30 * 60;
@@ -28,21 +29,31 @@ class Graph extends Ui.Drawable {
   private var yOffset as Number = 120;
   var height as Number = 86;
   private var glucoseBuffer as Shared.DateValues = new Shared.DateValues(null, 2);
-  private var maxGlucose as Number?;
+  private var maxGlucose as Number = 0;
   private var circular as Boolean;
   var isMmolL as Boolean?;
+  var lowGlucoseMark as Number?;
+  var highGlucoseMark as Number?;
+  
   private var bgColor as Number = Gfx.COLOR_BLACK;
   private var hrColor as Number = Gfx.COLOR_WHITE;
   private var axisColor as Number = Gfx.COLOR_LT_GRAY;
+  private var lowGlucoseColor = 0;
+  private var lowGlucoseHighlightColor = 0;
+  private var normalGlucoseColor = 0;
+  private var normalGlucoseHighlightColor = 0;
+  private var highGlucoseColor = 0;
+  private var highGlucoseHighlightColor = 0;
+  private var glucoseRangeColor = 0;
 
   function initialize(params as  { :x as Number, :identifier as Object, :locX as Numeric, :locY as Numeric, :width as Numeric, :height as Numeric, :visible as Boolean }) {
     Drawable.initialize(params);
     me.circular = Sys.getDeviceSettings().screenShape == Sys.SCREEN_SHAPE_ROUND;
     me.initialXOffset = params.get(:x) as Number;
-    me.yOffset = params.get(:y) as Number;
+    me.yOffset = (params.get(:y) as Number) + 8;
     me.initialWidth = params.get(:width) as Number;
     me.width = initialWidth;
-    me.height = params.get(:height) as Number;
+    me.height = (params.get(:height) as Number) - 8;
     setAppearanceLight();
   }
 
@@ -54,12 +65,26 @@ class Graph extends Ui.Drawable {
     bgColor = Gfx.COLOR_WHITE;
     axisColor = Gfx.COLOR_LT_GRAY;
     hrColor = Gfx.COLOR_DK_GRAY;
+    lowGlucoseColor = Gfx.COLOR_RED;
+    lowGlucoseHighlightColor = Gfx.COLOR_DK_RED;
+    normalGlucoseColor = 0x55FF55;
+    normalGlucoseHighlightColor = Gfx.COLOR_DK_GREEN;
+    highGlucoseColor = 0xFFFF55;
+    highGlucoseHighlightColor = 0xFFFF00;
+    glucoseRangeColor = Gfx.COLOR_LT_GRAY;
   }
 
   function setAppearanceDark() as Void {
     bgColor = Gfx.COLOR_BLACK;
     axisColor = Gfx.COLOR_DK_GRAY;
     hrColor = Gfx.COLOR_LT_GRAY;
+    lowGlucoseColor = Gfx.COLOR_DK_RED;
+    lowGlucoseHighlightColor = Gfx.COLOR_RED;
+    normalGlucoseColor = Gfx.COLOR_DK_GREEN;
+    normalGlucoseHighlightColor = Gfx.COLOR_GREEN;
+    highGlucoseColor = Gfx.COLOR_YELLOW;
+    highGlucoseHighlightColor = 0xFFFFAA;
+    glucoseRangeColor = Gfx.COLOR_DK_GRAY;
   }
 
   private function computeFirstIndex(startSec as Number) as Void {
@@ -76,14 +101,14 @@ class Graph extends Ui.Drawable {
   private function computeMaxGlucose() as Void {
     maxGlucose = 180;
     for (var i = firstValueIdx; i < glucoseBuffer.size(); i++) {
-      maxGlucose = Util.max(maxGlucose as Number, glucoseBuffer.getValue(i) as Number) as Number;
+      maxGlucose = Util.max(maxGlucose, glucoseBuffer.getValue(i)) as Number;
     }
   }
 
   private function computeOffsetAndWidth() as Void {
     var rightOffset = 0;
     if (firstValueIdx < glucoseBuffer.size()) {
-      rightOffset = getBorderOffset(glucoseBuffer.getLastValue() as Number);
+      rightOffset = getBorderOffset(glucoseBuffer.getLastValue());
     }
     
     var w = initialWidth - rightOffset;
@@ -95,7 +120,7 @@ class Graph extends Ui.Drawable {
       glucoseBarWidth = Util.max(1, glucoseBarWidth);
     }
     var width = valueWidth * valueCount() - glucoseBarPadding;
-    xOffset = initialXOffset + initialWidth - width - 1;
+    xOffset = initialXOffset + w - width - 1;
 
     Log.i(
         TAG, 
@@ -105,7 +130,8 @@ class Graph extends Ui.Drawable {
             "width" => width, 
             "glucoseBarWidth" => glucoseBarWidth,
             "glucoseBarPadding" => glucoseBarPadding,
-            "valueCount" => valueCount()});
+            "valueCount" => valueCount(),
+            "height" => height});
   }
 
   function setReadings(glucoseBuffer as Shared.DateValues) as Void {
@@ -113,7 +139,9 @@ class Graph extends Ui.Drawable {
     glucoseBarPadding = glucoseBarWidthSec < 300 ? 0 : 2;
     me.glucoseBuffer = glucoseBuffer;
 
-    var startSec = Util.nowSec() - TIME_RANGE_SEC;
+    var startSec = glucoseBuffer.size() > 0 ? glucoseBuffer.getLastDateSec() : Util.nowSec();
+    startSec += glucoseBarWidthSec * ((Util.nowSec() - startSec) / glucoseBarWidthSec);
+    startSec -= TIME_RANGE_SEC;
     computeFirstIndex(startSec);
     computeMaxGlucose();
     computeOffsetAndWidth();
@@ -124,7 +152,8 @@ class Graph extends Ui.Drawable {
     var y = Util.min(height, getYForGlucose(value));
     var r = initialWidth / 2;
     var o = r - Math.sqrt(r*r - y*y);  // Pythagoras' theorem
-    return Math.ceil(o).toNumber();
+    Log.i(TAG, "gbo " + {"y" => y, "r" => r, "o" => o});
+    return Math.ceil(o).toNumber() + glucoseBarWidth;
   }
 
   private function getX(startSec as Number, dateSec as Number) as Number {
@@ -133,7 +162,7 @@ class Graph extends Ui.Drawable {
   }
 
   private function getYForGlucose(glucose as Number) as Number {
-    return height * ((maxGlucose as Number) - glucose) / ((maxGlucose as Number) - 40);
+    return height * (maxGlucose - glucose) / (maxGlucose - MIN_GLUCOSE);
   }
 
   private function getYForHR(hr as Number) as Number {
@@ -153,45 +182,66 @@ class Graph extends Ui.Drawable {
     }
   }
 
-  private function drawValue(dc as Gfx.Dc, startSec as Number, i as Number) as Void {
-    var x = getX(startSec, glucoseBuffer.getDateSec(i));
-    var y = getYForGlucose(glucoseBuffer.getValue(i));
-    var justification;
-
-    if (i < firstValueIdx + 3) {
-      justification = Gfx.TEXT_JUSTIFY_LEFT;
-    } else if (i > glucoseBuffer.size() - 3) {
-      justification = Gfx.TEXT_JUSTIFY_RIGHT;
-      x += glucoseBarWidth - 5;
-    } else {
-      justification = Gfx.TEXT_JUSTIFY_CENTER;
-      x += glucoseBarWidth / 2;
-    }
-
-    if (y > height / 2) {
-      y -= 25;
-    }
-
-    dc.drawText(
-        xOffset + x, yOffset + y,
-        Gfx.FONT_TINY,
-        formatValue(glucoseBuffer.getValue(i)),
-        justification);
+  private function drawRectangle(
+      dc as Gfx.Dc, color as Number, 
+      x as Number, y as Number, w as Number, h as Number) as Void {
+    dc.setColor(color, Gfx.COLOR_TRANSPARENT);
+    dc.fillRectangle(xOffset + x, yOffset + y, w, h);
   }
 
   private function drawGlucose(dc as Gfx.Dc, startSec as Number) as Void {
     if (glucoseBuffer == null) {
       return;
     }
+    if (Properties.getValue("ShowTargetGlucoseInGraph") &&
+        Util.ifNullNumber(lowGlucoseMark, 0) >= MIN_GLUCOSE &&
+        Util.ifNullNumber(highGlucoseMark, 0) > lowGlucoseMark) {
+      drawGlucoseLowHigh(dc, startSec);
+    } else {
+      drawGlucoseBasic(dc, startSec);
+    }
+  }
+
+  private function drawGlucoseBasic(dc as Gfx.Dc, startSec as Number) as Void {
     for (var i = firstValueIdx; i < glucoseBuffer.size(); i++) {
+      var gl = glucoseBuffer.getValue(i);
       var x = getX(startSec, glucoseBuffer.getDateSec(i));
-      var w = glucoseBarWidth;
-      var y = getYForGlucose(glucoseBuffer.getValue(i));
-      var h = height - y;
-      dc.setColor(Gfx.COLOR_DK_BLUE, bgColor);
-      dc.fillRectangle(xOffset + x, yOffset + y, w, h);
-      dc.setColor(Gfx.COLOR_BLUE, bgColor);
-      dc.fillRectangle(xOffset + x, yOffset + y, w, 3);
+      var y = getYForGlucose(gl);
+      drawRectangle(dc, Gfx.COLOR_DK_BLUE, x, y, glucoseBarWidth, height - y);
+      drawRectangle(dc, Gfx.COLOR_BLUE, x, y, glucoseBarWidth, 3);
+    }
+  }
+
+  private function drawGlucoseLowHigh(dc as Gfx.Dc, startSec as Number) as Void {
+    var yLow = getYForGlucose(lowGlucoseMark);
+    var yHigh = getYForGlucose(highGlucoseMark);
+
+    var x = 0;
+    for (var i = firstValueIdx; i < glucoseBuffer.size(); i++) {
+      x = getX(startSec, glucoseBuffer.getDateSec(i));
+      var gl = glucoseBuffer.getValue(i);
+      var y = getYForGlucose(gl);
+
+      var hlColor = highGlucoseHighlightColor;
+      if (gl < lowGlucoseMark) {
+        drawRectangle(dc, lowGlucoseColor, x, y, glucoseBarWidth, height - y);
+        drawRectangle(dc, glucoseRangeColor, x, yHigh, glucoseBarWidth, yLow - yHigh);
+        hlColor = lowGlucoseHighlightColor;
+      } else if (gl < highGlucoseMark) {
+        drawRectangle(dc, lowGlucoseColor, x, yLow, glucoseBarWidth, height - yLow);
+        drawRectangle(dc, normalGlucoseColor, x, y, glucoseBarWidth, yLow - y);
+        drawRectangle(dc, glucoseRangeColor, x, yHigh, glucoseBarWidth, y - yHigh);
+        hlColor = normalGlucoseHighlightColor;
+      } else {
+        drawRectangle(dc, lowGlucoseColor, x, yLow, glucoseBarWidth, height - yLow);
+        drawRectangle(dc, normalGlucoseColor, x, yHigh, glucoseBarWidth, yLow - yHigh);
+        drawRectangle(dc, highGlucoseColor, x, y, glucoseBarWidth, yHigh - y);
+      }
+      drawRectangle(dc, hlColor, x, y, glucoseBarWidth, 3);
+    }
+    while (x < initialWidth) {
+      x += glucoseBarWidth + glucoseBarPadding;
+      drawRectangle(dc, glucoseRangeColor, x, yHigh, glucoseBarWidth, yLow - yHigh);
     }
   }
 
@@ -271,21 +321,51 @@ class Graph extends Ui.Drawable {
     }
   }
 
-  function drawMinMax(dc as Gfx.Dc, startSec as Number) as Void {
+  private function drawValue(dc as Gfx.Dc, startSec as Number, i as Number) as Void {
+    var x = getX(startSec, glucoseBuffer.getDateSec(i));
+    var y = getYForGlucose(glucoseBuffer.getValue(i));
+    var justification;
+
+    if (i < firstValueIdx + 3) {
+      justification = Gfx.TEXT_JUSTIFY_LEFT;
+    } else if (i > glucoseBuffer.size() - 3) {
+      justification = Gfx.TEXT_JUSTIFY_RIGHT;
+      x += glucoseBarWidth;
+    } else {
+      justification = Gfx.TEXT_JUSTIFY_CENTER;
+      x += glucoseBarWidth / 2;
+    }
+
+    dc.drawText(
+        xOffset + x, yOffset + y - 18,
+        Gfx.FONT_XTINY,
+        formatValue(glucoseBuffer.getValue(i)),
+        justification);
+  }
+
+  private function getColorForValue(glucose as Number) as Number {
+    return glucose < lowGlucoseMark ? lowGlucoseHighlightColor
+         : glucose <= highGlucoseMark ? normalGlucoseHighlightColor
+         : highGlucoseHighlightColor;
+  }
+
+  private function drawMinMax(dc as Gfx.Dc, startSec as Number) as Void {
     if (glucoseBuffer == null || glucoseBuffer.size() <= firstValueIdx) {
       return;
     }
-    var minIdx = 0;
-    var maxIdx = 0;
+    var minIdx = firstValueIdx;
+    var maxIdx = firstValueIdx;
     for (var i = firstValueIdx; i < glucoseBuffer.size(); i++) {
-      if (glucoseBuffer.getValue(minIdx) > glucoseBuffer.getValue(i)) {
+      if (glucoseBuffer.getValue(minIdx) >= glucoseBuffer.getValue(i)) {
         minIdx = i;
-      } else if (glucoseBuffer.getValue(maxIdx) < glucoseBuffer.getValue(i)) {
+      }
+      if (glucoseBuffer.getValue(maxIdx) <= glucoseBuffer.getValue(i)) {
         maxIdx = i;
       }
     }
-    dc.setColor(Gfx.COLOR_YELLOW, Gfx.COLOR_TRANSPARENT);
+    dc.setColor(getColorForValue(glucoseBuffer.getValue(minIdx)), Gfx.COLOR_TRANSPARENT);
     drawValue(dc, startSec, minIdx);
+    dc.setColor(getColorForValue(glucoseBuffer.getValue(maxIdx)), Gfx.COLOR_TRANSPARENT);
     drawValue(dc, startSec, maxIdx);
   }
 

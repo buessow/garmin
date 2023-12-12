@@ -10,8 +10,8 @@
   <property id="TemporaryBasalRate" type="float">0.0</property>
   <property id="BasalProfile" type="string"/>
   <property id="GlucoseUnit" type="string"/>
-  <property id="TargetGlucoseLow" type="number">0</property>
-  <property id="TargetGlucoseHigh" type="number">0</property>
+  <property id="LowGlucoseMark" type="number">0</property>
+  <property id="HighGlucoseMark" type="number">0</property>
 
   <property id="AAPSKey" type="string"></property>
   <property id="GlucoseDeltaSec" type="number">60</property>
@@ -20,4 +20,5 @@
   <property id="GlucoseValueWaitSec" type="number">5</property>
   <property id="AppVersion" type="string"></property>
   <property id="ShowTotalRemainingInsulin" type="boolean">true</property>
+  <property id="ShowTargetGlucoseInGraph" type="boolean">true</property>
 </properties>

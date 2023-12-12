@@ -25,7 +25,7 @@
       <param name="x">0</param>
       <param name="y">130</param>
       <param name="width">260</param>
-       <param name="height">90</param>
+       <param name="height">100</param>
     </drawable>      
     <label id="DateLabel" x="center" y="10" 
            font="Graphics.FONT_SYSTEM_SMALL" 
@@ -38,7 +38,7 @@
           <param name="hourFont">Graphics.FONT_SYSTEM_NUMBER_HOT</param> 
           <param name="minuteFont">Graphics.FONT_SYSTEM_NUMBER_MILD</param>
     </drawable>
-    <label id="GlucoseLabel" x="center" y="215" 
+    <label id="GlucoseLabel" x="center" y="225" 
            font="Graphics.FONT_SYSTEM_LARGE" 
            justification="Graphics.TEXT_JUSTIFY_CENTER" 
            color="Graphics.COLOR_WHITE" />

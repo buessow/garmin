@@ -32,6 +32,8 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
 
     graph = findDrawableById("DateValueGraph") as Shared.Graph;
     graph.isMmolL = data.glucoseUnit == Shared.Data.mmoll;
+    graph.lowGlucoseMark = data.lowGlucoseMark;
+    graph.highGlucoseMark = data.highGlucoseMark;
     graph.setReadings(data.glucoseBuffer);
 
     updateSettings();
@@ -72,6 +74,8 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
 
   function setReadings() {
     graph.isMmolL = data.glucoseUnit == Shared.Data.mmoll;
+    graph.lowGlucoseMark = data.lowGlucoseMark;
+    graph.highGlucoseMark = data.highGlucoseMark;
     graph.setReadings(data.glucoseBuffer);
     Ui.requestUpdate();
   }

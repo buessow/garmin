@@ -8,10 +8,10 @@ using Toybox.Time.Gregorian as Calendar;
 module Shared {
 class Data {
   private static const TAG = "Data";
-  var glucoseBuffer as Shared.DateValues = new Shared.DateValues(null, 13);
+  var glucoseBuffer as Shared.DateValues = new Shared.DateValues(null, 30);
   var glucoseUnit as GlucoseUnit = mgdl;
-  var targetGlucoseLow as Number?;
-  var targetGlucoseHigh as Number?;
+  var lowGlucoseMark as Number?;
+  var highGlucoseMark as Number?;
   var errorMessage as String?;
   var remainingInsulin as Float?;
   var remainingBasalInsulin as Float?;
@@ -35,7 +35,13 @@ class Data {
   function initialize() {
     try {
       restoreValues();
-      if (fakeMode == fakeError) {
+      if (fakeMode == fakeValues) {
+        var now = Util.nowSec();
+        glucoseBuffer.clear();
+        for (var i = 0; i < 24; i++) {
+          glucoseBuffer.add(new DateValue(now - 300*(23-i), i==23 ? 70 : 100));
+        }
+      } else if (fakeMode == fakeError) {
         errorMessage = "Enable Garmin in AAPS config";
       }
     } catch (e) {
@@ -55,10 +61,10 @@ class Data {
         remainingInsulin = Properties.getValue("RemainingInsulin");
         remainingBasalInsulin = Properties.getValue("RemainingBasalInsulin");
         temporaryBasalRate = Properties.getValue("TemporaryBasalRate");
-        targetGlucoseLow = Properties.getValue("TargetGlucoseLow");
-        targetGlucoseHigh = Properties.getValue("TargetGlucoseHigh");
+        lowGlucoseMark = Properties.getValue("LowGlucoseMark");
+        highGlucoseMark = Properties.getValue("HighGlucoseMark");
         profile = Properties.getValue("BasalProfile");
-        Log.i(TAG, "restored "+ glucoseBuffer.size() + " " + glucoseBuffer.get(glucoseBuffer.size() - 1));
+        Log.i(TAG, "restored "+ glucoseBuffer.size() + " " + glucoseBuffer.get(glucoseBuffer.size() - 1) + " target: " + lowGlucoseMark);
       }
     }
     if (!hasValue()) {
@@ -120,11 +126,11 @@ class Data {
     return "iob " + r.format("%0.1f");
   }
 
-  function setTargetGlucose(low as Number?, high as Number?) as Void {
-    targetGlucoseLow = low;
-    targetGlucoseHigh = high;
-    Properties.setValue("TargetGlucoseLow", targetGlucoseLow);
-    Properties.setValue("TargetGlucoseHigh", targetGlucoseHigh);
+  function setGlucoseRange(low as Number?, high as Number?) as Void {
+    lowGlucoseMark = low;
+    highGlucoseMark = high;
+    Properties.setValue("LowGlucoseMark", lowGlucoseMark);
+    Properties.setValue("HighGlucoseMark", highGlucoseMark);
   }
 
   // Returns the last glucose reading formatted in the selected
@@ -246,7 +252,9 @@ class Data {
   }
 
   // Notify that glucoseBuffer was updated.
-  function updateGlucose() as Void {
+  function updateGlucose(glucoseBuffer as DateValues) as Void {
+    if (fakeMode == fakeValues) { return; }
+    me.glucoseBuffer = glucoseBuffer;
     var hex = glucoseBuffer.toHexString();
     var last = glucoseBuffer.getLastValue();
     Properties.setValue("GlucoseValues", hex);
