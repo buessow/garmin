@@ -8,7 +8,7 @@
         launcherIcon="@Drawables.LauncherIcon" 
         name="@Strings.AppName" 
         type="watchface" 
-        version="1.1.10.pre">
+        version="1.1.18.pre">
         <iq:products>
             <iq:product id="legacyherocaptainmarvel"/>
             <iq:product id="fr55"/>

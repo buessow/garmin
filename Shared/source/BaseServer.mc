@@ -14,10 +14,9 @@ class BaseServer {
 
   function onData(msg as Dictionary<String, Object>, data as Data) as Void{
     var values = Shared.DeltaVarEncoder.decodeBase64(2, msg["encodedGlucose"] as String);
-    data.glucoseBuffer = new DateValues(values, values.size() / 2);
-
-    data.updateGlucose();
+    data.updateGlucose(new DateValues(values, values.size() / 2));
     data.setRemainingInsulin(msg["remainingInsulin"] as Float?, msg["remainingBasalInsulin"] as Float?);
+    data.setGlucoseRange(msg["lowGlucoseMark"] as Number?, msg["highGlucoseMark"] as Number?);
     data.setTemporaryBasalRate(msg["temporaryBasalRate"] as Float?);
     data.setProfile(msg["profile"] as String?);
     if (msg["glucoseUnit"] != null && "mmoll".equals(msg["glucoseUnit"])) {

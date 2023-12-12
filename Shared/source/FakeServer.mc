@@ -29,7 +29,7 @@ module Shared {
         data.glucoseBuffer.add(new Shared.DateValue(i, glucose0));
       }
       data.glucoseBuffer.add(new Shared.DateValue(last, glucose));
-      data.updateGlucose();
+      data.updateGlucose(data.glucoseBuffer);
       data.setGlucoseUnit(Data.mmoll);
       data.setTemporaryBasalRate(0.4);
       data.setProfile("S");

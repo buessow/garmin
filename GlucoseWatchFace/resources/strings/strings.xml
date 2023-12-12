@@ -7,4 +7,5 @@
     <string id="AppearanceLight">light</string>
     <string id="VersionTitle">Version</string>
     <string id="BuildTimeTitle">Build Time</string>
+    <string id="ShowTargetGlucoseInGraph">Show glucose range</string>
 </strings>
