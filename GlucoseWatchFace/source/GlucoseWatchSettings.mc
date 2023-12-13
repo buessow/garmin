@@ -20,8 +20,8 @@ class GlucoseWatchFaceSettings extends Ui.View {
           :menuAppearance,
           Properties.getValue("Appearance") == 0,
           {}));
-      menu.addItem(new Ui.MenuItem(Rez.Strings.VersionTitle, Rez.Strings.Version, :menuVersion, {}));
-      menu.addItem(new Ui.MenuItem(Rez.Strings.BuildTimeTitle, Rez.Strings.BuildTime, :menuBuildTime, {}));
+      menu.addItem(new Ui.MenuItem(Rez.Strings.VersionTitle, BuildInfo.VERSION, :menuVersion, {}));
+      menu.addItem(new Ui.MenuItem(Rez.Strings.BuildTimeTitle, BuildInfo.BUILD_TIME, :menuBuildTime, {}));
     }
     
     function get() as Array<Ui.Views or Ui.InputDelegates> {

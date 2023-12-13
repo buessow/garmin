@@ -12,7 +12,12 @@ shared_dep = Shared/source/*.mc Shared/resource/*/*
 	v=`xmlstarlet select --text --template --value-of '//iq:manifest/iq:application/@version' -n $<`; \
 	echo "<strings><string id='Version'>$$v</string><string id='BuildTime'>`date -Iminutes`</string></strings>" > "$@"
 
-bin-$(device)/%.prg: %/monkey.jungle %/manifest.xml %/source/*.mc %/resources/_version.xml %/resources*/* $(shared_dep)
+%/source/_Version.mc: %/manifest.xml
+	v=`xmlstarlet select --text --template --value-of '//iq:manifest/iq:application/@version' -n $<`; \
+    t=`date -Iminutes`
+	echo "module BuildInfo { const VERSION = \"$$v\"; const BUILD_TIME = \"$$t\"; }" > "$@"
+
+bin-$(device)/%.prg: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/resources/_version.xml %/resources*/* $(shared_dep)
 	[ -d "$(@D)" ] || mkdir "$(@D)"
 	monkeyc --jungle $< --output $@ $(MONKEYC_FLAGS) --optimization $(opt) --device $(device) $(test_flag)
 

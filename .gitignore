@@ -4,3 +4,4 @@ bazel-*
 bin/
 bin-*/
 _version.xml
+_Version.mc

@@ -54,7 +54,7 @@ class GlucoseWatchFaceApp extends Application.AppBase {
 
   function getInitialView() as Array<Ui.Views or Ui.InputDelegates> or Null {
     Properties.setValue("Device", System.getDeviceSettings().partNumber + "_WF");
-    Properties.setValue("AppVersion", "wf_" + Application.loadResource(Rez.Strings.Version));
+    Properties.setValue("AppVersion", "wf_" + BuildInfo.VERSION);
     server.init2();
     Background.registerForPhoneAppMessageEvent();
     Log.i(TAG, "getInitialView");
