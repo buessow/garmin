@@ -36,10 +36,12 @@ class Data {
     try {
       restoreValues();
       if (fakeMode == fakeValues) {
+        lowGlucoseMark = 60;
+        highGlucoseMark = 130;
         var now = Util.nowSec();
         glucoseBuffer.clear();
         for (var i = 0; i < 24; i++) {
-          glucoseBuffer.add(new DateValue(now - 300*(23-i), i==23 ? 70 : 100));
+          glucoseBuffer.add(new DateValue(now - 300*(23-i) - 120, i==23 ? 150 : 100));
         }
       } else if (fakeMode == fakeError) {
         errorMessage = "Enable Garmin in AAPS config";

@@ -34,7 +34,7 @@ class Graph extends Ui.Drawable {
   var isMmolL as Boolean?;
   var lowGlucoseMark as Number?;
   var highGlucoseMark as Number?;
-  
+
   private var bgColor as Number = Gfx.COLOR_BLACK;
   private var hrColor as Number = Gfx.COLOR_WHITE;
   private var axisColor as Number = Gfx.COLOR_LT_GRAY;
@@ -153,7 +153,7 @@ class Graph extends Ui.Drawable {
     var r = initialWidth / 2;
     var o = r - Math.sqrt(r*r - y*y);  // Pythagoras' theorem
     Log.i(TAG, "gbo " + {"y" => y, "r" => r, "o" => o});
-    return Math.ceil(o).toNumber() + glucoseBarWidth;
+    return Math.ceil(o).toNumber() + glucoseBarWidth / 2;
   }
 
   private function getX(startSec as Number, dateSec as Number) as Number {
@@ -189,13 +189,17 @@ class Graph extends Ui.Drawable {
     dc.fillRectangle(xOffset + x, yOffset + y, w, h);
   }
 
+  private function useLowHighGlucoseMarks() as Boolean {
+    return Properties.getValue("ShowTargetGlucoseInGraph") &&
+        Util.ifNullNumber(lowGlucoseMark, 0) >= MIN_GLUCOSE &&
+        Util.ifNullNumber(highGlucoseMark, 0) > lowGlucoseMark;
+  }
+
   private function drawGlucose(dc as Gfx.Dc, startSec as Number) as Void {
     if (glucoseBuffer == null) {
       return;
     }
-    if (Properties.getValue("ShowTargetGlucoseInGraph") &&
-        Util.ifNullNumber(lowGlucoseMark, 0) >= MIN_GLUCOSE &&
-        Util.ifNullNumber(highGlucoseMark, 0) > lowGlucoseMark) {
+    if (useLowHighGlucoseMarks()) {
       drawGlucoseLowHigh(dc, startSec);
     } else {
       drawGlucoseBasic(dc, startSec);
@@ -222,15 +226,16 @@ class Graph extends Ui.Drawable {
       var gl = glucoseBuffer.getValue(i);
       var y = getYForGlucose(gl);
 
+      drawRectangle(dc, glucoseRangeColor, x, yHigh, glucoseBarWidth, 1);
+      drawRectangle(dc, glucoseRangeColor, x, yLow, glucoseBarWidth, -1);
+
       var hlColor = highGlucoseHighlightColor;
       if (gl < lowGlucoseMark) {
         drawRectangle(dc, lowGlucoseColor, x, y, glucoseBarWidth, height - y);
-        drawRectangle(dc, glucoseRangeColor, x, yHigh, glucoseBarWidth, yLow - yHigh);
         hlColor = lowGlucoseHighlightColor;
       } else if (gl < highGlucoseMark) {
         drawRectangle(dc, lowGlucoseColor, x, yLow, glucoseBarWidth, height - yLow);
         drawRectangle(dc, normalGlucoseColor, x, y, glucoseBarWidth, yLow - y);
-        drawRectangle(dc, glucoseRangeColor, x, yHigh, glucoseBarWidth, y - yHigh);
         hlColor = normalGlucoseHighlightColor;
       } else {
         drawRectangle(dc, lowGlucoseColor, x, yLow, glucoseBarWidth, height - yLow);
@@ -241,7 +246,8 @@ class Graph extends Ui.Drawable {
     }
     while (x < initialWidth) {
       x += glucoseBarWidth + glucoseBarPadding;
-      drawRectangle(dc, glucoseRangeColor, x, yHigh, glucoseBarWidth, yLow - yHigh);
+      drawRectangle(dc, glucoseRangeColor, x, yHigh, glucoseBarWidth, yHigh + 1);
+      drawRectangle(dc, glucoseRangeColor, x, yLow, glucoseBarWidth, yLow + 1);
     }
   }
 
@@ -272,53 +278,63 @@ class Graph extends Ui.Drawable {
     var it = SensorHistory.getHeartRateHistory({
         :period => new Time.Duration(TIME_RANGE_SEC),
         :order => SensorHistory.ORDER_OLDEST_FIRST });
-    var val;
-    var hr;
-    do {
-      val = it.next();
-      if (val == null) {
-        Log.i(TAG, "no heart rate values");
-        return;
-      }
-      hr = val.data;
-    } while (hr == null);
-    var prevX = getX(startSec, val.when.value());
-    var prevY = getYForHR(hr.toNumber());
+
     dc.setColor(hrColor, bgColor);
     dc.setPenWidth(2);
-    var count = 0;
-    var sum = 0;
-    var minute = val.when.value() / 60;
-    var minuteSum = hr.toNumber();
-    var minuteCount = 1;
-    for (val = it.next(); val != null; val = it.next()) {
-      hr = val.data;
-      if (hr == null) {
+
+    var lastValue = null;
+    var samplingMinute = 0;
+    var samplingSum = 0;
+    var samplingCnt = 0;
+    var sampling5Sum = 0;
+    var sampling5Cnt = 0;
+    for (var val = it.next(); val != null; val = it.next()) {
+      if (val.data == null) { continue; }
+      var minute = val.when.value() / 60;
+
+      if (val.when.value() - nowSec < HR_SAMPLING_PERIOD_SEC) {
+        sampling5Sum += val.data.toNumber();
+        sampling5Cnt += 1;
+      }
+
+      if (minute == samplingMinute) {
+        samplingSum += val.data.toNumber();
+        samplingCnt += 1;
         continue;
+      } 
+      if (samplingCnt > 0) {
+        var value = new DateValue(60 * samplingMinute, samplingSum / samplingCnt);
+        if (lastValue == null || value.dateSec - (lastValue as DateValue).dateSec > 180) {
+          lastValue = new DateValue(60 * (samplingMinute - 1), value.value);
+        }
+        drawHeartRateLine(dc, startSec, lastValue, value);
+        lastValue = value;
       }
-      minuteCount++;
-      minuteSum += hr.toNumber();
-      if (val.when.value() / 60 == minute) {
-        continue;
-      }
-      if (val.when.value() + HR_SAMPLING_PERIOD_SEC > nowSec) {
-        count += minuteCount;
-        sum += minuteSum;
-      }
-      var x = getX(startSec, 60  * minute);
-      var y = getYForHR(minuteSum / minuteCount);
-      dc.drawLine(xOffset + prevX, yOffset + prevY, xOffset + x, yOffset + y);
-      prevX = x;
-      prevY = y;
-      minute = val.when.value() / 60;
-      minuteCount = 0;
-      minuteSum = 0;
+
+      samplingMinute = minute;
+      samplingSum = val.data.toNumber();
+      samplingCnt = 1;
     }
-    if (count > 0) {
+
+    if (sampling5Cnt > 0) {
       Properties.setValue("HeartRateStartSec", nowSec - HR_SAMPLING_PERIOD_SEC);
       Properties.setValue("HeartRateLastSec", nowSec);
-      Properties.setValue("HeartRateAvg", sum / count);
+      Properties.setValue("HeartRateAvg", sampling5Sum / sampling5Cnt);
+    } else {
+      Properties.setValue("HeartRateStartSec", null);
+      Properties.setValue("HeartRateLastSec", null);
+      Properties.setValue("HeartRateAvg", null);
     }
+  }
+
+  private function drawHeartRateLine(
+      dc as Gfx.Dc, startSec as Number,
+      dv1 as DateValue,dv2 as DateValue) as Void {
+    var x1 = getX(startSec, dv1.dateSec);
+    var y1 = getYForHR(dv1.value);
+    var x2 = getX(startSec, dv2.dateSec);
+    var y2 = getYForHR(dv2.value);
+    dc.drawLine(xOffset + x1, yOffset + y1, xOffset + x2, yOffset + y2);
   }
 
   private function drawValue(dc as Gfx.Dc, startSec as Number, i as Number) as Void {
@@ -344,9 +360,13 @@ class Graph extends Ui.Drawable {
   }
 
   private function getColorForValue(glucose as Number) as Number {
-    return glucose < lowGlucoseMark ? lowGlucoseHighlightColor
-         : glucose <= highGlucoseMark ? normalGlucoseHighlightColor
-         : highGlucoseHighlightColor;
+    if (useLowHighGlucoseMarks()) {
+      return glucose < lowGlucoseMark ? lowGlucoseHighlightColor
+          : glucose <= highGlucoseMark ? normalGlucoseHighlightColor
+          : highGlucoseHighlightColor;
+    } else {
+      return glucoseRangeColor;
+    }
   }
 
   private function drawMinMax(dc as Gfx.Dc, startSec as Number) as Void {

@@ -25,7 +25,7 @@
       <param name="x">0</param>
       <param name="y">130</param>
       <param name="width">260</param>
-       <param name="height">100</param>
+      <param name="height">95</param>
     </drawable>      
     <label id="DateLabel" x="center" y="10" 
            font="Graphics.FONT_SYSTEM_SMALL" 
