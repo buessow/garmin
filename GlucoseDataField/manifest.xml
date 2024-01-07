@@ -9,7 +9,7 @@
         minSdkVersion="3.3.1" 
         name="@Strings.AppName" 
         type="datafield" 
-        version="1.0.12.pre">
+        version="1.0.13.pre">
         <iq:products>
             <iq:product id="descentmk2s"/>
             <iq:product id="fenix5plus"/>

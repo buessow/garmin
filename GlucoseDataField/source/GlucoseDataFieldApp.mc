@@ -59,7 +59,7 @@ class GlucoseDataFieldApp extends Application.AppBase {
 
   function getInitialView() as Lang.Array<Ui.Views or Ui.InputDelegates> or Null {
     Properties.setValue("Device", System.getDeviceSettings().partNumber + "_DF");
-    Properties.setValue("AppVersion", "df_" + Application.loadResource(Rez.Strings.Version));
+    Properties.setValue("AppVersion", "df_" + BuildInfo.VERSION);
 
     data = new Shared.Data();
     view = new LabelView(data, method(:onTimerStop));
