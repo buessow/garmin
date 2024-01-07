@@ -36,6 +36,9 @@ class GlucoseDataFieldApp extends Application.AppBase {
     if (data == null) {
       data = new Shared.Data();
     }
+    if (view == null) {
+      view = new LabelView(data, method(:onTimerStop));
+    }
     view.heartRateCollector.reset();
     server.onBackgroundData(result, data);
     view.onNewGlucose();
