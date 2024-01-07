@@ -361,13 +361,6 @@ class Graph extends Ui.Drawable {
 
   private function getColorForValue(glucose as Number) as Number {
     return hrColor;
-    // if (useLowHighGlucoseMarks()) {
-    //   return glucose < lowGlucoseMark ? lowGlucoseHighlightColor
-    //       : glucose <= highGlucoseMark ? normalGlucoseHighlightColor
-    //       : highGlucoseHighlightColor;
-    // } else {
-    //   return glucoseRangeColor;
-    // }
   }
 
   private function drawMinMax(dc as Gfx.Dc, startSec as Number) as Void {

@@ -71,16 +71,20 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   }
 
   private function populateHeartRateHistory(parameters as Dictionary<String, String>) as Void {
-    var nowSec = Util.nowSec();
-    var startSec = Properties.getValue("HeartRateStartSec");
-    var lastSec = Properties.getValue("HeartRateLastSec");
-    var avg = Properties.getValue("HeartRateAvg");
-    if (startSec != null && lastSec != null && avg != null &&
-        avg > 0 && nowSec - lastSec < 300) {
-      Log.i(TAG, "HR " + avg);
-      parameters["hr"] = avg.toString();
-      parameters["hrStart"] = startSec.toString();
-      parameters["hrEnd"] = lastSec.toString();
+    try {
+      var nowSec = Util.nowSec();
+      var startSec = Properties.getValue("HeartRateStartSec");
+      var lastSec = Properties.getValue("HeartRateLastSec");
+      var avg = Properties.getValue("HeartRateAvg");
+      if (startSec != null && lastSec != null && avg != null &&
+          avg > 0 && nowSec - lastSec < 300) {
+        Log.i(TAG, "HR " + avg);
+        parameters["hr"] = avg.toString();
+        parameters["hrStart"] = startSec.toString();
+        parameters["hrEnd"] = lastSec.toString();
+      }
+    } catch (e) {
+      e.printStackTrace();
     }
   }
 

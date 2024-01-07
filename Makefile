@@ -14,7 +14,8 @@ shared_dep = Shared/source/*.mc Shared/resource/*/*
 
 %/source/_Version.mc: %/manifest.xml
 	v=`xmlstarlet select --text --template --value-of '//iq:manifest/iq:application/@version' -n $<`; \
-    t=`date -Iminutes`
+    t=`date -Iminutes`; \
+    echo "T: $$t"; \
 	echo "module BuildInfo { const VERSION = \"$$v\"; const BUILD_TIME = \"$$t\"; }" > "$@"
 
 bin-$(device)/%.prg: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/resources/_version.xml %/resources*/* $(shared_dep)
