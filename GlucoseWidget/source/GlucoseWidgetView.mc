@@ -30,7 +30,7 @@ class GlucoseWidgetView extends Ui.View {
       setLayout(drawables);
     }
     graph = findDrawableById("DateValueGraph");
-    findTextById("PostCarbsResultLabel").setText(Rez.Strings.Version);
+    findTextById("PostCarbsResultLabel").setText(BuildInfo.VERSION);
   }
 
   function onGlucose() {
