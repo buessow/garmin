@@ -246,8 +246,8 @@ class Graph extends Ui.Drawable {
     }
     while (x < initialWidth) {
       x += glucoseBarWidth + glucoseBarPadding;
-      drawRectangle(dc, glucoseRangeColor, x, yHigh, glucoseBarWidth, yHigh + 1);
-      drawRectangle(dc, glucoseRangeColor, x, yLow, glucoseBarWidth, yLow + 1);
+      drawRectangle(dc, glucoseRangeColor, x, yHigh, glucoseBarWidth, 1);
+      drawRectangle(dc, glucoseRangeColor, x, yLow, glucoseBarWidth, -1);
     }
   }
 
@@ -340,8 +340,8 @@ class Graph extends Ui.Drawable {
   private function drawValue(dc as Gfx.Dc, startSec as Number, i as Number) as Void {
     var x = getX(startSec, glucoseBuffer.getDateSec(i));
     var y = getYForGlucose(glucoseBuffer.getValue(i));
+    
     var justification;
-
     if (i < firstValueIdx + 3) {
       justification = Gfx.TEXT_JUSTIFY_LEFT;
     } else if (i > glucoseBuffer.size() - 3) {
@@ -353,20 +353,21 @@ class Graph extends Ui.Drawable {
     }
 
     dc.drawText(
-        xOffset + x, yOffset + y - 18,
-        Gfx.FONT_XTINY,
+        xOffset + x, yOffset + y - 25,
+        Gfx.FONT_TINY,
         formatValue(glucoseBuffer.getValue(i)),
         justification);
   }
 
   private function getColorForValue(glucose as Number) as Number {
-    if (useLowHighGlucoseMarks()) {
-      return glucose < lowGlucoseMark ? lowGlucoseHighlightColor
-          : glucose <= highGlucoseMark ? normalGlucoseHighlightColor
-          : highGlucoseHighlightColor;
-    } else {
-      return glucoseRangeColor;
-    }
+    return hrColor;
+    // if (useLowHighGlucoseMarks()) {
+    //   return glucose < lowGlucoseMark ? lowGlucoseHighlightColor
+    //       : glucose <= highGlucoseMark ? normalGlucoseHighlightColor
+    //       : highGlucoseHighlightColor;
+    // } else {
+    //   return glucoseRangeColor;
+    // }
   }
 
   private function drawMinMax(dc as Gfx.Dc, startSec as Number) as Void {

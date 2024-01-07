@@ -21,7 +21,7 @@ bin-$(device)/%.prg: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/sourc
 	[ -d "$(@D)" ] || mkdir "$(@D)"
 	monkeyc --jungle $< --output $@ $(MONKEYC_FLAGS) --optimization $(opt) --device $(device) $(test_flag)
 
-bin/%.iq: %/monkey.jungle %/manifest.xml %/source/*.mc %/resources/_version.xml %/resources*/* $(shared_dep)
+bin/%.iq: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/resources/_version.xml %/resources*/* $(shared_dep)
 	[ -d "$(@D)" ] || mkdir "$(@D)"
 	monkeyc --jungle $< --output $@ $(MONKEYC_FLAGS) --optimization 3pz --package-app --release
 

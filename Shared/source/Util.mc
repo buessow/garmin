@@ -45,6 +45,10 @@ module Util {
     return a == null ? b : a;
   }
 
+  function ifNullFloat(a as Float?, b as Float) as Float {
+    return a == null ? b : a;
+  }
+
   (:exclude)
   function join(sep as String, array as Array<String>) as String {
     var s = "";

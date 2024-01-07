@@ -95,16 +95,14 @@ class Data {
 
   function getBasalCorrectionStr() as String {
     if (fakeMode != normal) { return "S10%"; }
-    if (temporaryBasalRate == null || profile == null) {
-      return  "-";
-    }
+    var tbr = Util.ifNullFloat(temporaryBasalRate, 1.0);
     var s;
-    if (temporaryBasalRate < 1) {
-      s = (temporaryBasalRate * 100).format("%0.0f") + "%";
+    if (tbr < 1.0) {
+      s = (tbr * 100).format("%0.0f") + "%";
     } else {
-      s = " " + temporaryBasalRate.format("%0.1f");
+      s = " " + tbr.format("%0.1f");
     }
-    if (!"D".equals(profile)) {
+    if (profile != null && !"D".equals(profile)) {
       s = profile + s;
     }
     return s;
