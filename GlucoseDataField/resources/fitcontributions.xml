@@ -11,23 +11,23 @@
 	 	unitLabel="@Strings.GlucoseUnitMgDl" 
 		displayInActivitySummary="true" /> 
 	<fitField id="3" 
-		displayInChart="false" sortOrder = "1" precision="1"
+		displayInChart="false" sortOrder = "2" precision="1"
 		dataLabel="@Strings.GlucoseMaxLabel"
 	 	unitLabel="@Strings.GlucoseUnitMgDl" 
 		displayInActivitySummary="true" />
 	<fitField id="4" 
-		displayInChart="true" sortOrder = "0" precision="1"
+		displayInChart="true" sortOrder = "3" precision="1"
 	 	chartTitle="@Strings.GlucoseMmolLLabel" 
 		dataLabel="@Strings.GlucoseMmolLLabel"
 	 	unitLabel="@Strings.GlucoseUnitMmolL" 
 		fillColor="#FF0000" />
 	<fitField id="5" 
-		displayInChart="false" sortOrder = "1" precision="1"
+		displayInChart="false" sortOrder = "4" precision="1"
 		dataLabel="@Strings.GlucoseMinLabel"
 	 	unitLabel="@Strings.GlucoseUnitMmolL" 
 		displayInActivitySummary="true" />
 	<fitField id="6" 
-		displayInChart="false" sortOrder = "1" precision="1"
+		displayInChart="false" sortOrder = "5" precision="1"
 		dataLabel="@Strings.GlucoseMaxLabel"
 	 	unitLabel="@Strings.GlucoseUnitMmolL" 
 		displayInActivitySummary="true" />
