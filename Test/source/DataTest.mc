@@ -22,8 +22,8 @@ class DataTest {
 
       var d = new Shared.Data();
       d.glucoseBuffer.add(new Shared.DateValue(1000, 90));
-      d.updateGlucose();
-      d.setRemainingInsulin(4.1);
+      d.updateGlucose(d.glucoseBuffer);
+      d.setRemainingInsulin(4.1, 0.0);
       d.setTemporaryBasalRate(0.9);
       d.setProfile("P");
       d.setGlucoseUnit(Shared.Data.mmoll);
@@ -72,8 +72,8 @@ class DataTest {
       Util.testNowSec = 1010;
       var d = new Shared.Data();
       d.glucoseBuffer.add(new Shared.DateValue(1000, 123));
-      d.updateGlucose();
-      d.setRemainingInsulin(3.366);
+      d.updateGlucose(d.glucoseBuffer);
+      d.setRemainingInsulin(3.366, 0.0);
 
       Assert.equal(true, d.hasValue());
       Assert.equal("123", d.getGlucoseStr());
@@ -98,7 +98,7 @@ class DataTest {
       var d = new Shared.Data();
       d.glucoseBuffer.add(new Shared.DateValue(880, 133));
       d.glucoseBuffer.add(new Shared.DateValue(1000, 123));
-      d.updateGlucose();
+      d.updateGlucose(d.glucoseBuffer);
 
       Assert.equal("-5.0", d.getGlucoseDeltaPerMinuteStr());
       return true;
@@ -117,7 +117,7 @@ class DataTest {
       var d = new Shared.Data();
       d.glucoseBuffer.add(new Shared.DateValue(880, 133));
       d.glucoseBuffer.add(new Shared.DateValue(1000, 153));
-      d.updateGlucose();
+      d.updateGlucose(d.glucoseBuffer);
 
       Assert.equal("+10.0", d.getGlucoseDeltaPerMinuteStr());
       return true;
@@ -135,7 +135,7 @@ class DataTest {
     var d = new Shared.Data();
     d.glucoseBuffer.add(new Shared.DateValue(880, 100));
     d.glucoseBuffer.add(new Shared.DateValue(1000, 120));
-    d.updateGlucose();
+    d.updateGlucose(d.glucoseBuffer);
 
     d.setGlucoseUnit(Shared.Data.mmoll);
 

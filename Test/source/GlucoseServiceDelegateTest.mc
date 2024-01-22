@@ -91,7 +91,6 @@ class GlucoseServiceDelegateTest {
     Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
     Assert.equal(200, recv.result["httpCode"]);
     Assert.equal(null, recv.result["errorMessage"]);
-    Assert.equal(1000, recv.result["startTimeSec"]);
     Assert.equal("bar", recv.result["foo"]);
 
     return true;
@@ -121,7 +120,6 @@ class GlucoseServiceDelegateTest {
     Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
     Assert.equal(400, recv.result["httpCode"]);
     Assert.equal("HTTP400", recv.result["errorMessage"]);
-    Assert.equal(1000, recv.result["startTimeSec"]);
 
     return true;
   }
@@ -151,7 +149,6 @@ class GlucoseServiceDelegateTest {
     Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
     Assert.equal(200, recv.result["httpCode"]);
     Assert.equal(null, recv.result["errorMessage"]);
-    Assert.equal(1000, recv.result["startTimeSec"]);
 
     return true;
   }
@@ -180,7 +177,6 @@ class GlucoseServiceDelegateTest {
     Assert.equal({ :method => Comm.HTTP_REQUEST_METHOD_GET}, comm.options);
     Assert.equal(200, recv.result["httpCode"]);
     Assert.equal(null, recv.result["errorMessage"]);
-    Assert.equal(1000, recv.result["startTimeSec"]);
 
     return true;
   }
