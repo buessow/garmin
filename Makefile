@@ -1,4 +1,3 @@
-
 DEVELOPER_KEY='/Users/robertbuessow/StudioProjects/developer_key'
 device ?= fenix7
 opt ?= 2
@@ -6,7 +5,9 @@ MONKEYC_FLAGS=--private-key $(DEVELOPER_KEY) --typecheck 2
 
 .NOPARALELL:
 
-shared_dep = Shared/source/*.mc Shared/resource/*/*
+
+shared_dep=Shared/source/*.mc Shared/resources/*/*
+
 
 %/resources/_version.xml: %/manifest.xml
 	v=`xmlstarlet select --text --template --value-of '//iq:manifest/iq:application/@version' -n $<`; \
