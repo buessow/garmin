@@ -1,12 +1,12 @@
-DEVELOPER_KEY='/Users/robertbuessow/StudioProjects/developer_key'
+DEVELOPER_KEY ?= '$(HOME)/StudioProjects/developer_key'
 device ?= fenix7
 opt ?= 2
-MONKEYC_FLAGS=--private-key $(DEVELOPER_KEY) --typecheck 2
+MONKEYC_FLAGS = --private-key $(DEVELOPER_KEY) --typecheck 2
 
 .NOPARALELL:
 
 
-shared_dep=Shared/source/*.mc Shared/resources/*/*
+shared_dep = Shared/source/*.mc Shared/resources/*/*
 
 
 %/resources/_version.xml: %/manifest.xml
