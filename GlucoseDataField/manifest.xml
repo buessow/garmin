@@ -9,8 +9,14 @@
         minSdkVersion="3.3.1" 
         name="@Strings.AppName" 
         type="datafield" 
-        version="1.0.14.pre">
+        version="1.0.15.pre">
         <iq:products>
+            <iq:product id='d2airx10'/>
+            <iq:product id='d2mach1'/>
+            <iq:product id='epix2'/>
+            <iq:product id='epix2pro47mm'/>
+            <iq:product id='venu2'/>
+            <iq:product id='venu2plus'/>
             <iq:product id="descentmk2s"/>
             <iq:product id="fenix5plus"/>
             <iq:product id="fenix5splus"/>

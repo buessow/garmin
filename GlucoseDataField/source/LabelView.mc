@@ -24,34 +24,43 @@ class LabelView extends Ui.DataField {
   var onTimerStopCallback;
 
   private static var layoutSymbols as Dictionary<String, Symbol> = {
-        "L1" => :L1,
-        "L2_3C_Top" => :L2_3C_Top,
-        "L2_Bot" => :L2_Bot,
-        "L3A_Top" => :L3A_Top,
-        "L3A_Mid" => :L3A_Mid,
-        "L3A_Bot" => :L3A_Bot,
-        "L3B_4B_Top" => :L3B_4B_Top,
-        "L3B_Mid" => :L3B_Mid,
-        "L3B_Midfr" => :L3B_Midfr,
-        "L3B_Bot" => :L3B_Bot,
+        "L1"           => :L1,
+        "L1_fr265"     => :L1_fr,
+        "L2_3C_Top"    => :L2_3C_Top,
+        "L2_Bot"       => :L2_Bot,
+        "L3A_Top"      => :L3A_Top,
+        "L3A_Mid"      => :L3A_Mid,
+        "L3A_Bot"      => :L3A_Bot,
+        "L3B_4B_Top"   => :L3B_4B_Top,
+        "L3B_Mid"      => :L3B_Mid,
+        "L3B_Midfr"    => :L3B_Midfr,
+        "L3B_Bot"      => :L3B_Bot,
         "L3C_4C_Bot_L" => :L3C_4C_Bot_L,
         "L3C_4C_Bot_R" => :L3C_4C_Bot_R,        
-        "L4A_Top" => :L4A_Top,
-        "L4A_Mid" => :L4A_Mid,
-        "L4A_Bot" => :L4A_Bot,
-        "L4B_Mid" => :L4B_Mid,
-        "L4B_Bot" => :L4B_Bot,
-        "L4C_Top" => :L4C_Top,
-        "L5_6_Mid_L" => :L5_6_Mid_L,
-        "L5_6_Mid_R" => :L5_6_Mid_R,
+        "L4A_Top"      => :L4A_Top,
+        "L4A_Mid"      => :L4A_Mid,
+        "L4A_Bot"      => :L4A_Bot,
+        "L4B_Mid"      => :L4B_Mid,
+        "L4B_Bot"      => :L4B_Bot,
+        "L4C_Top"      => :L4C_Top,
+        "L5_6_Mid_L"   => :L5_6_Mid_L,
+        "L5_6_Mid_R"   => :L5_6_Mid_R,
+        "L6_Top"       => :L6_Top,
+        "L7_Mid_S"     => :L7_Mid_S,
+        "L7_Mid"       => :L7_Mid,
+        "L7_Bot"       => :L7_Bot,
+        "L9_Top"       => :L9_Top,
+        "L9_Mid_R"     => :L9_Mid_R,
+        "L9_Mid_L"     => :L9_Mid_L,
+        "L9_Bot"       => :L9_Bot,
 
-        "Rect_1" => :Rect_1,
-        "Rect_1_2" => :Rect_1_2,
-        "Rect_1_3" => :Rect_1_3,
-        "Rect_1_4" => :Rect_1_4,
-        "Rect_2_5" => :Rect_2_5,
-        "Rect_1_5" => :Rect_1_5,
-        "Rect_1_10" => :Rect_1_10,
+        "Rect_1"       => :Rect_1,
+        "Rect_1_2"     => :Rect_1_2,
+        "Rect_1_3"     => :Rect_1_3,
+        "Rect_1_4"     => :Rect_1_4,
+        "Rect_2_5"     => :Rect_2_5,
+        "Rect_1_5"     => :Rect_1_5,
+        "Rect_1_10"    => :Rect_1_10,
 
         "Rect_1_10_edge540" => :Rect_1_10_edgeX40,
         "Rect_1_10_edge840" => :Rect_1_10_edgeX40
@@ -74,7 +83,7 @@ class LabelView extends Ui.DataField {
       var layoutId = layouts[sizeStr]["layout"] as String?;
       layoutSymbol = Util.ifNull(layoutSymbols[layoutId + "_" + device], layoutSymbols[layoutId]) as Symbol;
       var defined = Rez.Layouts has layoutSymbol ? "" : " undef";
-      if (log) { Log.i(TAG, "onLayout " + sizeStr + " " + layoutId + " " + (layoutSymbol==null ? "??" : "ok") + defined); }
+      if (log) { Log.i(TAG, "onLayout " + sizeStr + " " + layoutId + "/" + device + " " + (layoutSymbol==null ? "??" : "ok") + defined); }
     } catch (e) {
       if (log) { Log.i(TAG, "onLayout " + sizeStr + " not found"); }
     }

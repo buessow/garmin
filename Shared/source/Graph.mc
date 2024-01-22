@@ -45,8 +45,14 @@ class Graph extends Ui.Drawable {
   private var highGlucoseColor = 0;
   private var highGlucoseHighlightColor = 0;
   private var glucoseRangeColor = 0;
+  private var minMaxYOffset = -25;
 
-  function initialize(params as  { :x as Number, :identifier as Object, :locX as Numeric, :locY as Numeric, :width as Numeric, :height as Numeric, :visible as Boolean }) {
+  function initialize(params as  { 
+        :x as Number, :identifier as Object, 
+        :locX as Numeric, :locY as Numeric, 
+        :width as Numeric, :height as Numeric, 
+        :minMaxYOffset as Numeric,
+        :visible as Boolean }) {
     Drawable.initialize(params);
     me.circular = Sys.getDeviceSettings().screenShape == Sys.SCREEN_SHAPE_ROUND;
     me.initialXOffset = params.get(:x) as Number;
@@ -54,6 +60,7 @@ class Graph extends Ui.Drawable {
     me.initialWidth = params.get(:width) as Number;
     me.width = initialWidth;
     me.height = (params.get(:height) as Number) - 8;
+    me.minMaxYOffset = Util.ifNullNumber(params.get(:minMaxYOffset), -25);
     setAppearanceLight();
   }
 
@@ -353,7 +360,7 @@ class Graph extends Ui.Drawable {
     }
 
     dc.drawText(
-        xOffset + x, yOffset + y - 25,
+        xOffset + x, yOffset + y + minMaxYOffset,
         Gfx.FONT_TINY,
         formatValue(glucoseBuffer.getValue(i)),
         justification);
