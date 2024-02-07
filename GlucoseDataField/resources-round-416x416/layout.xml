@@ -45,10 +45,10 @@
         "L_207x102_1":  { "layout": "L5_6_Mid_L" },
         "L_207x102_4":  { "layout": "L5_6_Mid_R" },
         "L_416x73_7":   { "layout": "L6_Top"},
-        "L_207x87_1":   { "layout": "L7_Mid_S" },
-        "L_207x87_4":   { "layout": "L7_Mid_S" },
+        "L_207x87_1":   { "layout": "L7_8_Mid_S" },
+        "L_207x87_4":   { "layout": "L7_8_Mid_S" },
         "L_416x87_5":   { "layout": "L7_Mid"},
-        "L_416x74_13":  { "layout": "L7_Bot" },
+        "L_416x74_13":  { "layout": "L7_8_Bot" },
         "L_138x87_1":   { "layout": "L9_Mid_L" },
         "L_257x108_4":  { "layout": "L9_Mid_R" },
         "L_257x98_4":   { "layout": "L9_Mid_R" },
@@ -278,7 +278,7 @@
     <label id="GlucoseLabel" x="50%" y="20" font="Gfx.FONT_MEDIUM" justification="Gfx.TEXT_JUSTIFY_CENTER" />
     <text-area id="ErrorLabel" x="2" y="48" width="390" height="50" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
   </layout>
-  <layout id="L7_Mid_S">
+  <layout id="L7_8_Mid_S">
     <drawable id="BackgroundDark" visible="false" />
     <drawable id="BackgroundLight" visible="false" />
     <label id="TitleLabel" x="50%" y="1" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 
@@ -296,7 +296,7 @@
     <label id="Data4Label" x="280" y="50" font="Gfx.FONT_SYSTEM_TINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
     <text-area id="ErrorLabel" x="10" y="50" width="390" height="50" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_LEFT" />
   </layout> 
-  <layout id="L7_Bot">
+  <layout id="L7_8_Bot">
     <drawable id="BackgroundDark" visible="false" />
     <drawable id="BackgroundLight" visible="false" />
     <label id="TitleLabel" x="50%" y="1" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" /> 

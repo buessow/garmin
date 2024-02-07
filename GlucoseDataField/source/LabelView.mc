@@ -46,9 +46,10 @@ class LabelView extends Ui.DataField {
         "L5_6_Mid_L"   => :L5_6_Mid_L,
         "L5_6_Mid_R"   => :L5_6_Mid_R,
         "L6_Top"       => :L6_Top,
-        "L7_Mid_S"     => :L7_Mid_S,
+        "L7_8_Top"     => :L7_8_Top,
+        "L7_8_Mid_S"   => :L7_8_Mid_S,
         "L7_Mid"       => :L7_Mid,
-        "L7_Bot"       => :L7_Bot,
+        "L7_8_Bot"     => :L7_8_Bot,
         "L9_Top"       => :L9_Top,
         "L9_Mid_R"     => :L9_Mid_R,
         "L9_Mid_L"     => :L9_Mid_L,
@@ -150,17 +151,18 @@ class LabelView extends Ui.DataField {
       "ConnectedLabel", 
       connected ? "C" : "D",
       connected ? Gfx.COLOR_GREEN : Gfx.COLOR_RED);
-    setLabel("Data2Label", data.getGlucoseAgeStr());
 
     if (data.errorMessage == null) {
       setLabel("GlucoseUnitLabel", data.getGlucoseUnitStr());
       setLabel("Data1Label", data.getGlucoseDeltaPerMinuteStr());
+      setLabel("Data2Label", data.getGlucoseAgeStr());
       setLabel("Data3Label", data.getRemainingInsulinStr());
       setLabel("Data4Label", data.getBasalCorrectionStr());
       setLabel("ErrorLabel", null);
     } else {
       setLabel("GlucoseUnitLabel", null);
       setLabel("Data1Label", null);
+      setLabel("Data2Label", data.getNextScheduleDelayStr());
       setLabel("Data3Label", null);
       setLabel("Data4Label", null);
       setLabelColor("ErrorLabel", data.errorMessage, Gfx.COLOR_RED);

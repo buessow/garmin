@@ -46,7 +46,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
         if (code > 0) {
           return "HTTP" + code;
         } else {
-          return "unknown error";
+          return "error " + code;
         }
     }
   }
