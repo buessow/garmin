@@ -9,7 +9,7 @@
         minSdkVersion="3.3.1" 
         name="@Strings.AppName" 
         type="datafield" 
-        version="1.0.15">
+        version="1.0.16">
         <iq:products>
             <iq:product id='d2airx10'/>
             <iq:product id='d2mach1'/>
@@ -22,9 +22,12 @@
             <iq:product id="fenix5splus"/>
             <iq:product id="fenix5xplus"/>
             <iq:product id="fenix6spro"/>
+            <iq:product id="fenix6pro"/>
             <iq:product id='fenix6xpro'/>
+            <iq:product id="fenix7"/>
             <iq:product id="fenix7s"/>
             <iq:product id='fenix7x'/>
+            <iq:product id="fenix7pro"/>
             <iq:product id="fenix7spro"/>
             <iq:product id='fenix7xpro'/>
             <iq:product id="fr245m"/>
@@ -39,9 +42,6 @@
             <iq:product id="marqdriver"/>
             <iq:product id="marqexpedition"/>
             <iq:product id="marqgolfer"/>
-            <iq:product id="fenix6pro"/>
-            <iq:product id="fenix7"/>
-            <iq:product id="fenix7pro"/>
             <iq:product id="fr255"/>
             <iq:product id="fr255m"/>
             <iq:product id="fr955"/>

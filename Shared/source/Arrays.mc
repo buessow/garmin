@@ -25,7 +25,7 @@ module Shared {
 
     function qsort(a as Array) as Void {
       // Stack of begin/end pairs encoded into one integer.
-      var s = new [10];
+      var s = new [10] as Array<Number>;
       var scnt = 0;  // stack size, since it's hard to remove from the end of an array
       scnt = push(s, scnt, 0, a.size() - 1);
       while (scnt > 0) {
