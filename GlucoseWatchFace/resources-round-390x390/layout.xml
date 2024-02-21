@@ -6,6 +6,11 @@
            "devices": ["venu"],
            "locY": 47,
            "addMinuteY": 3
+        },
+        {
+           "devices": ["fr165", "fr165m"],
+           "locX": 255,
+           "locY": 55
         }
       ]
     }

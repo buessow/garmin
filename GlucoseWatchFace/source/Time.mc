@@ -24,7 +24,9 @@ class Time extends Ui.Drawable {
     Drawable.initialize(params);
     addMinuteY = Util.ifNull(params.get(:addMinuteY), 0) as Number;
 
-    var device = PartNumbers.map[System.getDeviceSettings().partNumber];
+    var partNumber = System.getDeviceSettings().partNumber;
+    var device = PartNumbers.map[partNumber];
+    Log.i(TAG, "looking for override " + partNumber + " " + device);
     var overrides = Application.loadResource(Rez.JsonData.timeOverrides) as Dictionary<String, Object>;
     var deviceOverrides = overrides["deviceOverrides"] as Array;
     for (var i = 0; i < deviceOverrides.size(); i++) {

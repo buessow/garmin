@@ -118,5 +118,7 @@ module PartNumbers {
         "006-B4375-00" => "fenix7pro",
         "006-B4376-00" => "fenix7xpro",
         "006-B4394-00" => "instinct2x",
+        "006-B4432-00" => "fr165",
+        "006-B4433-00" => "fr165m",
     };
 }}
