@@ -3,12 +3,12 @@
     <!--    preview: id="c9e90ee7e6924829a8b45e7dafff5cb4" -->
     <!-- production: id="662dfcf7f5a147de8bd37f09574adb11" -->
     <iq:application entry="GlucoseWatchFaceApp" 
-        id="662dfcf7f5a147de8bd37f09574adb11"
+        id="c9e90ee7e6924829a8b45e7dafff5cb4"
         minSdkVersion="3.3.1" 
         launcherIcon="@Drawables.LauncherIcon" 
         name="@Strings.AppName" 
         type="watchface" 
-        version="1.2.3">
+        version="1.2.4.pre">
         <iq:products>
             <iq:product id="legacyherocaptainmarvel"/>
             <iq:product id="fr55"/>
@@ -68,6 +68,8 @@
             <iq:product id="venu2"/>
             <iq:product id="venu2plus"/>
             <iq:product id="venu2s"/>
+            <iq:product id="venusq"/>
+            <iq:product id="venusq2"/>
             <iq:product id="legacyherofirstavenger"/>
             <iq:product id="legacysagadarthvader"/>
             <iq:product id="venu"/>
