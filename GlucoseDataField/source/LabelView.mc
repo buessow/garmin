@@ -120,6 +120,7 @@ class LabelView extends Ui.DataField {
     if (graph != null) {
       graph.isMmolL = data.glucoseUnit == Shared.Data.mmoll;
       graph.setReadings(data.glucoseBuffer);
+      graph.setVisible(data.errorMessage == null);
     }
     
     Ui.requestUpdate();
@@ -167,6 +168,11 @@ class LabelView extends Ui.DataField {
       "ConnectedLabel", 
       connected ? "C" : "D",
       connected ? Gfx.COLOR_GREEN : Gfx.COLOR_RED);
+
+    graph = findDrawableById("DateValueGraph") as Shared.Graph?;
+    if (graph != null) {
+      graph.setVisible(data.errorMessage == null);
+    }
 
     if (data.errorMessage == null) {
       setLabel("GlucoseUnitLabel", data.getGlucoseUnitStr());

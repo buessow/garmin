@@ -391,6 +391,7 @@ class Graph extends Ui.Drawable {
   }
 
   function draw(dc as Gfx.Dc) as Void {
+    if (!isVisible) { return; }
     glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec") as Number;
     glucoseBarPadding = glucoseBarWidthSec < 300 ? 0 : 2;
     if (glucoseBuffer.size() == 0) {

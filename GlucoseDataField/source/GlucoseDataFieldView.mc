@@ -151,28 +151,7 @@ class GlucoseDataFieldView extends Ui.DataField {
   }
 
   hidden function getGraph(dc, reset) {
-    var graph = null;/*
-    var graphSettings = settings[:graph];
-    if (graphSettings != null) {
-      graph = graphSettings[:obj];
-      if (graphSettings[:valign] == :bottom) {
-        graphSettings[:y] = dc.getHeight() - graphSettings[:height];
-      }
-      if (graph == null || reset) {
-        graph = new Shared.DateValueGraph(settings[:graph]);
-        graph.isMmolL = data.glucoseUnit == Shared.Data.mmoll;
-        if (data.lastGlucose != null) {
-          graph.setReadings(data.glucoseBuffer);
-        } else {
-          graphSettings[:lastDrawnSec] = 0;
-        }
-        graphSettings[:obj] = graph;
-      }
-      if (data.lastGlucose != null &&
-          lastDrawnValueSec  < data.lastGlucose.dateSec) {
-        graph.setReadings(data.glucoseBuffer);
-      }
-    }*/
+    var graph = null;
     return graph;
   }
 
@@ -393,10 +372,7 @@ class GlucoseDataFieldView extends Ui.DataField {
 
     var x = dc.getWidth() / 2;
     var y = getY(dc);
-    var xy = drawText(
-	dc, x, y,
-	:labelFont, Ui.loadResource(Rez.Strings.FieldName),
-	:top, Gfx.TEXT_JUSTIFY_CENTER);
+    var xy = drawText(dc, x, y, :labelFont, Ui.loadResource(Rez.Strings.FieldName), :top, Gfx.TEXT_JUSTIFY_CENTER);
     var labelHeight = xy[1];
     if (isRound()) {
       drawValueAndExtraRound(dc, y + labelHeight);
@@ -420,7 +396,7 @@ class GlucoseDataFieldView extends Ui.DataField {
       drawError(dc, 0, y, w, h);
     }
 
-    if (graph != null) {
+    if (graph != null && data.errorMessage == null) {
       graph.draw(dc);
     }
     if (data.hasValue()) {
