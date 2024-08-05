@@ -4,7 +4,7 @@
     <!-- prod id="815c7328c21248c493ad9ac4682fe6b3"-->
     <iq:application 
         entry="GlucoseDataFieldApp" 
-        id="1107ca6c2d5644b998d4bcb3793f2b7c" 
+        id="815c7328c21248c493ad9ac4682fe6b3" 
         launcherIcon="@Drawables.LauncherIcon" 
         minSdkVersion="3.3.1" 
         name="@Strings.AppName" 
