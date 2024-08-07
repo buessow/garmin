@@ -6,6 +6,7 @@ using Shared.Log;
 using Shared.Util;
 using Toybox.Application;
 using Toybox.Background;
+using Toybox.System;
 using Toybox.Time;
 using Toybox.WatchUi as Ui;
 
@@ -23,11 +24,11 @@ class GlucoseWatchFaceApp extends Application.AppBase {
     server.wait = true;
   }
 
-  function getServiceDelegate() {
+  function getServiceDelegate() as [ System.ServiceDelegate ] {
     return [ new Shared.GlucoseServiceDelegate(server, 2 * 3600 - 9 * 60) ];
   }
 
-  function onBackgroundData(result) {
+  function onBackgroundData(result) as Void {
     try {
       Log.i(TAG, "onBackgroundData " + result);
       if (data == null) {
@@ -52,7 +53,7 @@ class GlucoseWatchFaceApp extends Application.AppBase {
     Log.i(TAG, "onStop");
   }
 
-  function getInitialView() as Array<Ui.Views or Ui.InputDelegates> or Null {
+  function getInitialView() as [ Ui.Views ] or [ Ui.Views, Ui.InputDelegates ] {
     Properties.setValue("Device", System.getDeviceSettings().partNumber + "_WF");
     Properties.setValue("AppVersion", "wf_" + BuildInfo.VERSION);
     server.init2();
@@ -62,15 +63,15 @@ class GlucoseWatchFaceApp extends Application.AppBase {
       data = new Shared.Data();
     }
     view = new GlucoseWatchFaceView(data);
-    return [ view ];
+    return [view];
   }
 
-  function getSettingsView() as Array<Ui.Views or Ui.InputDelegates> or Null{
+  function getSettingsView() as [ Ui.Views ] or [ Ui.Views, Ui.InputDelegates ] or Null {
     Log.i(TAG, "getSettingsView");
     return new GlucoseWatchFaceSettings().get();
   }
 
-  function onSettingsChanged() {
+  function onSettingsChanged() as Void {
     view.updateSettings();
     Ui.requestUpdate();
   }

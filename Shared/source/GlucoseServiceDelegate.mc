@@ -88,7 +88,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     }
   }
 
-  private function putIfNotNull(d as Dictionary<String, Object>, k as String, v as Object?) as Void {
+  private function putIfNotNull(d as Dictionary<String, String>, k as String, v as String?) as Void {
     if (v == null) {
       d.remove(k);
     } else {

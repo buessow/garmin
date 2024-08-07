@@ -25,7 +25,7 @@ class GlucoseDataFieldApp extends Application.AppBase {
   }
 
   (:background)
-  function getServiceDelegate() as Lang.Array<System.ServiceDelegate> {
+  function getServiceDelegate() as [ System.ServiceDelegate ] {
     Log.i(TAG, "getServiceDelegate");
     return [ new Shared.GlucoseServiceDelegate(server, 111 * 60) ];
   }
@@ -60,7 +60,7 @@ class GlucoseDataFieldApp extends Application.AppBase {
     }
   }
 
-  function getInitialView() as Lang.Array<Ui.Views or Ui.InputDelegates> or Null {
+  function getInitialView() as [ Ui.Views ] or [ Ui.Views, Ui.InputDelegates ] {
     Properties.setValue("Device", System.getDeviceSettings().partNumber + "_DF");
     Properties.setValue("AppVersion", "df_" + BuildInfo.VERSION);
 

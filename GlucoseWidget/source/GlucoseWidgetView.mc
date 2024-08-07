@@ -25,10 +25,8 @@ class GlucoseWidgetView extends Ui.View {
   private var drawables as Array<Ui.Drawable> = [];
 
   function onLayout(dc) {
-    if (Rez.Layouts has :MainLayout) {
-      drawables = Rez.Layouts.MainLayout(dc);
-      setLayout(drawables);
-    }
+    drawables = Rez.Layouts.MainLayout(dc);
+    setLayout(drawables);
     graph = findDrawableById("DateValueGraph");
     findTextById("PostCarbsResultLabel").setText(BuildInfo.VERSION);
   }

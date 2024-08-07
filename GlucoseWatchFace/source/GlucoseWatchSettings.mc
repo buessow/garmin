@@ -24,7 +24,7 @@ class GlucoseWatchFaceSettings extends Ui.View {
       menu.addItem(new Ui.MenuItem(Rez.Strings.BuildTimeTitle, BuildInfo.BUILD_TIME, :menuBuildTime, {}));
     }
     
-    function get() as Array<Ui.Views or Ui.InputDelegates> {
+    function get() as [ Ui.Views, Ui.InputDelegates ] {
       return [menu, input];
     }
 

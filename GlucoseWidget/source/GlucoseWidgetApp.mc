@@ -3,6 +3,7 @@ using Shared.Log;
 using Toybox.Application;
 using Toybox.Application.Properties;
 using Toybox.System as Sys;
+using Toybox.WatchUi as Ui;
 
 class GlucoseWidgetApp extends Application.AppBase {
   hidden const TAG = "GlucoseWidgetApp";
@@ -43,7 +44,7 @@ class GlucoseWidgetApp extends Application.AppBase {
     return [ glanceView ];
   }
 
-  function onConnect() {
+  function onConnect() as Void {
     Log.i(TAG, "onConnect() " + data.connected);
     if (view != null) {
       view.onGlucose();
@@ -53,7 +54,7 @@ class GlucoseWidgetApp extends Application.AppBase {
     }
   }
 
-  function getInitialView() {
+  function getInitialView() as [ Ui.Views ] or [ Ui.Views, Ui.InputDelegates ] {
     Properties.setValue("Device", System.getDeviceSettings().partNumber + "_Widget");
     Properties.setValue("AppVersion", "wi_" + Application.loadResource(Rez.Strings.Version));
 
@@ -79,7 +80,7 @@ class GlucoseWidgetApp extends Application.AppBase {
     } catch (e) {
       Log.e(TAG, e.getErrorMessage());
       e.printStackTrace();
-      return null;
+      throw e;
     }
   }
 }
