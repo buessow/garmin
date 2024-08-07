@@ -24,14 +24,14 @@ class GlucoseWidgetView extends Ui.View {
 
   private var drawables as Array<Ui.Drawable> = [];
 
-  function onLayout(dc) {
+  function onLayout(dc) as Void {
     drawables = Rez.Layouts.MainLayout(dc);
     setLayout(drawables);
     graph = findDrawableById("DateValueGraph");
     findTextById("PostCarbsResultLabel").setText(BuildInfo.VERSION);
   }
 
-  function onGlucose() {
+  function onGlucose() as Void {
     if (data.glucoseBuffer != null and graph != null) {
       if (graph != null) {
         graph.setReadings(data.glucoseBuffer);
@@ -45,7 +45,7 @@ class GlucoseWidgetView extends Ui.View {
     }
   }
 
-  private function resetButtons() {
+  private function resetButtons() as Void {
     for (var i = 0; i < drawables.size(); i++) {
       var d = drawables[i];
       if (d instanceof Ui.Button) {
@@ -54,19 +54,19 @@ class GlucoseWidgetView extends Ui.View {
     }
   }
 
-  function connecting() {
+  function connecting() as Void {
     Log.i(TAG, "connecting");
     data.connected = null;
     Ui.requestUpdate();
   }
 
-  function setCarbs(carbs) {
+  function setCarbs(carbs) as Void {
     findTextById("Carbs").setText(carbs.toString());
     resetButtons();
     Ui.requestUpdate();
   }
 
-  function postCarbsStart(carbs) {
+  function postCarbsStart(carbs) as Void {
     var view = findTextById("PostCarbsResultLabel");
     if (view != null) {
       view.setColor(Gfx.COLOR_BLUE);
@@ -74,7 +74,7 @@ class GlucoseWidgetView extends Ui.View {
     }
   }
 
-  function postCarbsDone(success, message) {
+  function postCarbsDone(success, message) as Void {
     var view = findTextById("PostCarbsResultLabel");
     if (view == null) { return; }
     if (success) {
@@ -103,7 +103,7 @@ class GlucoseWidgetView extends Ui.View {
     c.draw(dc);
   }
 
-  function onUpdate(dc) {
+  function onUpdate(dc) as Void {
     try {
       View.onUpdate(dc);
       findTextById("GlucoseAge").setText(data.getGlucoseAgeStr());
