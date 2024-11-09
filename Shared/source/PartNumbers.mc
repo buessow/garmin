@@ -120,5 +120,9 @@ module PartNumbers {
         "006-B4394-00" => "instinct2x",
         "006-B4432-00" => "fr165",
         "006-B4433-00" => "fr165m",
+        "006-B4532-00" => "fenix8solar47mm",
+        "006-B4536-00" => "fenix847mm",
+        "006-B4534-00" => "fenix843mm",
+        "006-B4533-00" => "fenix8solar51mm",
     };
 }}

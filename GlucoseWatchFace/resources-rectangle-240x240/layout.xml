@@ -1,51 +1,29 @@
 <resources>
-  <jsonData id="timeOverrides">{ "deviceOverrides": []}</jsonData>
-<layout id="WatchFace">
+  <layout id="WatchFace">
     <drawable id="BackgroundDark" visible="true" />
     <drawable id="BackgroundLight" visible="false" />
     <drawable id="DateValueGraph" class="Shared.Graph">
       <param name="x">0</param>
       <param name="y">120</param>
       <param name="width">240</param>
-       <param name="height">90</param>
-       <param name="minMaxYOffset">-25</param>
-    </drawable>      
-    <label id="DateLabel" x="center" y="2" 
-           font="Graphics.FONT_SYSTEM_SMALL" 
-           justification="Graphics.TEXT_JUSTIFY_CENTER" 
-           color="Graphics.COLOR_WHITE" />
-    <drawable id="Time" class="Time">
-          <param name="locX">176</param>
-          <param name="locY">35</param>
-          <param name="hourMinuteSpace">4</param>
-          <param name="hourFont">Graphics.FONT_NUMBER_THAI_HOT</param> 
-          <param name="minuteFont">Graphics.FONT_LARGE</param>
-          <param name="addMinuteY">0</param>
+      <param name="height">90</param>
+      <param name="minMaxYOffset">-25</param>
     </drawable>
-    <label id="GlucoseLabel" x="center" y="210" 
-           font="Graphics.FONT_SYSTEM_LARGE" 
-           justification="Graphics.TEXT_JUSTIFY_CENTER" 
-           color="Graphics.COLOR_WHITE" />
-    <label id="Data1Label" x="100" y="30" 
-           font="Graphics.FONT_SYSTEM_TINY" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />         
-    <label id="Data2Label" x="100" y="52" 
-           font="Graphics.FONT_SYSTEM_XTINY" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />
-    <label id="Data3Label" x="100" y="73" 
-           font="Graphics.FONT_SYSTEM_XTINY" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />     
-    <label id="Data4Label" x="100" y="94" 
-           font="Graphics.FONT_SYSTEM_XTINY" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />     
-           
-    <label id="MessageLabel" x="20" y="100" 
-           font="Graphics.FONT_SYSTEM_TINY" 
-           justification="Graphics.TEXT_JUSTIFY_LEFT" 
-           color="Graphics.COLOR_RED" />   
-</layout>
+    <label id="DateLabel" x="center" y="2" font="Graphics.FONT_SYSTEM_SMALL" justification="Graphics.TEXT_JUSTIFY_CENTER" color="Graphics.COLOR_WHITE" />
+    <drawable id="Time" class="Time">
+      <param name="locX">176</param>
+      <param name="locY">35</param>
+      <param name="hourMinuteSpace">4</param>
+      <param name="hourFont">Graphics.FONT_NUMBER_THAI_HOT</param>
+      <param name="minuteFont">Graphics.FONT_LARGE</param>
+      <param name="addMinuteY">0</param>
+    </drawable>
+    <label id="GlucoseLabel" x="center" y="210" font="Graphics.FONT_SYSTEM_LARGE" justification="Graphics.TEXT_JUSTIFY_CENTER" color="Graphics.COLOR_WHITE" />
+    <label id="Data1Label" x="100" y="30" font="Graphics.FONT_SYSTEM_TINY" justification="Graphics.TEXT_JUSTIFY_RIGHT" color="Graphics.COLOR_WHITE" />
+    <label id="Data2Label" x="100" y="52" font="Graphics.FONT_SYSTEM_XTINY" justification="Graphics.TEXT_JUSTIFY_RIGHT" color="Graphics.COLOR_WHITE" />
+    <label id="Data3Label" x="100" y="73" font="Graphics.FONT_SYSTEM_XTINY" justification="Graphics.TEXT_JUSTIFY_RIGHT" color="Graphics.COLOR_WHITE" />
+    <label id="Data4Label" x="100" y="94" font="Graphics.FONT_SYSTEM_XTINY" justification="Graphics.TEXT_JUSTIFY_RIGHT" color="Graphics.COLOR_WHITE" />
+
+    <label id="MessageLabel" x="20" y="100" font="Graphics.FONT_SYSTEM_TINY" justification="Graphics.TEXT_JUSTIFY_LEFT" color="Graphics.COLOR_RED" />
+  </layout>
 </resources>

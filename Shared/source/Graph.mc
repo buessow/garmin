@@ -47,10 +47,10 @@ class Graph extends Ui.Drawable {
   private var glucoseRangeColor = 0;
   private var minMaxYOffset = -25;
 
-  function initialize(params as  { 
-        :x as Number, :identifier as Object, 
-        :locX as Numeric, :locY as Numeric, 
-        :width as Numeric, :height as Numeric, 
+  function initialize(params as  {
+        :x as Number, :identifier as Object,
+        :locX as Numeric, :locY as Numeric,
+        :width as Numeric, :height as Numeric,
         :minMaxYOffset as Numeric,
         :visible as Boolean }) {
     Drawable.initialize(params);
@@ -64,8 +64,12 @@ class Graph extends Ui.Drawable {
     setAppearanceLight();
   }
 
+  function setOverride(override as Shared.Override) {
+    me.minMaxYOffset += override.getInt("graph", "addMinMaxYOffset", 0);
+  }
+
   function valueCount() as Number {
-    return TIME_RANGE_SEC / glucoseBarWidthSec; 
+    return TIME_RANGE_SEC / glucoseBarWidthSec;
   }
 
   function setAppearanceLight() as Void {
@@ -117,7 +121,7 @@ class Graph extends Ui.Drawable {
     if (firstValueIdx < glucoseBuffer.size()) {
       rightOffset = getBorderOffset(glucoseBuffer.getLastValue());
     }
-    
+
     var w = initialWidth - rightOffset;
     var valueWidth = Math.ceil((w + glucoseBarPadding) / valueCount().toDouble()).toNumber();
     glucoseBarWidth = valueWidth - glucoseBarPadding;
@@ -130,11 +134,11 @@ class Graph extends Ui.Drawable {
     xOffset = initialXOffset + w - width - 1;
 
     Log.i(
-        TAG, 
-        "graph: " + { 
-            "rightOffset" => rightOffset, 
+        TAG,
+        "graph: " + {
+            "rightOffset" => rightOffset,
             "xOffset" => xOffset,
-            "width" => width, 
+            "width" => width,
             "glucoseBarWidth" => glucoseBarWidth,
             "glucoseBarPadding" => glucoseBarPadding,
             "valueCount" => valueCount(),
@@ -190,7 +194,7 @@ class Graph extends Ui.Drawable {
   }
 
   private function drawRectangle(
-      dc as Gfx.Dc, color as Number, 
+      dc as Gfx.Dc, color as Number,
       x as Number, y as Number, w as Number, h as Number) as Void {
     dc.setColor(color, Gfx.COLOR_TRANSPARENT);
     dc.fillRectangle(xOffset + x, yOffset + y, w, h);
@@ -308,7 +312,7 @@ class Graph extends Ui.Drawable {
         samplingSum += val.data.toNumber();
         samplingCnt += 1;
         continue;
-      } 
+      }
       if (samplingCnt > 0) {
         var value = new DateValue(60 * samplingMinute, samplingSum / samplingCnt);
         if (lastValue == null || value.dateSec - (lastValue as DateValue).dateSec > 180) {
@@ -347,7 +351,7 @@ class Graph extends Ui.Drawable {
   private function drawValue(dc as Gfx.Dc, startSec as Number, i as Number) as Void {
     var x = getX(startSec, glucoseBuffer.getDateSec(i));
     var y = getYForGlucose(glucoseBuffer.getValue(i));
-    
+
     var justification;
     if (i < firstValueIdx + 3) {
       justification = Gfx.TEXT_JUSTIFY_LEFT;

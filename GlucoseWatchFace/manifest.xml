@@ -2,20 +2,14 @@
 <iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
     <!--    preview: id="c9e90ee7e6924829a8b45e7dafff5cb4" -->
     <!-- production: id="662dfcf7f5a147de8bd37f09574adb11" -->
-    <iq:application entry="GlucoseWatchFaceApp" 
+    <iq:application entry="GlucoseWatchFaceApp"
         id="c9e90ee7e6924829a8b45e7dafff5cb4"
-        minSdkVersion="3.3.1" 
-        launcherIcon="@Drawables.LauncherIcon" 
-        name="@Strings.AppName" 
-        type="watchface" 
+        minSdkVersion="3.3.1"
+        launcherIcon="@Drawables.LauncherIcon"
+        name="@Strings.AppName"
+        type="watchface"
         version="1.2.4.pre">
         <iq:products>
-            <iq:product id="legacyherocaptainmarvel"/>
-            <iq:product id="fr55"/>
-            <iq:product id="fr255s"/>
-            <iq:product id="fr255sm"/>
-            <iq:product id="legacysagarey"/>
-            <iq:product id="vivoactive4s"/>
             <iq:product id="approachs7042mm"/>
             <iq:product id="approachs7047mm"/>
             <iq:product id="d2airx10"/>
@@ -41,20 +35,31 @@
             <iq:product id="fenix7spro"/>
             <iq:product id="fenix7x"/>
             <iq:product id="fenix7xpro"/>
+            <iq:product id="fenix843mm"/>
+            <iq:product id="fenix847mm"/>
+            <iq:product id="fenix8solar47mm"/>
+            <iq:product id="fenix8solar51mm"/>
             <iq:product id="fr165"/>
             <iq:product id="fr165m"/>
             <iq:product id="fr245"/>
             <iq:product id="fr245m"/>
             <iq:product id="fr255"/>
             <iq:product id="fr255m"/>
+            <iq:product id="fr255s"/>
+            <iq:product id="fr255sm"/>
             <iq:product id="fr265"/>
             <iq:product id="fr265s"/>
-            <iq:product id="fr745"/>
             <iq:product id="fr265s"/>
+            <iq:product id="fr55"/>
+            <iq:product id="fr745"/>
             <iq:product id="fr945"/>
             <iq:product id="fr945lte"/>
             <iq:product id="fr955"/>
             <iq:product id="fr965"/>
+            <iq:product id="legacyherocaptainmarvel"/>
+            <iq:product id="legacyherofirstavenger"/>
+            <iq:product id="legacysagadarthvader"/>
+            <iq:product id="legacysagarey"/>
             <iq:product id="marq2"/>
             <iq:product id="marq2aviator"/>
             <iq:product id="marqadventurer"/>
@@ -65,15 +70,14 @@
             <iq:product id="marqdriver"/>
             <iq:product id="marqexpedition"/>
             <iq:product id="marqgolfer"/>
+            <iq:product id="venu"/>
             <iq:product id="venu2"/>
             <iq:product id="venu2plus"/>
             <iq:product id="venu2s"/>
             <iq:product id="venusq"/>
             <iq:product id="venusq2"/>
-            <iq:product id="legacyherofirstavenger"/>
-            <iq:product id="legacysagadarthvader"/>
-            <iq:product id="venu"/>
             <iq:product id="vivoactive4"/>
+            <iq:product id="vivoactive4s"/>
             <iq:product id="vivoactive5"/>
         </iq:products>
         <iq:permissions>

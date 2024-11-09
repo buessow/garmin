@@ -1,11 +1,12 @@
 <resources>
-  <jsonData id="timeOverrides">
-    { 
-      "deviceOverrides": [
+  <jsonData id="overrides">
+    {
+      "devices": [
         {
-           "devices": ["epix2", "epix2pro47mm", "epix2pro51mm"],
-         
-           "addMinuteY": 2
+           "deviceIds": ["epix2", "epix2pro47mm", "epix2pro51mm", "fenix843mm"],
+           "time": {
+             "addMinuteY": 2
+           }
         }
       ]
     }
@@ -17,44 +18,45 @@
       <param name="x">0</param>
       <param name="y">195</param>
       <param name="width">416</param>
-       <param name="height">160</param>
-    </drawable>      
-    <label id="DateLabel" x="center" y="10" 
-           font="Graphics.FONT_SYSTEM_SMALL" 
-           justification="Graphics.TEXT_JUSTIFY_CENTER" 
+      <param name="height">160</param>
+      <param name="minMaxYOffset">-35</param>
+    </drawable>
+    <label id="DateLabel" x="center" y="10"
+           font="Graphics.FONT_SYSTEM_SMALL"
+           justification="Graphics.TEXT_JUSTIFY_CENTER"
            color="Graphics.COLOR_WHITE" />
     <drawable id="Time" class="Time">
           <param name="locX">280</param>
           <param name="locY">45</param>
           <param name="addMinuteY">-5</param>
           <param name="hourMinuteSpace">3</param>
-          <param name="hourFont">Graphics.FONT_SYSTEM_NUMBER_HOT</param> 
-          <param name="minuteFont">Graphics.FONT_SYSTEM_NUMBER_MILD</param> 
-    </drawable>    
-    <label id="GlucoseLabel" x="center" y="355" 
-           font="Graphics.FONT_SYSTEM_LARGE" 
-           justification="Graphics.TEXT_JUSTIFY_CENTER" 
+          <param name="hourFont">Graphics.FONT_SYSTEM_NUMBER_HOT</param>
+          <param name="minuteFont">Graphics.FONT_SYSTEM_NUMBER_MILD</param>
+    </drawable>
+    <label id="GlucoseLabel" x="center" y="355"
+           font="Graphics.FONT_SYSTEM_LARGE"
+           justification="Graphics.TEXT_JUSTIFY_CENTER"
            color="Graphics.COLOR_WHITE" />
-    <label id="Data1Label" x="145" y="65" 
-           font="Graphics.FONT_SYSTEM_TINY" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />         
-    <label id="Data2Label" x="145" y="105" 
-           font="Graphics.FONT_SYSTEM_XTINY" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
+    <label id="Data1Label" x="145" y="65"
+           font="Graphics.FONT_SYSTEM_TINY"
+           justification="Graphics.TEXT_JUSTIFY_RIGHT"
            color="Graphics.COLOR_WHITE" />
-    <label id="Data3Label" x="145" y="135" 
-           font="Graphics.FONT_SYSTEM_XTINY" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />     
-    <label id="Data4Label" x="145" y="165" 
-           font="Graphics.FONT_SYSTEM_XTINY" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />     
-           
-    <label id="MessageLabel" x="20" y="165" 
-           font="Graphics.FONT_SYSTEM_XTINY" 
-           justification="Graphics.TEXT_JUSTIFY_LEFT" 
-           color="Graphics.COLOR_RED" />   
+    <label id="Data2Label" x="145" y="105"
+           font="Graphics.FONT_SYSTEM_XTINY"
+           justification="Graphics.TEXT_JUSTIFY_RIGHT"
+           color="Graphics.COLOR_WHITE" />
+    <label id="Data3Label" x="145" y="135"
+           font="Graphics.FONT_SYSTEM_XTINY"
+           justification="Graphics.TEXT_JUSTIFY_RIGHT"
+           color="Graphics.COLOR_WHITE" />
+    <label id="Data4Label" x="145" y="165"
+           font="Graphics.FONT_SYSTEM_XTINY"
+           justification="Graphics.TEXT_JUSTIFY_RIGHT"
+           color="Graphics.COLOR_WHITE" />
+
+    <label id="MessageLabel" x="20" y="165"
+           font="Graphics.FONT_SYSTEM_XTINY"
+           justification="Graphics.TEXT_JUSTIFY_LEFT"
+           color="Graphics.COLOR_RED" />
 </layout>
 </resources>

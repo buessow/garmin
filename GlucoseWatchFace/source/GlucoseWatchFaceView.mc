@@ -29,12 +29,18 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
 
   function onLayout(dc as Gfx.Dc) as Void {
     setLayout(Rez.Layouts.WatchFace(dc));
+    var override = new Shared.Override();
 
     graph = findDrawableById("DateValueGraph") as Shared.Graph;
+    graph.setOverride(override);
     graph.isMmolL = data.glucoseUnit == Shared.Data.mmoll;
     graph.lowGlucoseMark = data.lowGlucoseMark;
     graph.highGlucoseMark = data.highGlucoseMark;
     graph.setReadings(data.glucoseBuffer);
+
+    var time = findDrawableById("Time") as Time;
+    time.setOverride(override);
+
 
     updateSettings();
     Ui.requestUpdate();

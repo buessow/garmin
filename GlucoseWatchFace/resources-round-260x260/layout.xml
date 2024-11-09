@@ -1,19 +1,25 @@
 <resources>
-  <jsonData id="timeOverrides">
-    { 
-      "deviceOverrides": [
+  <jsonData id="overrides">
+    {
+      "devices": [
         {
-           "devices": ["fr955"],
-           "locX": 175,
-           "locY": 38,
-           "addMinuteY": 0
+           "deviceIds": ["fr955"],
+           "time": {
+              "locX": 175,
+              "locY": 38,
+              "addMinuteY": 0
+           }
         }, {
-           "devices": ["fr255", "fr255m", "vivoactive4", "legacyherofirstavenger", "legacysagadarthvader"],
-           "addMinuteY": 4
+           "deviceIds": ["fr255", "fr255m", "vivoactive4", "legacyherofirstavenger", "legacysagadarthvader"],
+           "time": {
+            "addMinuteY": 4
+           }
         }, {
-           "devices": ["fenix7", "fenix7s", "fenix7pro"],
-           "locX": 180,
-           "addMinuteY": -2
+           "deviceIds": ["fenix7", "fenix7s", "fenix7pro"],
+           "time": {
+             "locX": 180,
+             "addMinuteY": -2
+           }
         }
       ]
     }
@@ -26,42 +32,42 @@
       <param name="y">130</param>
       <param name="width">260</param>
       <param name="height">95</param>
-    </drawable>      
-    <label id="DateLabel" x="center" y="10" 
-           font="Graphics.FONT_SYSTEM_SMALL" 
-           justification="Graphics.TEXT_JUSTIFY_CENTER" 
+    </drawable>
+    <label id="DateLabel" x="center" y="10"
+           font="Graphics.FONT_SYSTEM_SMALL"
+           justification="Graphics.TEXT_JUSTIFY_CENTER"
            color="Graphics.COLOR_WHITE" />
     <drawable id="Time" class="Time">
           <param name="locX">170</param>
           <param name="locY">28</param>
           <param name="hourMinuteSpace">3</param>
-          <param name="hourFont">Graphics.FONT_SYSTEM_NUMBER_HOT</param> 
+          <param name="hourFont">Graphics.FONT_SYSTEM_NUMBER_HOT</param>
           <param name="minuteFont">Graphics.FONT_SYSTEM_NUMBER_MILD</param>
     </drawable>
-    <label id="GlucoseLabel" x="center" y="225" 
-           font="Graphics.FONT_SYSTEM_LARGE" 
-           justification="Graphics.TEXT_JUSTIFY_CENTER" 
+    <label id="GlucoseLabel" x="center" y="225"
+           font="Graphics.FONT_SYSTEM_LARGE"
+           justification="Graphics.TEXT_JUSTIFY_CENTER"
            color="Graphics.COLOR_WHITE" />
-    <label id="Data1Label" x="88" y="46" 
-           font="Graphics.FONT_SYSTEM_TINY" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />         
-    <label id="Data2Label" x="88" y="72" 
-           font="Graphics.FONT_SYSTEM_XTINY" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
+    <label id="Data1Label" x="88" y="46"
+           font="Graphics.FONT_SYSTEM_TINY"
+           justification="Graphics.TEXT_JUSTIFY_RIGHT"
            color="Graphics.COLOR_WHITE" />
-    <label id="Data3Label" x="88" y="88" 
-           font="Graphics.FONT_SYSTEM_XTINY" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />     
-    <label id="Data4Label" x="88" y="104" 
-           font="Graphics.FONT_SYSTEM_XTINY" 
-           justification="Graphics.TEXT_JUSTIFY_RIGHT" 
-           color="Graphics.COLOR_WHITE" />     
-           
-    <label id="MessageLabel" x="10" y="108" 
-           font="Graphics.FONT_SYSTEM_XTINY" 
-           justification="Graphics.TEXT_JUSTIFY_LEFT" 
-           color="Graphics.COLOR_RED" />   
+    <label id="Data2Label" x="88" y="72"
+           font="Graphics.FONT_SYSTEM_XTINY"
+           justification="Graphics.TEXT_JUSTIFY_RIGHT"
+           color="Graphics.COLOR_WHITE" />
+    <label id="Data3Label" x="88" y="88"
+           font="Graphics.FONT_SYSTEM_XTINY"
+           justification="Graphics.TEXT_JUSTIFY_RIGHT"
+           color="Graphics.COLOR_WHITE" />
+    <label id="Data4Label" x="88" y="104"
+           font="Graphics.FONT_SYSTEM_XTINY"
+           justification="Graphics.TEXT_JUSTIFY_RIGHT"
+           color="Graphics.COLOR_WHITE" />
+
+    <label id="MessageLabel" x="10" y="108"
+           font="Graphics.FONT_SYSTEM_XTINY"
+           justification="Graphics.TEXT_JUSTIFY_LEFT"
+           color="Graphics.COLOR_RED" />
 </layout>
 </resources>

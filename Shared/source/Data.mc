@@ -18,7 +18,7 @@ class Data {
   var temporaryBasalRate as Float?;
   var profile as String?;
   var connected as Boolean = true;
-  private var fakeMode as FakeMode = normal;
+  private var fakeMode as FakeMode = fakeValues;
 
   enum FakeMode {
     normal = 1,
@@ -75,11 +75,15 @@ class Data {
     }
     var glucoseUnitStr = Properties.getValue("GlucoseUnit");
     glucoseUnit = "mmoll".equals(glucoseUnitStr) ? mmoll : mgdl;
+
+    if (fakeMode == fakeValues) {
+      Properties.setValue("GlucoseValueFrequencySec", 300);
+    }
   }
 
   // Returns true iff we have a blood glucose reading.
   function hasValue() as Boolean {
-    return fakeMode == fakeValues 
+    return fakeMode == fakeValues
         || glucoseBuffer.size() > 0 && (Util.nowSec() - glucoseBuffer.getLastDateSec()) < 16 * 60;
   }
 
@@ -139,8 +143,8 @@ class Data {
   // @Returns Toybox.Lang.String
   function getGlucoseStr() as String {
     var glucose = null;
-    if (fakeMode == fakeValues) { 
-      glucose = (Util.nowSec() % 30)*10 + Util.nowSec() % 11; 
+    if (fakeMode == fakeValues) {
+      glucose = (Util.nowSec() % 30)*10 + Util.nowSec() % 11;
     } else {
       if (!hasValue()) { return "-"; }
       glucose = glucoseBuffer.getLastValue();
@@ -208,7 +212,7 @@ class Data {
   }
 
   function getNextScheduleDelaySec() {
-     return BackgroundScheduler.nextScheduleTimeSec == null ? null : 
+     return BackgroundScheduler.nextScheduleTimeSec == null ? null :
        BackgroundScheduler.nextScheduleTimeSec - Util.nowSec();
   }
 
@@ -226,7 +230,7 @@ class Data {
       var secs = Properties.getValue("GlucoseDeltaSec") as Number;
       return last.deltaPerSec(glucoseBuffer.get(glucoseBuffer.size() - 2), secs);
     } else {
-      return null;    
+      return null;
     }
   }
 
@@ -260,9 +264,9 @@ class Data {
     Properties.setValue("GlucoseValues", hex);
     var glucoseFrequencySec = Properties.getValue("GlucoseValueFrequencyOverrideSec") as Number;
     if (glucoseFrequencySec == 0) {
-      glucoseFrequencySec = 60 * (Util.ifNull(glucoseBuffer.medianDeltaMinute(), 0) as Number);
+      glucoseFrequencySec = 60 * (Util.ifNull(glucoseBuffer.medianDeltaMinute(), 300) as Number);
     }
-    Log.i(TAG, 
+    Log.i(TAG,
       "updateGlucose " + glucoseBuffer.size() + " values, " +
       "last " + (last==null?"NULL":last) + " freq " + glucoseFrequencySec);
     if (glucoseFrequencySec != null && glucoseFrequencySec > 0) {

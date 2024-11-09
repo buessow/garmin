@@ -42,8 +42,8 @@ test: bin-$(device)/Test.prg
 .PHONY: %/run
 %/run: %
 	connectiq $(device)
-	sleep 2
-	monkeydo bin-$(device)/$(@D).prg $(device) 
+	sleep 5
+	monkeydo bin-$(device)/$(@D).prg $(device)
 	killall simulator
 
 .PHONY: clean
