@@ -18,7 +18,7 @@ class Data {
   var temporaryBasalRate as Float?;
   var profile as String?;
   var connected as Boolean = true;
-  private var fakeMode as FakeMode = fakeValues;
+  private var fakeMode as FakeMode = normal;
 
   enum FakeMode {
     normal = 1,
