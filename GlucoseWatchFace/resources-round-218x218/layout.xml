@@ -14,6 +14,12 @@
         }, {
            "deviceIds": ["descentmk2s", "fenix6spro"],
            "time": { "addMinuteY": -2 }
+        }, {
+           "deviceIds": ["legacyherocaptainmarvel", "legacyherofirstavenger", "legacysagadarthvader"],
+           "time": {
+             "locX": 160,
+             "addMinuteY": 3
+           }
         }
       ]
     }
@@ -24,7 +30,7 @@
     <drawable id="DateValueGraph" class="Shared.Graph">
       <param name="x">3</param>
       <param name="y">120</param>
-      <param name="width">218</param>
+      <param name="width">212</param>
       <param name="height">80</param>
     </drawable>
     <label id="DateLabel" x="center" y="10"

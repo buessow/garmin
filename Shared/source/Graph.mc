@@ -136,6 +136,7 @@ class Graph extends Ui.Drawable {
     Log.i(
         TAG,
         "graph: " + {
+            "initialWidth" => initialWidth,
             "rightOffset" => rightOffset,
             "xOffset" => xOffset,
             "width" => width,

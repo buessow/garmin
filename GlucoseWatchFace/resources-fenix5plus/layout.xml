@@ -5,7 +5,7 @@
   <drawable id="DateValueGraph" class="Shared.Graph">
       <param name="x">3</param>
       <param name="y">132</param>
-      <param name="width">244</param>
+      <param name="width">230</param>
       <param name="height">74</param>
   </drawable>
   <label id="DateLabel" x="center" y="10"

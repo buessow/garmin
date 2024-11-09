@@ -3,18 +3,22 @@
     {
       "devices": [
         {
-           "deviceIds": ["venu"],
-           "time": {
+          "deviceIds": ["venu"],
+          "time": {
             "locY": 47,
             "addMinuteY": 3
-           }
+          }
         },
         {
-           "deviceIds": ["fr165", "fr165m"],
-           "time": {
+          "deviceIds": ["fr165", "fr165m"],
+          "time": {
             "locX": 255,
-            "locY": 55
-           }
+            "locY": 55,
+            "addMinuteY": 10
+          },
+          "graph": {
+            "addMinMaxYOffset": 5
+          }
         }
       ]
     }

@@ -29,6 +29,7 @@ class GlucoseWatchFaceView extends Ui.WatchFace {
 
   function onLayout(dc as Gfx.Dc) as Void {
     setLayout(Rez.Layouts.WatchFace(dc));
+    Log.i(TAG, "onLayout " + dc.getWidth() + "x" + dc.getHeight());
     var override = new Shared.Override();
 
     graph = findDrawableById("DateValueGraph") as Shared.Graph;

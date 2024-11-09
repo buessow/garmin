@@ -3,6 +3,9 @@
     {
       "devices": [
         {
+           "deviceIds": ["fr55"],
+           "time": { "addMinuteY": 2 }
+        }, {
            "deviceIds": ["fr245", "fr245m", "fr745"],
            "time": { "addMinuteY": 5 }
         }, {
@@ -24,7 +27,7 @@
     <drawable id="DateValueGraph" class="Shared.Graph">
       <param name="x">3</param>
       <param name="y">120</param>
-      <param name="width">208</param>
+      <param name="width">200</param>
       <param name="height">60</param>
     </drawable>
     <label id="DateLabel" x="center" y="8"

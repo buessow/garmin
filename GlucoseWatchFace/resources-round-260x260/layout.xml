@@ -7,7 +7,7 @@
            "time": {
               "locX": 175,
               "locY": 38,
-              "addMinuteY": 0
+              "addMinuteY": 7
            }
         }, {
            "deviceIds": ["fr255", "fr255m", "vivoactive4", "legacyherofirstavenger", "legacysagadarthvader"],
