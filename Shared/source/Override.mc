@@ -11,7 +11,7 @@ class Override {
     var partNumber = System.getDeviceSettings().partNumber;
     var deviceId = PartNumbers.map[partNumber];
     var allOverrides = {} as Dictionary<String, Object>;
-    if (Rez.JsonData has :overrides) {
+    if (Rez has :JsonData && Rez.JsonData has :overrides) {
       allOverrides = Application.loadResource(Rez.JsonData.overrides) as Dictionary<String, Object>;
     } else {
       return;
