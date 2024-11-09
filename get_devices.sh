@@ -7,7 +7,7 @@
     deviceId=`jq -r .deviceId "$f"`
     displayName=`jq -r .displayName "$f"`
     deviceGroup=`jq -r .deviceGroup "$f"`
-    hardwarePartNumber=`jq -r .hardwarePartNumber "$f"`
+    partNumber=`jq -r .worldWidePartNumber "$f"`
     width=`jq -r .resolution.width "$f"`
     height=`jq -r .resolution.height "$f"`
     bitsPerPixel=`jq -r .bitsPerPixel "$f"`
@@ -18,6 +18,6 @@
     datafield=`jq -r '.appTypes[] | select(.type == "datafield") | .memoryLimit' "$f"`
     background=`jq -r '.appTypes[] | select(.type == "background") | .memoryLimit' "$f"`
 
-    echo $deviceId,,N,N,N,$displayName,\"$deviceGroup\",$hardwarePartNumber,$[width]x$height,$bitsPerPixel,$connectIQVersion,TRUE,$watchFaceMem,$watchApp,$glance,$datafield,$background
+    echo $deviceId,,N,N,N,$displayName,\"$partNumber\",\"$deviceGroup\",$[width]x$height,$bitsPerPixel,$connectIQVersion,TRUE,$watchFaceMem,$watchApp,$glance,$datafield,$background
 
 
