@@ -9,10 +9,11 @@ using Toybox.Activity;
 using Toybox.Application;
 using Toybox.Application.Properties;
 using Toybox.Graphics as Gfx;
-using Toybox.System;
+using Toybox.Lang;
+using Toybox.Math;
+using Toybox.System as Sys;
 using Toybox.Time;
 using Toybox.Time.Gregorian as Calendar;
-using Toybox.Lang;
 using Toybox.WatchUi as Ui;
 
 class LabelView extends Ui.DataField {
@@ -24,7 +25,6 @@ class LabelView extends Ui.DataField {
   var onTimerStopCallback;
 
   private static var layoutSymbols as Dictionary<String, Symbol> = {
-
         "L1_fr265"      => :L1_fr,
         "L1"            => :L1,
         "L2_3C_Top"     => :L2_3C_Top,
@@ -43,7 +43,7 @@ class LabelView extends Ui.DataField {
         "L3C_4B_Bot_L"  => :L3C_4B_Bot_L,
         "L3C_4B_Bot_R"  => :L3C_4B_Bot_R,
         "L3C_4C_Bot_L"  => :L3C_4C_Bot_L,
-        "L3C_4C_Bot_R"  => :L3C_4C_Bot_R,        
+        "L3C_4C_Bot_R"  => :L3C_4C_Bot_R,
         "L4A_Bot"       => :L4A_Bot,
         "L4A_Mid_L"     => :L4A_Mid_L,
         "L4A_Mid_R"     => :L4A_Mid_R,
@@ -72,37 +72,68 @@ class LabelView extends Ui.DataField {
         "L9_Top"        => :L9_Top,
 
         "Rect_1"       => :Rect_1,
+        "Rect_1_1"     => :Rect_1_1,
         "Rect_1_2"     => :Rect_1_2,
+        "Rect_1_25"    => :Rect_1_25,
         "Rect_1_3"     => :Rect_1_3,
         "Rect_1_4"     => :Rect_1_4,
         "Rect_2_5"     => :Rect_2_5,
         "Rect_1_5"     => :Rect_1_5,
         "Rect_1_10"    => :Rect_1_10,
 
+
         "Rect_1_10_edge540" => :Rect_1_10_edgeX40,
         "Rect_1_10_edge840" => :Rect_1_10_edgeX40
   };
-  
+
   function initialize(data as Shared.Data, onTimerStopCallback) {
     Ui.DataField.initialize();
     me.data = data;
     me.onTimerStopCallback = onTimerStopCallback;
   }
 
+  private function autoLayout(dc as Gfx.Dc) as String {
+    var devWidth = Sys.getDeviceSettings().screenWidth;
+    var devHeight = Sys.getDeviceSettings().screenHeight;
+    var horiz = Math.round(devWidth / dc.getWidth()).toNumber();
+    var vert = Math.round(2 * devHeight / dc.getHeight()).toNumber() / 2;
+    return "Rect_" + horiz + "_" + vert;
+  }
+
+  private function getLayoutSymbol(layoutId as String, device as String) as Symbol? {
+    return Util.ifNull(layoutSymbols[layoutId + "_" + device], layoutSymbols[layoutId]) as Symbol;
+ }
+
   function onLayout(dc as Gfx.Dc) as Void {
-    var device = PartNumbers.map[System.getDeviceSettings().partNumber];
+    var device = PartNumbers.map[Sys.getDeviceSettings().partNumber];
     var sizeStr = "L_" + dc.getWidth() + "x" + dc.getHeight() + "_" + getObscurityFlags();
+    Log.i(TAG, "Size: " + sizeStr);
     var log = !sizes.hasKey(sizeStr);
     sizes[sizeStr] = true;
-    var layouts =  Application.loadResource(Rez.JsonData.Layouts);
+    var layouts = {};
+    if (Rez has :JsonData && Rez.JsonData has :Layouts) {
+      layouts =  Application.loadResource(Rez.JsonData.Layouts);
+    } else {
+        var round = Sys.getDeviceSettings().screenShape == Sys.SCREEN_SHAPE_ROUND;
+        var s = round ? "round" : "rectangle";
+      Log.e(TAG,
+          "Cannot find resource file " + "resources-" + s + "-" +
+          dc.getWidth() + "x" + dc.getHeight() + "/layout.xml");
+    }
     var layoutSymbol = null;
+    var layoutId = "?";
     try {
-      var layoutId = layouts[sizeStr]["layout"] as String?;
-      layoutSymbol = Util.ifNull(layoutSymbols[layoutId + "_" + device], layoutSymbols[layoutId]) as Symbol;
+      layoutId = layouts[sizeStr]["layout"] as String?;
+      layoutSymbol = getLayoutSymbol(layoutId, device);
+      if (layoutSymbol == null) {
+        sizeStr = autoLayout(dc);
+        layoutId = sizeStr;
+        layoutSymbol = getLayoutSymbol(layoutId, device);
+      }
       var defined = Rez.Layouts has layoutSymbol ? "" : " undef";
       if (log) { Log.i(TAG, "onLayout " + sizeStr + " " + layoutId + "/" + device + " " + (layoutSymbol==null ? "??" : "ok") + defined); }
     } catch (e) {
-      if (log) { Log.i(TAG, "onLayout " + sizeStr + " not found"); }
+      if (log) { Log.i(TAG, "onLayout " + sizeStr + " layoutId " + layoutId + " not found"); }
     }
 
     // Fallback in case we didn't find anything. Physical devices sometimes have different
@@ -122,7 +153,7 @@ class LabelView extends Ui.DataField {
       graph.setReadings(data.glucoseBuffer);
       graph.setVisible(data.errorMessage == null);
     }
-    
+
     Ui.requestUpdate();
   }
 
@@ -159,13 +190,13 @@ class LabelView extends Ui.DataField {
     var light = getBackgroundColor() == Gfx.COLOR_WHITE;
     findDrawableById("BackgroundLight").setVisible(light);
     findDrawableById("BackgroundDark").setVisible(!light);
-    
+
     (findDrawableById("TitleLabel") as Ui.Text).setColor(0xffffff & ~getBackgroundColor());
 
     setLabel("GlucoseLabel", data.getGlucoseStr());
-    var connected = System.getDeviceSettings().phoneConnected;
+    var connected = Sys.getDeviceSettings().phoneConnected;
     setLabelColor(
-      "ConnectedLabel", 
+      "ConnectedLabel",
       connected ? "C" : "D",
       connected ? Gfx.COLOR_GREEN : Gfx.COLOR_RED);
 
@@ -188,7 +219,7 @@ class LabelView extends Ui.DataField {
       setLabel("Data3Label", null);
       setLabel("Data4Label", null);
       setLabelColor("ErrorLabel", data.errorMessage, Gfx.COLOR_RED);
-    } 
+    }
     Ui.DataField.onUpdate(dc);
   }
 }

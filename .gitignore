@@ -5,3 +5,5 @@ bin/
 bin-*/
 _version.xml
 _Version.mc
+.df_auto_layout
+GlucoseDataField/resources-edge*/layout.xml

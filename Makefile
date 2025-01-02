@@ -6,8 +6,19 @@ MONKEYC_FLAGS = --private-key $(DEVELOPER_KEY) --typecheck 2
 .NOPARALELL:
 
 
-shared_dep = Shared/source/*.mc Shared/resources/*/*
+shared_dep = Shared/source/*.mc Shared/resources/*/* .df_auto_layout
 
+df_auto_layout = edge530 edge830 edge1030 edge1030plus edgeexplore2
+.df_auto_layout: Tools/connectiq_x-1.0-all.jar
+	java -jar Tools/connectiq_x-1.0-all.jar \
+			--devices=/Users/robertbuessow/CIQ/Devices \
+			--output=GlucoseDataField $(df_auto_layout)
+	touch .df_auto_layout
+
+GlucoseDataField/resources-edge%/layout.xml: Tools/connectiq_x-1.0-all.jar
+	java -jar Tools/connectiq_x-1.0-all.jar \
+			--devices=/Users/robertbuessow/CIQ/Devices \
+			--output=GlucoseDataField $(@:GlucoseDataField/resources-%/layout.xml=%)
 
 %/resources/_version.xml: %/manifest.xml
 	v=`xmlstarlet select --text --template --value-of '//iq:manifest/iq:application/@version' -n $<`; \
@@ -50,4 +61,7 @@ test: bin-$(device)/Test.prg
 clean:
 	rm -rf bin-*
 	rm -rf bin
-	rm */resources/_version.xml
+	rm -f */resources/_version.xml
+	rm -f .df_auto_layout
+	rm -f $(df_auto_layout:%=GlucoseDataField/resources-%/layout.xml)
+
