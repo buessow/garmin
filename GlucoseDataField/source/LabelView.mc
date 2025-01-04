@@ -193,7 +193,6 @@ class LabelView extends Ui.DataField {
 
     (findDrawableById("TitleLabel") as Ui.Text).setColor(0xffffff & ~getBackgroundColor());
 
-    setLabel("GlucoseLabel", data.getGlucoseStr());
     var connected = Sys.getDeviceSettings().phoneConnected;
     setLabelColor(
       "ConnectedLabel",
@@ -206,6 +205,7 @@ class LabelView extends Ui.DataField {
     }
 
     if (data.errorMessage == null) {
+      setLabel("GlucoseLabel", data.getGlucoseStr());
       setLabel("GlucoseUnitLabel", data.getGlucoseUnitStr());
       setLabel("Data1Label", data.getGlucoseDeltaPerMinuteStr());
       setLabel("Data2Label", data.getGlucoseAgeStr());
@@ -213,6 +213,7 @@ class LabelView extends Ui.DataField {
       setLabel("Data4Label", data.getBasalCorrectionStr());
       setLabel("ErrorLabel", null);
     } else {
+      setLabel("GlucoseLabel", null);
       setLabel("GlucoseUnitLabel", null);
       setLabel("Data1Label", null);
       setLabel("Data2Label", data.getNextScheduleDelayStr());

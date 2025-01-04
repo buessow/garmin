@@ -63,5 +63,5 @@ clean:
 	rm -rf bin
 	rm -f */resources/_version.xml
 	rm -f .df_auto_layout
-	rm -f $(df_auto_layout:%=GlucoseDataField/resources-%/layout.xml)
+	rm -rf $(df_auto_layout:%=GlucoseDataField/resources-%)
 
