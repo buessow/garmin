@@ -78,6 +78,7 @@ class Data {
 
     if (fakeMode == fakeValues) {
       Properties.setValue("GlucoseValueFrequencySec", 300);
+      setRemainingInsulin(0.3, -0.4);
     }
   }
 

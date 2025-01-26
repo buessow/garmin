@@ -8,7 +8,9 @@ MONKEYC_FLAGS = --private-key $(DEVELOPER_KEY) --typecheck 2
 
 shared_dep = Shared/source/*.mc Shared/resources/*/* .df_auto_layout
 
-df_auto_layout = edge530 edge830 edge1030 edge1030plus edgeexplore2
+df_auto_layout = edge530 edge540 edge830 edge840 edge1030 edge1030bontrager \
+	edge1030plus edge1040 edge1050 edgeexplore2
+
 .df_auto_layout: Tools/connectiq_x-1.0-all.jar
 	java -jar Tools/connectiq_x-1.0-all.jar \
 			--devices=/Users/robertbuessow/CIQ/Devices \
