@@ -25,14 +25,14 @@ module BackgroundScheduler {
   var schedule = false;
 
   // The phone doesn't get new readings immediately, so add some
-  // slack to avoid that we try to get it just before it's available.  
+  // slack to avoid that we try to get it just before it's available.
   function extraReadingDelay() as Number {
     return Util.ifNull(Properties.getValue("GlucoseValueWaitSec"), 5) as Number;
   }
 
-  // Frequency at which the CGMprovides glucose readings. The default is 5 min.
+  // Frequency at which the CGM provides glucose readings. The default is 5 min.
   function readingFrequency() as Number {
-    return Util.ifNull(Properties.getValue("GlucoseValueFrequencySec"), 300) as Number;
+    return Data.getGlucoseValueFrequencySeq();
   }
 
   // Computes when we expect the next value, usually 5 minutes plus a bit
@@ -45,7 +45,7 @@ module BackgroundScheduler {
       return null;
     } else {
       return (lastGlucoseTimeSec
-          + Math.ceil(missedReadings) * readingFrequency()).toNumber() 
+          + Math.ceil(missedReadings) * readingFrequency()).toNumber()
           + extraReadingDelay();
     }
   }
@@ -63,8 +63,8 @@ module BackgroundScheduler {
   //          Time we should run the background task next in seconds
   //          since the epoch.
   function getNextRunTime(
-      nowSec as Number, 
-      lastGlucoseTimeSec as Number?, 
+      nowSec as Number,
+      lastGlucoseTimeSec as Number?,
       lastRunTimeSec as Number?) as Number {
     var nextRunTimeSec = lastRunTimeSec == null
                        ? nowSec + IMMEDIATE_SCHEDULING_DELAY
@@ -107,7 +107,7 @@ module BackgroundScheduler {
         // Skip glucose readings and get the next immediately, so
         // that we're better synchronized with the CGM schedule. For 5 minute
         // frequency like Dexcom G6, this would be always another 5min.
-        return nextValueSec + 
+        return nextValueSec +
             (Math.ceil((nextRunTimeSec - nextValueSec) / freq) * freq).toNumber();
       }
 
@@ -138,7 +138,7 @@ module BackgroundScheduler {
   function schedule2(lastDateSec, scheduleWithinSec) {
     var nowSec = Util.nowSec();
     if (!schedule) {
-      if (lastDateSec == null || nowSec - lastDateSec > 660) { 
+      if (lastDateSec == null || nowSec - lastDateSec > 660) {
         tryRegisterTemporalEventIn(new Time.Duration(2));
       }
       return;

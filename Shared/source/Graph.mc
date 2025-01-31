@@ -147,7 +147,7 @@ class Graph extends Ui.Drawable {
   }
 
   function setReadings(glucoseBuffer as Shared.DateValues) as Void {
-    glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec") as Number;
+    glucoseBarWidthSec = Data.getGlucoseValueFrequencySeq();
     glucoseBarPadding = glucoseBarWidthSec < 300 ? 0 : 2;
     me.glucoseBuffer = glucoseBuffer;
 
@@ -397,7 +397,7 @@ class Graph extends Ui.Drawable {
 
   function draw(dc as Gfx.Dc) as Void {
     if (!isVisible) { return; }
-    glucoseBarWidthSec = Properties.getValue("GlucoseValueFrequencySec") as Number;
+    glucoseBarWidthSec = Data.getGlucoseValueFrequencySeq();
     glucoseBarPadding = glucoseBarWidthSec < 300 ? 0 : 2;
     if (glucoseBuffer.size() == 0) {
       return;

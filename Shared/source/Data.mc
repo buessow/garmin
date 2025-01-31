@@ -31,6 +31,17 @@ class Data {
      mmoll = 2,
    }
 
+  // Returns the frequency of glucose values in seconds from the
+  // "GlucoseValueFrequencySec" property.
+  static function getGlucoseValueFrequencySeq() as Number {
+    var val = Properties.getValue("GlucoseValueFrequencySec");
+    if (val == null || val <= 0 || val > 600) {
+      return 300;
+    } else {
+      return val as Number;
+    }
+  }
+
   (:glance)
   function initialize() {
     try {

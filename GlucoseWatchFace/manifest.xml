@@ -3,12 +3,12 @@
     <!--    preview: id="c9e90ee7e6924829a8b45e7dafff5cb4" -->
     <!-- production: id="662dfcf7f5a147de8bd37f09574adb11" -->
     <iq:application entry="GlucoseWatchFaceApp"
-        id="c9e90ee7e6924829a8b45e7dafff5cb4"
+        id="662dfcf7f5a147de8bd37f09574adb11"
         minSdkVersion="3.3.1"
         launcherIcon="@Drawables.LauncherIcon"
         name="@Strings.AppName"
         type="watchface"
-        version="1.2.8_pre">
+        version="1.2.9">
         <iq:products>
             <iq:product id="approachs7042mm"/>
             <iq:product id="approachs7047mm"/>
@@ -79,6 +79,7 @@
             <iq:product id="venusq"/>
             <iq:product id="venusq2"/>
             <iq:product id="venusq2m"/>
+            <iq:product id="vivoactive3"/>
             <iq:product id="vivoactive4"/>
             <iq:product id="vivoactive4s"/>
             <iq:product id="vivoactive5"/>
