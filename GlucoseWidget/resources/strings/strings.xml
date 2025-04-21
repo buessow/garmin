@@ -1,3 +1,6 @@
 <strings>
     <string id="AppName">Glucose</string>
+    <string id="complicationLongLabel">AAPS Glucose</string>
+    <string id="complicationShortLabel">Glucose</string>
+    <string id="complicationName">100 mg/dl</string>
 </strings>

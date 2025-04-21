@@ -5,9 +5,9 @@
     <iq:application
         entry="GlucoseWidgetApp"
         id="928fe19a4d3a4259b50cb6f9ddaf0f4a"
-        minSdkVersion="3.3.0"
+        minSdkVersion="4.2.0"
         launcherIcon="@Drawables.LauncherIcon"
-        name="@Strings.AppName" type="widget" version="1.0.9.pre">
+        name="@Strings.AppName" type="widget" version="1.0.13.pre">
         <iq:products>
             <iq:product id="edge1030"/>
             <iq:product id="edge1030plus"/>
@@ -42,6 +42,8 @@
         <iq:permissions>
             <iq:uses-permission id="Background"/>
             <iq:uses-permission id="Communications"/>
+            <iq:uses-permission id="ComplicationPublisher"/>
+            <iq:uses-permission id="Sensor"/>
             <iq:uses-permission id="SensorHistory"/>
         </iq:permissions>
         <iq:languages>

@@ -50,6 +50,11 @@ class Messenger {
       if (data.hasValue()) {
         onGlucose.invoke();
         lastBloodGlucoseSec = data.glucoseBuffer.getLastDateSec();
+        Complications.updateComplication(
+          0,
+          { :value => data.getGlucoseStr(),
+            :unit => " " + data.getGlucoseUnitStr() }
+        );
       }
     } catch (e) {
       e.printStackTrace();

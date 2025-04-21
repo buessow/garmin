@@ -1,0 +1,11 @@
+<complications>
+  <complication
+      id="0"
+      access="public"
+      longLabel="@Strings.complicationLongLabel"
+      shortLabel="@Strings.complicationShortLabel"
+      icon="@Drawables.ComplicationIcon"
+      glancePreview="true">
+    <faceIt defaultText="@Strings.complicationName" />
+  </complication>
+</complications>

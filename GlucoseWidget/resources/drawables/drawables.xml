@@ -1,5 +1,6 @@
 <drawables>
     <bitmap id="LauncherIcon" filename="icons8-blood-40.png" />
+    <bitmap id="ComplicationIcon" filename="blood-svgrepo-com.svg" />
     <bitmap id="Carb5g" filename="carb-5g.png" />
     <bitmap id="Carb10g" filename="carb-10g.png" />
     <bitmap id="Carb20g" filename="carb-20g.png" />

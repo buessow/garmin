@@ -81,21 +81,23 @@ class InputHandler extends Ui.BehaviorDelegate {
   }
 
   hidden function createMenu() {
-    var menu = new Ui.Menu2({:title => "Action"});
+    var version = BuildInfo.VERSION;
+    var title = Util.stringEndsWith(version, "pre") ? "A " + version : "Action";
+    var menu = new Ui.Menu2({:title => title});
     if (messenger.data.connected != null) {
       connectMenutItem = new Ui.ToggleMenuItem(
-          "connected", 
-          "pump status", 
-          :connect, 
-          messenger.data.connected, 
+          "connected",
+          "pump status",
+          :connect,
+          messenger.data.connected,
           {});
       menu.addItem(connectMenutItem);
     }
     for (var i = 5; i <= 60; i += 5) {
       menu.addItem(new Ui.MenuItem(
-          "eat " + i.toString() + "g", 
-          "carbohydrates", 
-          i, 
+          "eat " + i.toString() + "g",
+          "carbohydrates",
+          i,
           {}));
     }
     return menu;
@@ -105,9 +107,9 @@ class InputHandler extends Ui.BehaviorDelegate {
     var menu = new Ui.Menu2({:title => "Carbohydrates"});
     for (var i = 5; i <= 60; i += 5) {
       menu.addItem(new Ui.MenuItem(
-	  "eat " + i.toString() + "g", 
-	  "carbohydrates", 
-	   i, 
+	  "eat " + i.toString() + "g",
+	  "carbohydrates",
+	   i,
 	  {}));
     }
     return menu;
@@ -133,7 +135,7 @@ class InputHandler extends Ui.BehaviorDelegate {
       Ui.popView(Ui.SLIDE_IMMEDIATE);
     }
   }
- 
+
   function getViewAndDelegate() {
     return [ createMenu(), new BolusMenuDelegate(messenger) ];
   }
