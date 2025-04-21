@@ -18,16 +18,16 @@ class GlucoseDataFieldApp extends Application.AppBase {
 
   (:background)
   function initialize() {
+    Log.i(TAG, "initialize");
     AppBase.initialize();
-    Log.i(TAG, "initialize with GmwServer");
-    server = new Shared.GmwServer();
-    server.wait = true;
+    server = new Shared.GmwServer(111 * 60);
+    server.waitSec = 15;
   }
 
   (:background)
   function getServiceDelegate() as [ System.ServiceDelegate ] {
     Log.i(TAG, "getServiceDelegate");
-    return [ new Shared.GlucoseServiceDelegate(server, 111 * 60) ];
+    return [ server.createServiceDelegate() ];
   }
 
   function onBackgroundData(result) as Void {

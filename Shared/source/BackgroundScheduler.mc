@@ -37,14 +37,14 @@ module BackgroundScheduler {
 
   // Computes when we expect the next value, usually 5 minutes plus a bit
   // after the last reading.
-  function getNextValueTimeSec(nowSec, lastGlucoseTimeSec) as Number? {
-    if (lastGlucoseTimeSec == null) { return null; }
+  function getNextValueTimeSec(nowSec, lastValueTimeSec) as Number? {
+    if (lastValueTimeSec == null) { return null; }
 
-    var missedReadings = (nowSec - lastGlucoseTimeSec) / readingFrequency().toDouble();
+    var missedReadings = (nowSec - lastValueTimeSec) / readingFrequency().toDouble();
     if (missedReadings > 6.0) {
       return null;
     } else {
-      return (lastGlucoseTimeSec
+      return (lastValueTimeSec
           + Math.ceil(missedReadings) * readingFrequency()).toNumber()
           + extraReadingDelay();
     }
@@ -54,7 +54,7 @@ module BackgroundScheduler {
   //
   // @Param nowSec: Toybox.Lang.Integer
   //        Current time in seconds since the epoch
-  // @Param lastGlucoseTimeSec: Toybox.Lang.Integer
+  // @Param lastValueTimeSec: Toybox.Lang.Integer
   //        Time of last glucose reading in seconds since the epoch.
   // @Param lastRunTime: Toybox.Lang.Integer
   //        Last time the background task run in secdonds since the
@@ -64,24 +64,24 @@ module BackgroundScheduler {
   //          since the epoch.
   function getNextRunTime(
       nowSec as Number,
-      lastGlucoseTimeSec as Number?,
+      lastValueTimeSec as Number?,
       lastRunTimeSec as Number?) as Number {
     var nextRunTimeSec = lastRunTimeSec == null
                        ? nowSec + IMMEDIATE_SCHEDULING_DELAY
                        : lastRunTimeSec + MIN_SCHEDULE_DELAY;
 
-    if (lastGlucoseTimeSec == null) {
+    if (lastValueTimeSec == null) {
       Log.i(TAG, "now: " + Util.timeSecToString(nowSec) +
                  " last run: " + Util.timeSecToString(lastRunTimeSec) +
                  " earliest run: " + Util.timeSecToString(nextRunTimeSec));
       return nextRunTimeSec;
     }
 
-    var nextValueSec = getNextValueTimeSec(nowSec, lastGlucoseTimeSec);
+    var nextValueSec = getNextValueTimeSec(nowSec, lastValueTimeSec);
     Log.i(TAG, "now: " + Util.timeSecToString(nowSec) +
                " last run: " + Util.timeSecToString(lastRunTimeSec) +
                " earliest run: " + Util.timeSecToString(nextRunTimeSec) +
-               " last value: " + Util.timeSecToString(lastGlucoseTimeSec) +
+               " last value: " + Util.timeSecToString(lastValueTimeSec) +
                " expect value: " + Util.timeSecToString(nextValueSec));
 
     if (nextValueSec == null) {
@@ -118,11 +118,11 @@ module BackgroundScheduler {
     }
   }
 
-  function scheduleTime(nowSec as Number, lastGlucoseTimeSec as Number?) as Number {
+  function scheduleTime(nowSec as Number, lastValueTimeSec as Number?) as Number {
     var lastRunTime = Background.getLastTemporalEventTime();
     var nextRunTimeSec = getNextRunTime(
         nowSec,
-        lastGlucoseTimeSec,
+        lastValueTimeSec,
         lastRunTime == null ? null : lastRunTime.value());
     Log.i(TAG, "last run " + Util.momentToString(lastRunTime) +
         ", run background at " + Util.timeSecToString(nextRunTimeSec));

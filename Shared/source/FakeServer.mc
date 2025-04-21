@@ -3,16 +3,15 @@ using Toybox.Time;
 
 module Shared {
   (:background,:exclude)
-  class FakeServer extends BaseServer {
+  class FakeServer {
     function initialize() {
-      BaseServer.initialize();
     }
 
     function init2() {
       Application.getApp().onBackgroundData(null);
     }
 
-    function getServiceDelegate() {
+    function createServiceDelegate() {
       return null;
     }
 

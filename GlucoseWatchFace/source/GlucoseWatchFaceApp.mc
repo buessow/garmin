@@ -20,12 +20,12 @@ class GlucoseWatchFaceApp extends Application.AppBase {
   function initialize() {
     Log.i(TAG, "initialize");
     AppBase.initialize();
-    server = new Shared.GmwServer();
-    server.wait = true;
+    server = new Shared.GmwServer(111 * 60);
+    server.waitSec = 15;
   }
 
   function getServiceDelegate() as [ System.ServiceDelegate ] {
-    return [ new Shared.GlucoseServiceDelegate(server, 2 * 3600 - 9 * 60) ];
+    return [ server.createServiceDelegate() ];
   }
 
   function onBackgroundData(result) as Void {
