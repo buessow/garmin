@@ -30,7 +30,7 @@ class HttpClient {
       case -200: return "inv req header";
       case -201: return "inv req body";
       case -202: return "inv req method";
-      case -300: return "Enable Garmin in AAPS config";
+      case -300: return "Enable Garmin in AAPS config"; // NETWORK_REQUEST_TIMED_OUT
       case -400: return "inv resp body";
       case -401: return "inv resp header";
       case -402: return "resp too large";
