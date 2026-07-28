@@ -9,7 +9,7 @@
         minSdkVersion="3.3.1"
         name="@Strings.AppName"
         type="datafield"
-        version="1.0.21.pre">
+        version="1.0.22.pre">
         <iq:products>
             <iq:product id='d2airx10'/>
             <iq:product id='d2mach1'/>
@@ -60,8 +60,6 @@
             <iq:product id="fenix847mm"/>
             <iq:product id="fenix8solar47mm"/>
             <iq:product id="fenix8solar51mm"/>
-            <iq:product id="fenix8x51mm"/>
-            <iq:product id="fenix8xsolar51mm"/>
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="Background"/>
