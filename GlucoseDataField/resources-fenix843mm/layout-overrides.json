@@ -1,0 +1,212 @@
+{
+  "L1/Data1Label": {
+    "dx": 23,
+    "dy": 1
+  },
+  "L1/Data2Label": {
+    "dx": 39
+  },
+  "L1/Data3Label": {
+    "dx": 1
+  },
+  "L1/Data4Label": {
+    "dx": 9,
+    "dy": -1
+  },
+  "L1/GlucoseLabel": {
+    "dx": -1,
+    "dy": -11,
+    "font": "numberMedium"
+  },
+  "L2_Bot/Data2Label": {
+    "dx": 38,
+    "dy": -8,
+    "font": "tiny"
+  },
+  "L2_Bot/GlucoseLabel": {
+    "dx": -6,
+    "dy": 4,
+    "font": "numberMild"
+  },
+  "L2_Top/Data1Label": {
+    "dx": -80,
+    "dy": 1,
+    "font": "tiny"
+  },
+  "L2_Top/Data2Label": {
+    "dx": -49,
+    "dy": -11,
+    "font": "xtiny"
+  },
+  "L2_Top/Data3Label": {
+    "dx": 135,
+    "dy": -1
+  },
+  "L2_Top/Data4Label": {
+    "dx": 144,
+    "dy": -15
+  },
+  "L2_Top/GlucoseLabel": {
+    "dx": 6,
+    "dy": -3,
+    "font": "numberMild"
+  },
+  "L3A_Bot/Data2Label": {
+    "dx": 16,
+    "dy": -3
+  },
+  "L3A_Bot/GlucoseLabel": {
+    "dx": 6,
+    "dy": 9,
+    "font": "numberMild"
+  },
+  "L3A_Top/Data1Label": {
+    "dx": -21,
+    "dy": -15
+  },
+  "L3A_Top/Data2Label": {
+    "dx": -4,
+    "dy": -16
+  },
+  "L3A_Top/GlucoseLabel": {
+    "dx": 4,
+    "dy": -9,
+    "font": "numberMild"
+  },
+  "L3B_Bot/GlucoseLabel": {
+    "dx": 1,
+    "dy": 19,
+    "font": "numberMild"
+  },
+  "L3B_Mid/Data2Label": {
+    "dx": 38,
+    "dy": -2
+  },
+  "L3B_Mid/Data4Label": {
+    "dx": 11,
+    "dy": -1
+  },
+  "L3B_Mid/GlucoseLabel": {
+    "font": "numberMild"
+  },
+  "L3B_Top/Data2Label": {
+    "font": "simExtNumber1"
+  },
+  "L3B_Top/GlucoseLabel": {
+    "dx": 3,
+    "dy": -14,
+    "font": "large"
+  },
+  "L3C_Bot_L/GlucoseLabel": {
+    "font": "numberMild"
+  },
+  "L3C_Bot_L/TitleLabel": {
+    "dx": -2
+  },
+  "L3C_Bot_R/GlucoseLabel": {
+    "font": "numberMild"
+  },
+  "L3C_Bot_R/TitleLabel": {
+    "dx": 3,
+    "dy": 1
+  },
+  "L3C_Top/Data2Label": {
+    "dx": 35,
+    "dy": -3
+  },
+  "L3C_Top/Data4Label": {
+    "dx": 10,
+    "dy": -3
+  },
+  "L4A_Bot/GlucoseLabel": {
+    "dx": -1,
+    "dy": 19,
+    "font": "numberMild"
+  },
+  "L4A_Mid_L/TitleLabel": {
+    "dx": -2
+  },
+  "L4A_Mid_R/TitleLabel": {
+    "dx": 3
+  },
+  "L4A_Top/GlucoseLabel": {
+    "dy": -9,
+    "font": "numberMild"
+  },
+  "L4B_Bot_L/GlucoseLabel": {
+    "dx": -8,
+    "dy": -1,
+    "font": "numberMild"
+  },
+  "L4B_Bot_L/TitleLabel": {
+    "dx": -5,
+    "dy": 3
+  },
+  "L4B_Bot_R/GlucoseLabel": {
+    "dx": 8,
+    "font": "numberMild"
+  },
+  "L4B_Bot_R/TitleLabel": {
+    "dx": 5,
+    "dy": 2
+  },
+  "L4B_Top_L/GlucoseLabel": {
+    "dy": -1
+  },
+  "L4B_Top_L/TitleLabel": {
+    "dx": -5,
+    "dy": 4
+  },
+  "L4B_Top_R/TitleLabel": {
+    "dx": 5,
+    "dy": 4
+  },
+  "L4C_Bot/GlucoseLabel": {
+    "font": "large"
+  },
+  "L4C_Mid/GlucoseLabel": {
+    "dx": 8,
+    "dy": -7,
+    "font": "large"
+  },
+  "L5_Mid/GlucoseLabel": {
+    "font": "simExtNumber2"
+  },
+  "L5_Mid_L/TitleLabel": {
+    "dx": -3
+  },
+  "L5_Mid_R/TitleLabel": {
+    "dx": 2
+  },
+  "L6_Mid_L/Data1Label": {
+    "font": "tiny"
+  },
+  "L6_Mid_L/GlucoseLabel": {
+    "font": "glanceNumberFont"
+  },
+  "L6_Mid_R/Data1Label": {
+    "font": "glanceFont"
+  },
+  "L6_Mid_R/GlucoseLabel": {
+    "font": "glanceNumberFont"
+  },
+  "L7_Mid_L/GlucoseLabel": {
+    "dx": -1,
+    "dy": -5,
+    "font": "small"
+  },
+  "L7_Mid_R/GlucoseLabel": {
+    "dx": 1,
+    "dy": -6,
+    "font": "small"
+  },
+  "L8_Mid_L/GlucoseLabel": {
+    "dx": 6,
+    "dy": -2,
+    "font": "medium"
+  },
+  "L8_Mid_R/GlucoseLabel": {
+    "dx": -12,
+    "font": "glanceNumberFont"
+  }
+}
