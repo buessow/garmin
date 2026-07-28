@@ -56,6 +56,12 @@
             <iq:product id="edge1040"/>
             <iq:product id="edge1050"/>
             <iq:product id="edgeexplore2"/>
+            <iq:product id="fenix843mm"/>
+            <iq:product id="fenix847mm"/>
+            <iq:product id="fenix8solar47mm"/>
+            <iq:product id="fenix8solar51mm"/>
+            <iq:product id="fenix8x51mm"/>
+            <iq:product id="fenix8xsolar51mm"/>
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="Background"/>

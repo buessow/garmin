@@ -28,6 +28,7 @@ class LabelView extends Ui.DataField {
         "L1_fr265"      => :L1_fr,
         "L1"            => :L1,
         "L2_3C_Top"     => :L2_3C_Top,
+        "L2_Top"        => :L2_Top,
         "L2_Bot"        => :L2_Bot,
         "L2A_3C_Top"    => :L2A_3C_Top,
         "L2A_Bot"       => :L2A_Bot,
@@ -40,10 +41,14 @@ class LabelView extends Ui.DataField {
         "L3B_Mid"       => :L3B_Mid,
         "L3B_Midfr"     => :L3B_Midfr,
         "L3B_Top"       => :L3B_Top,
+        "L3C_4C_Top"    => :L3C_4C_Top,
+        "L3C_Bot_L"     => :L3C_Bot_L,
+        "L3C_Bot_R"     => :L3C_Bot_R,
         "L3C_4B_Bot_L"  => :L3C_4B_Bot_L,
         "L3C_4B_Bot_R"  => :L3C_4B_Bot_R,
         "L3C_4C_Bot_L"  => :L3C_4C_Bot_L,
         "L3C_4C_Bot_R"  => :L3C_4C_Bot_R,
+        "L3C_Top"       => :L3C_Top,
         "L4A_Bot"       => :L4A_Bot,
         "L4A_Mid_L"     => :L4A_Mid_L,
         "L4A_Mid_R"     => :L4A_Mid_R,
@@ -53,19 +58,41 @@ class LabelView extends Ui.DataField {
         "L4B_Mid"       => :L4B_Mid,
         "L4B_Top"       => :L4B_Top,
         "L4B_Top"       => :L4B_Top,
+        "L4B_Top_L"     => :L4B_Top_L,
+        "L4B_Top_R"     => :L4B_Top_R,
+        "L4B_Bot_L"     => :L4B_Bot_L,
+        "L4B_Bot_R"     => :L4B_Bot_R,
         "L4C_5A_6A_Bot" => :L4C_5A_6A_Bot,
         "L4C_5A_6A_Top" => :L4C_5A_6A_Top,
         "L4C_5A_Mid"    => :L4C_5A_Mid,
         "L4C_Top"       => :L4C_Top,
+        "L4C_Mid"       => :L4C_Mid,
+        "L4C_Bot"       => :L4C_Bot,
+        "L5_Top"        => :L5_Top,
+        "L5_Mid"        => :L5_Mid,
+        "L5_Bot"        => :L5_Bot,
+        "L5_Mid_L"      => :L5_Mid_L,
+        "L5_Mid_R"      => :L5_Mid_R,
         "L5_6_Mid_L"    => :L5_6_Mid_L,
         "L5_6_Mid_R"    => :L5_6_Mid_R,
         "L5A_6A_Mid_L"  => :L5A_6A_Mid_L,
         "L5A_6A_Mid_R"  => :L5A_6A_Mid_R,
         "L6_Top"        => :L6_Top,
+        "L6_Mid_L"      => :L6_Mid_L,
+        "L6_Mid_R"      => :L6_Mid_R,
+        "L6_Bot"        => :L6_Bot,
+        "L7_Top"        => :L7_Top,
+        "L7_Mid_L"      => :L7_Mid_L,
+        "L7_Mid_R"      => :L7_Mid_R,
+        "L7_Bot"        => :L7_Bot,
         "L7_8_Bot"      => :L7_8_Bot,
         "L7_8_Mid_S"    => :L7_8_Mid_S,
         "L7_8_Top"      => :L7_8_Top,
         "L7_Mid"        => :L7_Mid,
+        "L8_Top"        => :L8_Top,
+        "L8_Mid_L"      => :L8_Mid_L,
+        "L8_Mid_R"      => :L8_Mid_R,
+        "L8_Bot"        => :L8_Bot,
         "L9_Bot"        => :L9_Bot,
         "L9_Mid_L"      => :L9_Mid_L,
         "L9_Mid_R"      => :L9_Mid_R,
@@ -93,6 +120,7 @@ class LabelView extends Ui.DataField {
   }
 
   private function autoLayout(dc as Gfx.Dc) as String {
+    Log.i(TAG, "screen dimensions - width=" + dc.getWidth() + " height=" + dc.getHeight());
     var devWidth = Sys.getDeviceSettings().screenWidth;
     var devHeight = Sys.getDeviceSettings().screenHeight;
     var horiz = Math.round(devWidth / dc.getWidth()).toNumber();
@@ -101,7 +129,9 @@ class LabelView extends Ui.DataField {
   }
 
   private function getLayoutSymbol(layoutId as String, device as String) as Symbol? {
-    return Util.ifNull(layoutSymbols[layoutId + "_" + device], layoutSymbols[layoutId]) as Symbol;
+    var sym = Util.ifNull(layoutSymbols[layoutId + "_" + device], layoutSymbols[layoutId]) as Symbol;
+    Log.e(TAG, "Layout " + layoutId + " for device " + device + " resolved to symbol " + sym);
+    return sym;
  }
 
   function onLayout(dc as Gfx.Dc) as Void {
@@ -112,13 +142,14 @@ class LabelView extends Ui.DataField {
     sizes[sizeStr] = true;
     var layouts = {};
     if (Rez has :JsonData && Rez.JsonData has :Layouts) {
+      Log.i(TAG, "Loading layouts from resource");
       layouts =  Application.loadResource(Rez.JsonData.Layouts);
     } else {
         var round = Sys.getDeviceSettings().screenShape == Sys.SCREEN_SHAPE_ROUND;
         var s = round ? "round" : "rectangle";
-      Log.e(TAG,
-          "Cannot find resource file " + "resources-" + s + "-" +
-          dc.getWidth() + "x" + dc.getHeight() + "/layout.xml");
+        Log.e(TAG,
+            "Cannot find resource file " + "resources-" + s + "-" +
+            dc.getWidth() + "x" + dc.getHeight() + "/layout.xml");
     }
     var layoutSymbol = null;
     var layoutId = "?";
@@ -191,7 +222,11 @@ class LabelView extends Ui.DataField {
     findDrawableById("BackgroundLight").setVisible(light);
     findDrawableById("BackgroundDark").setVisible(!light);
 
-    (findDrawableById("TitleLabel") as Ui.Text).setColor(0xffffff & ~getBackgroundColor());
+    var title = findDrawableById("TitleLabel") as Ui.Text;
+    if (title != null) {
+      title.setColor(0xffffff & ~getBackgroundColor());
+    } 
+    (findDrawableById("GlucoseLabel") as Ui.Text).setColor(0xffffff & ~getBackgroundColor());
 
     var connected = Sys.getDeviceSettings().phoneConnected;
     setLabelColor(
