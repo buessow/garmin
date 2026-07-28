@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <jsonData id="Layouts">
+      {
+        "L_260x260_15": {
+          "layout": "L1"
+        },
+        "L_260x129_7": {
+          "layout": "L2_Top"
+        },
+        "L_260x129_13": {
+          "layout": "L2_Bot"
+        },
+        "L_260x83_7": {
+          "layout": "L3A_Top"
+        },
+        "L_260x91_5": {
+          "layout": "L3A_Mid"
+        },
+        "L_260x82_13": {
+          "layout": "L3A_Bot"
+        },
+        "L_260x90_7": {
+          "layout": "L3B_Top"
+        },
+        "L_260x74_5": {
+          "layout": "L3B_Mid"
+        },
+        "L_260x93_13": {
+          "layout": "L3B_Bot"
+        },
+        "L_129x129_9": {
+          "layout": "L3C_Bot_L"
+        },
+        "L_129x129_12": {
+          "layout": "L3C_Bot_R"
+        },
+        "L_260x64_7": {
+          "layout": "L4A_Top"
+        },
+        "L_260x63_5": {
+          "layout": "L4A_Mid"
+        },
+        "L_260x64_13": {
+          "layout": "L4A_Bot"
+        },
+        "L_260x92_7": {
+          "layout": "L4B_Top"
+        },
+        "L_129x77_1": {
+          "layout": "L4B_Mid_L"
+        },
+        "L_129x77_4": {
+          "layout": "L4B_Mid_R"
+        },
+        "L_260x87_13": {
+          "layout": "L4B_Bot"
+        },
+        "L_129x129_3": {
+          "layout": "L4C_Top_L"
+        },
+        "L_129x129_6": {
+          "layout": "L4C_Top_R"
+        },
+        "L_129x63_1": {
+          "layout": "L5_Mid_L"
+        },
+        "L_129x63_4": {
+          "layout": "L5_Mid_R"
+        },
+        "L_260x44_7": {
+          "layout": "L7_Top"
+        },
+        "L_129x54_1": {
+          "layout": "L7_Mid_L"
+        },
+        "L_129x54_4": {
+          "layout": "L7_Mid_R"
+        },
+        "L_260x47_5": {
+          "layout": "L7_Mid"
+        },
+        "L_260x44_13": {
+          "layout": "L7_Bot"
+        }
+      }
+    </jsonData>
+    <layout id="L1">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <drawable class="Shared.Graph" id="DateValueGraph">
+            <param name="x">0</param>
+            <param name="y">141</param>
+            <param name="width">260</param>
+            <param name="height">119</param>
+        </drawable>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" x="130" y="3"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="86" y="67"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="197" y="50"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="189" y="72"/>
+        <label font="Graphics.FONT_XTINY" id="Data3Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="iob -" x="211" y="94"/>
+        <label font="Graphics.FONT_XTINY" id="Data4Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="203" y="116"/>
+        <text-area font="Graphics.FONT_XTINY" height="174" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="117" x="39" y="47"/>
+    </layout>
+    <layout id="L2_Top">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" x="130" y="3"/>
+        <label font="Graphics.FONT_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="59" y="69"/>
+        <label font="Graphics.FONT_XTINY" id="Data3Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="iob -" x="149" y="63"/>
+        <label font="Graphics.FONT_SMALL" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="218" y="57"/>
+        <label font="Graphics.FONT_XTINY" id="Data4Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="141" y="99"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="188" y="99"/>
+        <text-area font="Graphics.FONT_XTINY" height="82" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="124" x="31" y="47"/>
+    </layout>
+    <layout id="L2_Bot">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" x="130" y="0"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="86" y="28"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="189" y="22"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="181" y="44"/>
+        <label font="Graphics.FONT_XTINY" id="Data3Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="iob -" x="203" y="66"/>
+        <text-area font="Graphics.FONT_XTINY" height="71" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="109" x="39" y="19"/>
+    </layout>
+    <layout id="L3A_Top">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" x="130" y="3"/>
+        <label font="Graphics.FONT_XTINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="75" y="55"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="171" y="55"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="214" y="55"/>
+        <text-area font="Graphics.FONT_XTINY" height="36" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="150" x="31" y="47"/>
+    </layout>
+    <layout id="L3A_Mid">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" x="130" y="0"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="59" y="27"/>
+        <label font="Graphics.FONT_XTINY" id="Data3Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="iob -" x="179" y="30"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="233" y="30"/>
+        <label font="Graphics.FONT_XTINY" id="Data4Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="171" y="59"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="225" y="59"/>
+        <text-area font="Graphics.FONT_XTINY" height="68" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="184" x="8" y="20"/>
+    </layout>
+    <layout id="L3A_Bot">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" x="130" y="0"/>
+        <label font="Graphics.FONT_XTINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="130" y="21"/>
+        <text-area font="Graphics.FONT_XTINY" height="24" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="182" x="39" y="19"/>
+    </layout>
+    <layout id="L3B_Top">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_LARGE" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="97" y="44"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="206" y="43"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="198" y="66"/>
+        <text-area font="Graphics.FONT_XTINY" height="51" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="126" x="39" y="39"/>
+    </layout>
+    <layout id="L3B_Mid">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="59" y="10"/>
+        <label font="Graphics.FONT_XTINY" id="Data3Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="iob -" x="181" y="12"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="235" y="12"/>
+        <label font="Graphics.FONT_XTINY" id="Data4Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="173" y="41"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="227" y="41"/>
+        <text-area font="Graphics.FONT_XTINY" height="70" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="188" x="6" y="2"/>
+    </layout>
+    <layout id="L3B_Bot">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_LARGE" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="97" y="7"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="206" y="5"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="198" y="29"/>
+        <text-area font="Graphics.FONT_XTINY" height="54" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="126" x="39" y="0"/>
+    </layout>
+    <layout id="L3C_Top">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" x="130" y="3"/>
+        <label font="Graphics.FONT_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="59" y="69"/>
+        <label font="Graphics.FONT_XTINY" id="Data3Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="iob -" x="149" y="63"/>
+        <label font="Graphics.FONT_SMALL" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="218" y="57"/>
+        <label font="Graphics.FONT_XTINY" id="Data4Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="141" y="99"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="188" y="99"/>
+        <text-area font="Graphics.FONT_XTINY" height="82" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="124" x="31" y="47"/>
+    </layout>
+    <layout id="L3C_Bot_L">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="@Strings.FieldName" x="129" y="0"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="84" y="28"/>
+        <text-area font="Graphics.FONT_XTINY" height="71" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="90" x="39" y="19"/>
+    </layout>
+    <layout id="L3C_Bot_R">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" text="@Strings.FieldName" x="0" y="0"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="45" y="28"/>
+        <text-area font="Graphics.FONT_XTINY" height="71" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="90" x="0" y="19"/>
+    </layout>
+    <layout id="L4A_Top">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="130" y="5"/>
+        <text-area font="Graphics.FONT_XTINY" height="25" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="182" x="39" y="39"/>
+    </layout>
+    <layout id="L4A_Mid">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" x="130" y="0"/>
+        <label font="Graphics.FONT_TINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="75" y="28"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="194" y="33"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="237" y="33"/>
+        <text-area font="Graphics.FONT_XTINY" height="41" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="196" x="8" y="22"/>
+    </layout>
+    <layout id="L4A_Bot">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="130" y="5"/>
+        <text-area font="Graphics.FONT_XTINY" height="25" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="182" x="39" y="0"/>
+    </layout>
+    <layout id="L4B_Top">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" x="130" y="3"/>
+        <label font="Graphics.FONT_SMALL" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="75" y="53"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="171" y="60"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="214" y="60"/>
+        <text-area font="Graphics.FONT_XTINY" height="45" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="150" x="31" y="47"/>
+    </layout>
+    <layout id="L4B_Mid_L">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="@Strings.FieldName" x="129" y="0"/>
+        <label font="Graphics.FONT_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="35" y="29"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="114" y="25"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="106" y="49"/>
+        <text-area font="Graphics.FONT_XTINY" height="55" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="66" x="7" y="20"/>
+    </layout>
+    <layout id="L4B_Mid_R">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" text="@Strings.FieldName" x="0" y="0"/>
+        <label font="Graphics.FONT_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="28" y="29"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="107" y="25"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="99" y="49"/>
+        <text-area font="Graphics.FONT_XTINY" height="55" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="66" x="0" y="20"/>
+    </layout>
+    <layout id="L4B_Bot">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" x="130" y="0"/>
+        <label font="Graphics.FONT_XTINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="130" y="24"/>
+        <text-area font="Graphics.FONT_XTINY" height="29" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="182" x="39" y="19"/>
+    </layout>
+    <layout id="L4C_Top_L">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="@Strings.FieldName" x="129" y="11"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="78" y="63"/>
+        <text-area font="Graphics.FONT_XTINY" height="78" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="102" x="27" y="51"/>
+    </layout>
+    <layout id="L4C_Top_R">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" text="@Strings.FieldName" x="0" y="11"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="51" y="63"/>
+        <text-area font="Graphics.FONT_XTINY" height="78" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="102" x="0" y="51"/>
+    </layout>
+    <layout id="L4C_Bot_L">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="@Strings.FieldName" x="129" y="0"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="84" y="28"/>
+        <text-area font="Graphics.FONT_XTINY" height="71" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="90" x="39" y="19"/>
+    </layout>
+    <layout id="L4C_Bot_R">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" text="@Strings.FieldName" x="0" y="0"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="45" y="28"/>
+        <text-area font="Graphics.FONT_XTINY" height="71" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="90" x="0" y="19"/>
+    </layout>
+    <layout id="L5_Top">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="130" y="5"/>
+        <text-area font="Graphics.FONT_XTINY" height="25" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="182" x="39" y="39"/>
+    </layout>
+    <layout id="L5_Mid">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="@Strings.FieldName" x="130" y="0"/>
+        <label font="Graphics.FONT_TINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="75" y="28"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="194" y="33"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="237" y="33"/>
+        <text-area font="Graphics.FONT_XTINY" height="41" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="196" x="8" y="22"/>
+    </layout>
+    <layout id="L5_Mid_L">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="@Strings.FieldName" x="129" y="0"/>
+        <label font="Graphics.FONT_XTINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="38" y="28"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="114" y="28"/>
+        <text-area font="Graphics.FONT_XTINY" height="37" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="115" x="14" y="19"/>
+    </layout>
+    <layout id="L5_Mid_R">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" text="@Strings.FieldName" x="0" y="0"/>
+        <label font="Graphics.FONT_XTINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="24" y="28"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="100" y="28"/>
+        <text-area font="Graphics.FONT_XTINY" height="37" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="115" x="0" y="19"/>
+    </layout>
+    <layout id="L5_Bot">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="130" y="5"/>
+        <text-area font="Graphics.FONT_XTINY" height="25" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="182" x="39" y="0"/>
+    </layout>
+    <layout id="L6_Top">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="130" y="5"/>
+        <text-area font="Graphics.FONT_XTINY" height="25" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="182" x="39" y="39"/>
+    </layout>
+    <layout id="L6_Mid_L">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="@Strings.FieldName" x="129" y="0"/>
+        <label font="Graphics.FONT_TINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="35" y="28"/>
+        <label font="Graphics.FONT_TINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="123" y="28"/>
+        <text-area font="Graphics.FONT_XTINY" height="41" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="121" x="8" y="22"/>
+    </layout>
+    <layout id="L6_Mid_R">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" text="@Strings.FieldName" x="0" y="0"/>
+        <label font="Graphics.FONT_XTINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="24" y="28"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="100" y="28"/>
+        <text-area font="Graphics.FONT_XTINY" height="37" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="115" x="0" y="19"/>
+    </layout>
+    <layout id="L6_Bot">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_NUMBER_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="130" y="5"/>
+        <text-area font="Graphics.FONT_XTINY" height="25" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="182" x="39" y="0"/>
+    </layout>
+    <layout id="L7_Top">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="130" y="3"/>
+        <text-area font="Graphics.FONT_XTINY" height="19" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="182" x="39" y="25"/>
+    </layout>
+    <layout id="L7_Mid_L">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="@Strings.FieldName" x="129" y="0"/>
+        <label font="Graphics.FONT_XTINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="71" y="30"/>
+        <text-area font="Graphics.FONT_XTINY" height="28" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="115" x="14" y="26"/>
+    </layout>
+    <layout id="L7_Mid_R">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" text="@Strings.FieldName" x="0" y="0"/>
+        <label font="Graphics.FONT_XTINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="57" y="30"/>
+        <text-area font="Graphics.FONT_XTINY" height="28" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="115" x="0" y="26"/>
+    </layout>
+    <layout id="L7_Mid">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_SMALL" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="75" y="7"/>
+        <label font="Graphics.FONT_XTINY" id="Data1Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="199" y="14"/>
+        <label font="Graphics.FONT_XTINY" id="Data2Label" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="-" x="242" y="14"/>
+        <text-area font="Graphics.FONT_XTINY" height="45" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="206" x="3" y="1"/>
+    </layout>
+    <layout id="L7_Bot">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="130" y="3"/>
+        <text-area font="Graphics.FONT_XTINY" height="19" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="182" x="39" y="0"/>
+    </layout>
+    <layout id="L8_Top">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="130" y="3"/>
+        <text-area font="Graphics.FONT_XTINY" height="19" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="182" x="39" y="25"/>
+    </layout>
+    <layout id="L8_Mid_L">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_RIGHT" text="@Strings.FieldName" x="129" y="0"/>
+        <label font="Graphics.FONT_XTINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="71" y="30"/>
+        <text-area font="Graphics.FONT_XTINY" height="28" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="115" x="14" y="26"/>
+    </layout>
+    <layout id="L8_Mid_R">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_XTINY" id="TitleLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" text="@Strings.FieldName" x="0" y="0"/>
+        <label font="Graphics.FONT_XTINY" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="57" y="30"/>
+        <text-area font="Graphics.FONT_XTINY" height="28" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="115" x="0" y="26"/>
+    </layout>
+    <layout id="L8_Bot">
+        <drawable id="BackgroundLight" visible="false"/>
+        <drawable id="BackgroundDark" visible="false"/>
+        <label font="Graphics.FONT_MEDIUM" id="GlucoseLabel" justification="Graphics.TEXT_JUSTIFY_CENTER" text="--" x="130" y="3"/>
+        <text-area font="Graphics.FONT_XTINY" height="19" id="ErrorLabel" justification="Graphics.TEXT_JUSTIFY_LEFT" visible="false" width="182" x="39" y="0"/>
+    </layout>
+</resources>
