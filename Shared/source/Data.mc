@@ -6,6 +6,7 @@ using Toybox.Time;
 using Toybox.Time.Gregorian as Calendar;
 
 module Shared {
+(:glucose)
 class Data {
   private static const TAG = "Data";
   var glucoseBuffer as Shared.DateValues = new Shared.DateValues(null, 30);

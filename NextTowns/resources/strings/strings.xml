@@ -1,0 +1,7 @@
+<strings>
+    <string id="AppName">Roadbook</string>
+    <string id="PasscodeTitle">Passcode</string>
+    <string id="ServerUrlTitle">Server URL</string>
+    <string id="CountTitle">Towns to show</string>
+    <string id="BufferMeterTitle">Search radius (m)</string>
+</strings>

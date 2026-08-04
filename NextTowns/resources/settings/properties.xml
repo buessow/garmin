@@ -1,0 +1,8 @@
+<properties>
+  <property id="Passcode" type="string"></property>
+  <property id="ServerUrl" type="string">https://outabout.cc/device/</property>
+  <property id="Count" type="number">8</property>
+  <property id="BufferMeter" type="number">500</property>
+  <property id="Device" type="string"></property>
+  <property id="AppVersion" type="string"></property>
+</properties>

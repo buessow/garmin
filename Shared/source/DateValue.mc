@@ -1,6 +1,7 @@
 import Toybox.Lang;
 
 module Shared {
+(:glucose)
 class DateValue {
   var dateSec as Number;
   var value as Number;

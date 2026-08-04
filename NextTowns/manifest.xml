@@ -1,0 +1,27 @@
+<iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
+    <iq:application entry="NextTownsApp"
+                    id="e100613e2d02458186d675a8e8443987"
+		    minSdkVersion="3.2.0"
+		    launcherIcon="@Drawables.LauncherIcon"
+		    name="@Strings.AppName"
+		    type="widget"
+		    version="1.0.0">
+        <!-- Widgets were dropped after the edge1030/530/830 generation: edge540/840/1040/1050/550/
+             850/explore2/mtb support glance instead and would fail to build as type="widget". -->
+        <iq:products>
+            <iq:product id="edge530"/>
+            <iq:product id="edge830"/>
+            <iq:product id="edge1030"/>
+            <iq:product id="edge1030plus"/>
+            <iq:product id="edge1030bontrager"/>
+        </iq:products>
+        <iq:permissions>
+            <iq:uses-permission id="Background"/>
+            <iq:uses-permission id="Communications"/>
+            <iq:uses-permission id="Positioning"/>
+        </iq:permissions>
+        <iq:languages>
+            <iq:language>eng</iq:language>
+        </iq:languages>
+    </iq:application>
+</iq:manifest>

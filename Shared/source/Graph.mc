@@ -333,9 +333,11 @@ class Graph extends Ui.Drawable {
       Properties.setValue("HeartRateLastSec", nowSec);
       Properties.setValue("HeartRateAvg", sampling5Sum / sampling5Cnt);
     } else {
-      Properties.setValue("HeartRateStartSec", null);
-      Properties.setValue("HeartRateLastSec", null);
-      Properties.setValue("HeartRateAvg", null);
+      // 0 rather than null: Properties.ValueType has no Null member, and every reader already
+      // treats 0 as "no value" (Util.ifNullNumber(..., 0), or the avg > 0 guard below).
+      Properties.setValue("HeartRateStartSec", 0);
+      Properties.setValue("HeartRateLastSec", 0);
+      Properties.setValue("HeartRateAvg", 0);
     }
   }
 

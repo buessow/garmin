@@ -3,6 +3,7 @@ import Toybox.Lang;
 using Shared.Log;
 
 module Shared {
+(:partNumbers)
 class Override {
   private static const TAG = "Override";
   var overrides as Dictionary<String, Object> = {} as Dictionary<String, Object>;

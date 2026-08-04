@@ -7,6 +7,7 @@ using Toybox.Time;
 using Toybox.WatchUi as Ui;
 
 module Shared {
+(:glucose)
 class GmwServer {
   private const TAG = "GmwServer";
   const url = "http://127.0.0.1:28891/";

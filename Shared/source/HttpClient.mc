@@ -1,7 +1,6 @@
 import Toybox.Lang;
 
 using Toybox.Application.Properties;
-using Toybox.Background;
 using Toybox.Communications as Comm;
 using Toybox.System;
 

@@ -8,6 +8,7 @@ using Toybox.Time;
 using Toybox.Time.Gregorian as Calendar;
 
 module Shared {
+(:glucose)
 module BackgroundScheduler {
   const TAG = "BackgroundScheduler";
 

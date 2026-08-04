@@ -43,6 +43,7 @@ bin/%.iq: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/re
 GlucoseDataField: bin-$(device)/GlucoseDataField.prg
 GlucoseWidget: bin-$(device)/GlucoseWidget.prg
 GlucoseWatchFace: bin-$(device)/GlucoseWatchFace.prg
+NextTowns: bin-$(device)/NextTowns.prg
 
 .PHONY: test
 test: test_flag = --unit-test
@@ -57,7 +58,7 @@ test: bin-$(device)/Test.prg
 	connectiq $(device)
 	sleep 5
 	monkeydo bin-$(device)/$(@D).prg $(device)
-	killall simulator
+	# killall simulator
 
 .PHONY: clean
 clean:

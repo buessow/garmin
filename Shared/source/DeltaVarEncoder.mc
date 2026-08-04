@@ -3,6 +3,7 @@ import Toybox.Lang;
 using Toybox.StringUtil as StringUtil;
 
 module Shared {
+(:glucose)
 module DeltaVarEncoder {
 
   (:glance)

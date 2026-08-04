@@ -1,0 +1,14 @@
+<settings>
+  <setting propertyKey="@Properties.Passcode" title="@Strings.PasscodeTitle">
+    <settingConfig type="alphaNumeric" />
+  </setting>
+  <setting propertyKey="@Properties.ServerUrl" title="@Strings.ServerUrlTitle">
+    <settingConfig type="alphaNumeric" />
+  </setting>
+  <setting propertyKey="@Properties.Count" title="@Strings.CountTitle">
+    <settingConfig type="numeric" min="1" max="10" />
+  </setting>
+  <setting propertyKey="@Properties.BufferMeter" title="@Strings.BufferMeterTitle">
+    <settingConfig type="numeric" min="50" max="5000" />
+  </setting>
+</settings>

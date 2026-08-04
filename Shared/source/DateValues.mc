@@ -1,6 +1,7 @@
 import Toybox.Lang;
 
 module Shared {
+(:glucose)
 class DateValues {
   var data as Array<Number>;
   var start = 0;

@@ -7,7 +7,7 @@ using Toybox.System;
 
 module Shared {
 
-(:background, :glance)
+(:background, :glance, :glucose)
 class GlucoseServiceDelegate extends System.ServiceDelegate {
   private static const TAG = "GlucoseServiceDelegate";
   private var key = Properties.getValue("AAPSKey");
@@ -30,7 +30,14 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
 
   function onTemporalEvent() as Void {
     key = Properties.getValue("AAPSKey");
-    requestBloodGlucose(new Method(Toybox.Background, :exit));
+    requestBloodGlucose(method(:exitToBackground));
+  }
+
+  // Narrows Background.exit's parameter type (PropertyValueType, a large union) down to the
+  // Dictionary<String, Object> callers of this class expect, so the Method reference passed
+  // around here type-checks as Method(result as Dictionary<String, Object>) as Void.
+  private function exitToBackground(result as Dictionary<String, Object>) as Void {
+    Background.exit(result);
   }
 
   private function populateHeartRateHistory(parameters as Dictionary<String, String>) as Void {
@@ -84,7 +91,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   }
 
   function onPhoneAppMessage(msg as Comm.PhoneAppMessage) as Void {
-    onPhoneAppMessage2(msg, new Method(Toybox.Background, :exit));
+    onPhoneAppMessage2(msg, method(:exitToBackground));
   }
 
   function onPhoneAppMessage2(
