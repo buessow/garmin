@@ -7,12 +7,18 @@ using Toybox.Application.Properties;
 // Wraps Shared.HttpClient to call GET /device/next-towns and parse the response into a flat
 // array of town dictionaries: {:name, :distanceMeter, :place, :larger}. "larger" marks the
 // response's nextLargerTown, merged into the same row if it's already among nextTowns.
+//
+// Also surfaces the uploaded course as {:name, :lengthMeter, :ascentMeter}, and the server's own
+// "status" string. lat/lon are optional: omitting them asks for the course only, which is the one
+// request that works before the device has a GPS fix.
 class NextTownsClient {
   private static const TAG = "NextTownsClient";
 
   private var httpClient as Shared.HttpClient;
   private var requestPending as Boolean = false;
-  private var callback as (Method(towns as Array, errorMessage as String?) as Void)?;
+  private var callback as (Method(
+      towns as Array, course as Dictionary?, status as String?,
+      errorMessage as String?) as Void)?;
 
   function initialize() {
     httpClient = new Shared.HttpClient(
@@ -24,19 +30,24 @@ class NextTownsClient {
   }
 
   function requestNextTowns(
-      lat as Double, lon as Double,
-      callback as Method(towns as Array, errorMessage as String?) as Void) as Void {
+      lat as Double?, lon as Double?,
+      callback as Method(
+          towns as Array, course as Dictionary?, status as String?,
+          errorMessage as String?) as Void) as Void {
     if (requestPending) {
       return;
     }
     requestPending = true;
     me.callback = callback;
-    httpClient.get("next-towns", method(:onResult), {
+    var parameters = {
         "passcode" => Properties.getValue("Passcode") as String,
-        "lat" => lat.format("%.6f"),
-        "lon" => lon.format("%.6f"),
         "count" => (Properties.getValue("Count") as Number).toString(),
-        "bufferMeter" => (Properties.getValue("BufferMeter") as Number).toString() });
+        "bufferMeter" => (Properties.getValue("BufferMeter") as Number).toString() };
+    if (lat != null && lon != null) {
+      parameters["lat"] = lat.format("%.6f");
+      parameters["lon"] = lon.format("%.6f");
+    }
+    httpClient.get("next-towns", method(:onResult), parameters);
   }
 
   function onResult(result as Dictionary<String, Object>) as Void {
@@ -46,10 +57,28 @@ class NextTownsClient {
       return;
     }
     var code = result["httpCode"] as Number;
+    var serverStatus = result["status"];
     if (code != 200) {
-      Log.i(TAG, "onResult failed " + code);
-      cb.invoke([] as Array, code == 401 ? "bad passcode" : (result["errorMessage"] as String));
+      Log.i(TAG, "onResult failed " + code + " " + serverStatus);
+      // The server names the reason ("unknown passcode", "no course uploaded", ...), which beats
+      // HttpClient's generic per-code label - but Garmin doesn't always hand us the body on an
+      // error code, so keep the label as a fallback.
+      var message = serverStatus instanceof String
+          ? serverStatus as String
+          : (result["errorMessage"] as String);
+      cb.invoke([] as Array, null, null, message);
       return;
+    }
+
+    var course = null;
+    var c = result["course"];
+    if (c != null) {
+      var cd = c as Dictionary;
+      // :ascentMeter stays untyped - the GPX may have had no elevation data, so it can be null.
+      course = {
+          :name => cd["name"] as String,
+          :lengthMeter => cd["lengthMeter"] as Number,
+          :ascentMeter => cd["ascentMeter"] };
     }
 
     var towns = [] as Array;
@@ -78,8 +107,8 @@ class NextTownsClient {
             :larger => true });
       }
     }
-    Log.i(TAG, "onResult " + towns.size() + " towns");
-    cb.invoke(towns, null);
+    Log.i(TAG, "onResult " + towns.size() + " towns, status " + serverStatus);
+    cb.invoke(towns, course, serverStatus instanceof String ? serverStatus as String : null, null);
   }
 
   private function findByName(towns as Array, name as String) as Dictionary? {

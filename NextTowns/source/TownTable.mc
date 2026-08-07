@@ -14,7 +14,8 @@ class TownTable {
   private const DISTANCE_COLUMN_WIDTH = 60;
 
   function draw(
-      dc as Gfx.Dc, towns as Array, statusText as String?, footerText as String?) as Void {
+      dc as Gfx.Dc, towns as Array, course as Dictionary?, statusText as String?,
+      footerText as String?) as Void {
     var width = dc.getWidth();
     var height = dc.getHeight();
 
@@ -24,6 +25,26 @@ class TownTable {
     var y = MARGIN;
     dc.drawText(width / 2, y, HEADER_FONT, "Next Towns", Gfx.TEXT_JUSTIFY_CENTER);
     y += dc.getFontHeight(HEADER_FONT) + 4;
+
+    // The uploaded course this list is based on - two lines, name then length/ascent. Drawn
+    // before maxRows is computed below so the town list gives up rows for it rather than
+    // overflowing the screen.
+    if (course != null) {
+      dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
+      var courseName = course[:name] as String;
+      dc.drawText(
+          width / 2, y, ROW_FONT,
+          truncate(dc, courseName, ROW_FONT, width - MARGIN * 2), Gfx.TEXT_JUSTIFY_CENTER);
+      y += dc.getFontHeight(ROW_FONT);
+
+      var summary = formatDistance(course[:lengthMeter] as Number);
+      var ascentMeter = course[:ascentMeter];
+      if (ascentMeter != null) {
+        summary += "  " + (ascentMeter as Number) + " m up";
+      }
+      dc.drawText(width / 2, y, ROW_FONT, summary, Gfx.TEXT_JUSTIFY_CENTER);
+      y += dc.getFontHeight(ROW_FONT) + 4;
+    }
 
     if (statusText != null && statusText.length() > 0) {
       dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);

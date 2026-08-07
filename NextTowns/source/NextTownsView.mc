@@ -15,6 +15,7 @@ class NextTownsView extends Ui.View {
   private var table as TownTable = new TownTable();
 
   private var towns as Array = [] as Array;
+  private var course as Dictionary? = null;
   private var statusText as String = "waiting for GPS...";
   private var updatedAgoSec as Number?;
 
@@ -50,6 +51,11 @@ class NextTownsView extends Ui.View {
       options[:constellations] = [ Position.CONSTELLATION_GPS, Position.CONSTELLATION_GLONASS ];
     }
     Position.enableLocationEvents(options, method(:onPosition));
+
+    // Fetch the course straight away, without waiting for a fix. Getting a GPS lock can take a
+    // while (or never happen indoors), and until then a broken passcode, an unreachable server and
+    // a missing course all look identical to "waiting for GPS...". This request tells them apart.
+    client.requestNextTowns(null, null, method(:onTowns));
   }
 
   function onHide() as Void {
@@ -58,15 +64,18 @@ class NextTownsView extends Ui.View {
 
   function onUpdate(dc as Gfx.Dc) as Void {
     View.onUpdate(dc);
-    table.draw(dc, towns, statusText, footerText());
+    table.draw(dc, towns, course, statusText, footerText());
   }
 
   // Bypasses both the movement threshold and the failure backoff below - used by InputHandler
-  // for a manual refresh.
+  // for a manual refresh. Without a fix it still re-queries the course, so a manual retry reports
+  // a real error instead of silently doing nothing.
   function refresh() as Void {
     var pos = currentPos;
     if (pos != null) {
       requestTowns(pos[0], pos[1]);
+    } else if (!client.isRequestPending()) {
+      client.requestNextTowns(null, null, method(:onTowns));
     }
   }
 
@@ -113,15 +122,35 @@ class NextTownsView extends Ui.View {
     client.requestNextTowns(lat, lon, method(:onTowns));
   }
 
-  function onTowns(newTowns as Array, errorMessage as String?) as Void {
+  function onTowns(
+      newTowns as Array, newCourse as Dictionary?, newStatus as String?,
+      errorMessage as String?) as Void {
     if (errorMessage != null) {
       lastFailedPos = lastQueryPos;
       statusText = errorMessage;
       towns = [] as Array;
+      // Keep the last known course: a dropped connection doesn't mean it's gone, and leaving the
+      // header up makes clear the error is about this request, not the setup.
+      Ui.requestUpdate();
+      return;
+    }
+
+    lastFailedPos = null;
+    if (newCourse != null) {
+      course = newCourse;
+    }
+    if (newStatus != null && newStatus.equals("no position")) {
+      // Reply to the course-only request - it says nothing about the towns, so leave them and the
+      // "waiting for GPS..." status alone.
+      Ui.requestUpdate();
+      return;
+    }
+
+    updatedAgoSec = Util.nowSec();
+    towns = newTowns;
+    if (newStatus != null) {
+      statusText = newStatus;
     } else {
-      lastFailedPos = null;
-      updatedAgoSec = Util.nowSec();
-      towns = newTowns;
       statusText = newTowns.size() == 0 ? "past the last town" : "";
     }
     Ui.requestUpdate();
