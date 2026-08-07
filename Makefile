@@ -32,7 +32,13 @@ GlucoseDataField/resources-edge%/layout.xml: Tools/connectiq_x-1.0-all.jar
     echo "T: $$t"; \
 	echo "module BuildInfo { const VERSION = \"$$v\"; const BUILD_TIME = \"$$t\"; }" > "$@"
 
-bin-$(device)/%.prg: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/resources/_version.xml %/resources*/* $(shared_dep)
+# %/resources*/* matches files sitting directly in a resource dir (resources-<device>/layout.xml)
+# but only the *directory* for nested ones, and a directory's mtime doesn't change when a file
+# inside it is edited - so %/resources*/*/* is needed too, or edits to e.g.
+# resources-local/settings/properties.xml never trigger a rebuild.
+resource_dep = %/resources*/* %/resources*/*/*
+
+bin-$(device)/%.prg: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/resources/_version.xml $(resource_dep) $(shared_dep)
 	[ -d "$(@D)" ] || mkdir "$(@D)"
 	monkeyc --jungle $< --output $@ $(MONKEYC_FLAGS) --optimization $(opt) --device $(device) $(test_flag)
 
@@ -42,7 +48,7 @@ bin-$(device)/%.prg: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/sourc
 release_jungle = $(wildcard $(<D)/monkey-release.jungle)
 release_jungles = "$<$(if $(release_jungle),;$(release_jungle))"
 
-bin/%.iq: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/resources/_version.xml %/resources*/* $(shared_dep)
+bin/%.iq: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/resources/_version.xml $(resource_dep) $(shared_dep)
 	[ -d "$(@D)" ] || mkdir "$(@D)"
 	monkeyc --jungle $(release_jungles) --output $@ $(MONKEYC_FLAGS) --optimization 3pz --package-app --release
 
