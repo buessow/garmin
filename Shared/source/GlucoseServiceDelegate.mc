@@ -36,7 +36,7 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   // Narrows Background.exit's parameter type (PropertyValueType, a large union) down to the
   // Dictionary<String, Object> callers of this class expect, so the Method reference passed
   // around here type-checks as Method(result as Dictionary<String, Object>) as Void.
-  private function exitToBackground(result as Dictionary<String, Object>) as Void {
+  function exitToBackground(result as Dictionary<String, Object>) as Void {
     Background.exit(result);
   }
 

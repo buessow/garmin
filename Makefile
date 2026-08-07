@@ -36,9 +36,15 @@ bin-$(device)/%.prg: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/sourc
 	[ -d "$(@D)" ] || mkdir "$(@D)"
 	monkeyc --jungle $< --output $@ $(MONKEYC_FLAGS) --optimization $(opt) --device $(device) $(test_flag)
 
+# Optional per-app jungle applied after monkey.jungle when packaging, so an app can drop
+# gitignored local-only resource dirs from the store build (see NextTowns/monkey-release.jungle).
+# Recursively expanded: $< is only defined inside the recipe. Apps without one package unchanged.
+release_jungle = $(wildcard $(<D)/monkey-release.jungle)
+release_jungles = "$<$(if $(release_jungle),;$(release_jungle))"
+
 bin/%.iq: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/resources/_version.xml %/resources*/* $(shared_dep)
 	[ -d "$(@D)" ] || mkdir "$(@D)"
-	monkeyc --jungle $< --output $@ $(MONKEYC_FLAGS) --optimization 3pz --package-app --release
+	monkeyc --jungle $(release_jungles) --output $@ $(MONKEYC_FLAGS) --optimization 3pz --package-app --release
 
 GlucoseDataField: bin-$(device)/GlucoseDataField.prg
 GlucoseWidget: bin-$(device)/GlucoseWidget.prg

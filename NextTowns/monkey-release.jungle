@@ -1,0 +1,7 @@
+# Release-only overlay, applied after monkey.jungle for --package-app builds.
+#
+# Resets resourcePath to drop resources-local/, which is gitignored and holds personal simulator
+# defaults (passcode, and previously a localhost ServerUrl). Those defaults win over
+# resources/settings/properties.xml, so without this they would ship as the store app's defaults.
+# Local .prg builds don't use this file, so simulator/device testing keeps the overrides.
+base.resourcePath = resources
