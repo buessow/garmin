@@ -30,14 +30,9 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
 
   function onTemporalEvent() as Void {
     key = Properties.getValue("AAPSKey");
-    requestBloodGlucose(method(:exitToBackground));
-  }
-
-  // Narrows Background.exit's parameter type (PropertyValueType, a large union) down to the
-  // Dictionary<String, Object> callers of this class expect, so the Method reference passed
-  // around here type-checks as Method(result as Dictionary<String, Object>) as Void.
-  function exitToBackground(result as Dictionary<String, Object>) as Void {
-    Background.exit(result);
+    requestBloodGlucose(
+        new Method(Toybox.Background, :exit)
+            as (Method(result as Dictionary<String, Object>) as Void));
   }
 
   private function populateHeartRateHistory(parameters as Dictionary<String, String>) as Void {
@@ -91,7 +86,10 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   }
 
   function onPhoneAppMessage(msg as Comm.PhoneAppMessage) as Void {
-    onPhoneAppMessage2(msg, method(:exitToBackground));
+    onPhoneAppMessage2(
+        msg,
+        new Method(Toybox.Background, :exit)
+            as (Method(result as Dictionary<String, Object>) as Void));
   }
 
   function onPhoneAppMessage2(
