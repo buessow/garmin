@@ -11,6 +11,7 @@ class SettingsMenu extends Ui.Menu2 {
   private var serverUrlItem as Ui.MenuItem;
   private var countItem as Ui.MenuItem;
   private var bufferMeterItem as Ui.MenuItem;
+  private var versionItem as Ui.MenuItem;
 
   function initialize() {
     Menu2.initialize({ :title => "Settings" });
@@ -23,10 +24,14 @@ class SettingsMenu extends Ui.Menu2 {
     bufferMeterItem = new Ui.MenuItem(
         "Search radius", formatMeter(Properties.getValue("BufferMeter") as Number), :bufferMeter,
         {});
+    // Read-only: it has no :onSelect case, so selecting it falls through the switch and does
+    // nothing. Shows the manifest version, matching the "version" parameter sent on every request.
+    versionItem = new Ui.MenuItem("Version", BuildInfo.VERSION, :version, {});
     addItem(passcodeItem);
     addItem(serverUrlItem);
     addItem(countItem);
     addItem(bufferMeterItem);
+    addItem(versionItem);
   }
 
   function refreshPasscode() as Void {

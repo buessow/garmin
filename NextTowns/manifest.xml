@@ -5,7 +5,7 @@
 		    launcherIcon="@Drawables.LauncherIcon"
 		    name="@Strings.AppName"
 		    type="widget"
-		    version="1.0.0">
+		    version="1.0.2.pre">
         <!-- Widgets were dropped after the edge1030/530/830 generation: edge540/840/1040/1050/550/
              850/explore2/mtb support glance instead and would fail to build as type="widget". -->
         <iq:products>
