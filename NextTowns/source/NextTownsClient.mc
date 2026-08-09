@@ -107,8 +107,43 @@ class NextTownsClient {
             :larger => true });
       }
     }
-    Log.i(TAG, "onResult " + towns.size() + " towns, status " + serverStatus);
+
+    // Passes and high points go into the same array as the towns and the whole thing is sorted by
+    // distance, so the rider reads one list of what's coming rather than two. :name is null when
+    // the server found no matching summit/col - TownTable labels those by altitude.
+    var nextPeaks = result["nextPeaks"];
+    if (nextPeaks != null) {
+      var peaks = nextPeaks as Array;
+      for (var i = 0; i < peaks.size(); i++) {
+        var p = peaks[i] as Dictionary;
+        towns.add({
+            :name => p["name"],
+            :distanceMeter => p["distanceMeter"] as Number,
+            :altitudeMeter => p["altitudeMeter"] as Number,
+            :place => null,
+            :larger => false,
+            :peak => true });
+      }
+      sortByDistance(towns);
+    }
+
+    Log.i(TAG, "onResult " + towns.size() + " rows, status " + serverStatus);
     cb.invoke(towns, course, serverStatus instanceof String ? serverStatus as String : null, null);
+  }
+
+  // Insertion sort: the list is at most a couple of dozen rows and already nearly ordered (both
+  // sources arrive sorted), so this beats hauling in anything cleverer.
+  private function sortByDistance(rows as Array) as Void {
+    for (var i = 1; i < rows.size(); i++) {
+      var row = rows[i] as Dictionary;
+      var distance = row[:distanceMeter] as Number;
+      var j = i - 1;
+      while (j >= 0 && ((rows[j] as Dictionary)[:distanceMeter] as Number) > distance) {
+        rows[j + 1] = rows[j];
+        j--;
+      }
+      rows[j + 1] = row;
+    }
   }
 
   private function findByName(towns as Array, name as String) as Dictionary? {

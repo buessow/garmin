@@ -62,8 +62,20 @@ class TownTable {
     for (var i = 0; i < rowCount; i++) {
       var town = towns[i] as Dictionary;
       var larger = town[:larger] == true;
-      dc.setColor(larger ? Gfx.COLOR_YELLOW : Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
-      var name = town[:name] as String;
+      var peak = town[:peak] == true;
+      dc.setColor(
+          peak ? Gfx.COLOR_BLUE : (larger ? Gfx.COLOR_YELLOW : Gfx.COLOR_WHITE),
+          Gfx.COLOR_TRANSPARENT);
+      var name;
+      if (peak) {
+        // The altitude is the point of a high-point row, and the only label it has when the
+        // server couldn't match a named col or summit to it.
+        var altitude = (town[:altitudeMeter] as Number) + " m";
+        var peakName = town[:name];
+        name = peakName == null ? altitude : (peakName as String) + " " + altitude;
+      } else {
+        name = town[:name] as String;
+      }
       if (larger) {
         name = name.toUpper();
       }
