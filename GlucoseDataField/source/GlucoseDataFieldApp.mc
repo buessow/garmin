@@ -63,6 +63,7 @@ class GlucoseDataFieldApp extends Application.AppBase {
   function getInitialView() as [ Ui.Views ] or [ Ui.Views, Ui.InputDelegates ] {
     Properties.setValue("Device", System.getDeviceSettings().partNumber + "_DF");
     Properties.setValue("AppVersion", "df_" + BuildInfo.VERSION);
+    Properties.setValue("Version", BuildInfo.VERSION);
 
     data = new Shared.Data();
     view = new LabelView(data, method(:onTimerStop));
@@ -73,5 +74,11 @@ class GlucoseDataFieldApp extends Application.AppBase {
 
     Log.i(TAG, "getInitialView - done");
     return [ view ];
+  }
+
+  function getSettingsView() as [ Ui.Views ] or [ Ui.Views, Ui.InputDelegates ] or Null {
+    Log.i(TAG, "getSettingsView");
+    var menu = new GlucoseDataFieldSettings();
+    return [ menu, new GlucoseDataFieldSettingsDelegate(menu) ];
   }
 }

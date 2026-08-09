@@ -9,4 +9,8 @@
     <string id="GlucoseUnitMgDl">mg/dl</string>
     <string id="GlucoseUnitMmolL">mmol/l</string>
     <string id="AAPSKeyTitle">AAPS key</string>
+    <string id="SettingsTitle">AAPS Glucose</string>
+    <string id="VersionTitle">Version</string>
+    <string id="BuildTimeTitle">Build Time</string>
+    <string id="ShowTargetGlucoseInGraph">Show glucose range</string>
 </strings>

@@ -1,3 +1,6 @@
 <properties>
     <property id="AAPSKey" type="string"></property>
+    <!-- Written by the app on every start, shown read-only in the settings. Separate from the
+         shared AppVersion property, which carries the "df_" prefix sent to the server. -->
+    <property id="Version" type="string"></property>
 </properties>
