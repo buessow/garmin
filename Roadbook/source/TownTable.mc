@@ -23,7 +23,7 @@ class TownTable {
     dc.clear();
 
     var y = MARGIN;
-    dc.drawText(width / 2, y, HEADER_FONT, "Next Towns", Gfx.TEXT_JUSTIFY_CENTER);
+    dc.drawText(width / 2, y, HEADER_FONT, "Roadbook", Gfx.TEXT_JUSTIFY_CENTER);
     y += dc.getFontHeight(HEADER_FONT) + 4;
 
     // The uploaded course this list is based on - two lines, name then length/ascent. Drawn

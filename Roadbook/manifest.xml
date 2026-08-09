@@ -1,5 +1,5 @@
 <iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
-    <iq:application entry="NextTownsApp"
+    <iq:application entry="RoadbookApp"
                     id="e100613e2d02458186d675a8e8443987"
 		    minSdkVersion="3.2.0"
 		    launcherIcon="@Drawables.LauncherIcon"

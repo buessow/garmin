@@ -6,12 +6,12 @@ using Toybox.Graphics as Gfx;
 using Toybox.Position;
 using Toybox.WatchUi as Ui;
 
-class NextTownsView extends Ui.View {
-  private static const TAG = "NextTownsView";
+class RoadbookView extends Ui.View {
+  private static const TAG = "RoadbookView";
   private const REFRESH_DISTANCE_METER = 2000.0;
   private const RETRY_DISTANCE_METER = 500.0;
 
-  private var client as NextTownsClient = new NextTownsClient();
+  private var client as RoadbookClient = new RoadbookClient();
   private var table as TownTable = new TownTable();
 
   private var towns as Array = [] as Array;

@@ -11,8 +11,8 @@ using Toybox.Application.Properties;
 // Also surfaces the uploaded course as {:name, :lengthMeter, :ascentMeter}, and the server's own
 // "status" string. lat/lon are optional: omitting them asks for the course only, which is the one
 // request that works before the device has a GPS fix.
-class NextTownsClient {
-  private static const TAG = "NextTownsClient";
+class RoadbookClient {
+  private static const TAG = "RoadbookClient";
 
   private var httpClient as Shared.HttpClient;
   private var requestPending as Boolean = false;

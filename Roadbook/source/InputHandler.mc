@@ -8,9 +8,9 @@ using Toybox.WatchUi as Ui;
 // there's no system-provided settings entry point for a widget (AppBase.getSettingsView() only
 // applies to watch faces/data fields), so this is the self-built substitute.
 class InputHandler extends Ui.BehaviorDelegate {
-  private var view as NextTownsView;
+  private var view as RoadbookView;
 
-  function initialize(view as NextTownsView) {
+  function initialize(view as RoadbookView) {
     Ui.BehaviorDelegate.initialize();
     me.view = view;
   }

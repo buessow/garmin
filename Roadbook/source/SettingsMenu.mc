@@ -65,9 +65,9 @@ class SettingsMenu extends Ui.Menu2 {
 
 class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
   private var menu as SettingsMenu;
-  private var view as NextTownsView;
+  private var view as RoadbookView;
 
-  function initialize(menu as SettingsMenu, view as NextTownsView) {
+  function initialize(menu as SettingsMenu, view as RoadbookView) {
     Ui.Menu2InputDelegate.initialize();
     me.menu = menu;
     me.view = view;
