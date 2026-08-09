@@ -55,7 +55,7 @@ class RoadbookView extends Ui.View {
     // Fetch the course straight away, without waiting for a fix. Getting a GPS lock can take a
     // while (or never happen indoors), and until then a broken passcode, an unreachable server and
     // a missing course all look identical to "waiting for GPS...". This request tells them apart.
-    client.requestNextTowns(null, null, method(:onTowns));
+    client.requestRoadbook(null, null, method(:onTowns));
   }
 
   function onHide() as Void {
@@ -75,7 +75,7 @@ class RoadbookView extends Ui.View {
     if (pos != null) {
       requestTowns(pos[0], pos[1]);
     } else if (!client.isRequestPending()) {
-      client.requestNextTowns(null, null, method(:onTowns));
+      client.requestRoadbook(null, null, method(:onTowns));
     }
   }
 
@@ -119,7 +119,7 @@ class RoadbookView extends Ui.View {
     lastQueryPos = [lat, lon];
     statusText = "loading...";
     Ui.requestUpdate();
-    client.requestNextTowns(lat, lon, method(:onTowns));
+    client.requestRoadbook(lat, lon, method(:onTowns));
   }
 
   function onTowns(

@@ -4,7 +4,7 @@ using Shared;
 using Shared.Log;
 using Toybox.Application.Properties;
 
-// Wraps Shared.HttpClient to call GET /device/next-towns and parse the response into a flat
+// Wraps Shared.HttpClient to call GET /device/roadbook and parse the response into a flat
 // array of town dictionaries: {:name, :distanceMeter, :place, :larger}. "larger" marks the
 // response's nextLargerTown, merged into the same row if it's already among nextTowns.
 //
@@ -29,7 +29,7 @@ class RoadbookClient {
     return requestPending;
   }
 
-  function requestNextTowns(
+  function requestRoadbook(
       lat as Double?, lon as Double?,
       callback as Method(
           towns as Array, course as Dictionary?, status as String?,
@@ -47,7 +47,7 @@ class RoadbookClient {
       parameters["lat"] = lat.format("%.6f");
       parameters["lon"] = lon.format("%.6f");
     }
-    httpClient.get("next-towns", method(:onResult), parameters);
+    httpClient.get("roadbook", method(:onResult), parameters);
   }
 
   function onResult(result as Dictionary<String, Object>) as Void {
