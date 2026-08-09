@@ -11,4 +11,7 @@
   <setting propertyKey="@Properties.BufferMeter" title="@Strings.BufferMeterTitle">
     <settingConfig type="numeric" min="50" max="5000" />
   </setting>
+  <setting propertyKey="@Properties.OffCourseMeter" title="@Strings.OffCourseMeterTitle">
+    <settingConfig type="numeric" min="100" max="100000" />
+  </setting>
 </settings>

@@ -151,7 +151,7 @@ class RoadbookView extends Ui.View {
     if (newStatus != null) {
       statusText = newStatus;
     } else {
-      statusText = newTowns.size() == 0 ? "past the last town" : "";
+      statusText = newTowns.size() == 0 ? "no upcoming towns" : "";
     }
     Ui.requestUpdate();
   }

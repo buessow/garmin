@@ -21,8 +21,13 @@ class RoadbookClient {
       errorMessage as String?) as Void)?;
 
   function initialize() {
+    // NOT "no course uploaded": a bare 404 only says the server answered and the path wasn't
+    // there, which after the next-towns -> roadbook rename most likely means an old server or a
+    // wrong ServerUrl. The server sends status "no course uploaded" in the body when that is
+    // genuinely the reason, and onResult below prefers it - so this label is only ever seen when
+    // we have no idea, and it should not claim to know.
     httpClient = new Shared.HttpClient(
-        Properties.getValue("ServerUrl") as String, "no course uploaded");
+        Properties.getValue("ServerUrl") as String, "bad server URL", "cannot reach server");
   }
 
   function isRequestPending() as Boolean {
@@ -42,7 +47,8 @@ class RoadbookClient {
     var parameters = {
         "passcode" => Properties.getValue("Passcode") as String,
         "count" => (Properties.getValue("Count") as Number).toString(),
-        "bufferMeter" => (Properties.getValue("BufferMeter") as Number).toString() };
+        "bufferMeter" => (Properties.getValue("BufferMeter") as Number).toString(),
+        "offCourseMeter" => (Properties.getValue("OffCourseMeter") as Number).toString() };
     if (lat != null && lon != null) {
       parameters["lat"] = lat.format("%.6f");
       parameters["lon"] = lon.format("%.6f");

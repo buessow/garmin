@@ -11,6 +11,7 @@ class SettingsMenu extends Ui.Menu2 {
   private var serverUrlItem as Ui.MenuItem;
   private var countItem as Ui.MenuItem;
   private var bufferMeterItem as Ui.MenuItem;
+  private var offCourseMeterItem as Ui.MenuItem;
   private var versionItem as Ui.MenuItem;
 
   function initialize() {
@@ -24,6 +25,11 @@ class SettingsMenu extends Ui.Menu2 {
     bufferMeterItem = new Ui.MenuItem(
         "Search radius", formatMeter(Properties.getValue("BufferMeter") as Number), :bufferMeter,
         {});
+    // How far off the route counts as having left the course, past which the server reports
+    // "not on course" rather than the towns around whichever stretch happens to be nearest.
+    offCourseMeterItem = new Ui.MenuItem(
+        "Off-course limit", formatMeter(Properties.getValue("OffCourseMeter") as Number),
+        :offCourseMeter, {});
     // Read-only: it has no :onSelect case, so selecting it falls through the switch and does
     // nothing. Shows the manifest version, matching the "version" parameter sent on every request.
     versionItem = new Ui.MenuItem("Version", BuildInfo.VERSION, :version, {});
@@ -31,6 +37,7 @@ class SettingsMenu extends Ui.Menu2 {
     addItem(serverUrlItem);
     addItem(countItem);
     addItem(bufferMeterItem);
+    addItem(offCourseMeterItem);
     addItem(versionItem);
   }
 
@@ -52,6 +59,11 @@ class SettingsMenu extends Ui.Menu2 {
   function refreshBufferMeter() as Void {
     bufferMeterItem.setSubLabel(formatMeter(Properties.getValue("BufferMeter") as Number));
     updateItem(bufferMeterItem, 3);
+  }
+
+  function refreshOffCourseMeter() as Void {
+    offCourseMeterItem.setSubLabel(formatMeter(Properties.getValue("OffCourseMeter") as Number));
+    updateItem(offCourseMeterItem, 4);
   }
 
   private function formatCount(count as Number) as String {
@@ -99,6 +111,13 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
             new ChoiceMenuDelegate("BufferMeter", method(:onBufferMeterChanged)),
             Ui.SLIDE_UP);
         return;
+      case :offCourseMeter:
+        // 50000 is effectively "never" - far enough that no plausible detour trips it.
+        Ui.pushView(
+            new ChoiceMenu("Off-course limit", [500, 1000, 2000, 5000, 50000], "m"),
+            new ChoiceMenuDelegate("OffCourseMeter", method(:onOffCourseMeterChanged)),
+            Ui.SLIDE_UP);
+        return;
     }
   }
 
@@ -116,6 +135,10 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
 
   function onBufferMeterChanged() as Void {
     menu.refreshBufferMeter();
+  }
+
+  function onOffCourseMeterChanged() as Void {
+    menu.refreshOffCourseMeter();
   }
 
   function onBack() as Void {

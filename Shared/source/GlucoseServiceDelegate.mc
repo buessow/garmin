@@ -25,7 +25,11 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     System.ServiceDelegate.initialize();
     me.glucoseValueIntervalSec = glucoseValueIntervalSec;
     me.waitSec = waitSec;
-    me.httpClient = new HttpClient(url, "enable Garmin in AAPS config");
+    // Same wording for both: for the glucose apps the server is AAPS on the phone, so a 404 and a
+    // failure to reach it at all point at the same fix. The timeout case used to be hard-coded to
+    // this string inside HttpClient, which meant every other app showed it too.
+    me.httpClient = new HttpClient(
+        url, "enable Garmin in AAPS config", "enable Garmin in AAPS config");
   }
 
   function onTemporalEvent() as Void {

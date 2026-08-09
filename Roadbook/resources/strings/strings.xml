@@ -4,4 +4,5 @@
     <string id="ServerUrlTitle">Server URL</string>
     <string id="CountTitle">Towns to show</string>
     <string id="BufferMeterTitle">Search radius (m)</string>
+    <string id="OffCourseMeterTitle">Off-course limit (m)</string>
 </strings>

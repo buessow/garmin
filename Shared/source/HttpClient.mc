@@ -14,9 +14,14 @@ class HttpClient {
   private var callback as (Method(result as Dictionary<String, Object>) as Void)?;
   var makeWebRequest = new Method(Comm, :makeWebRequest);
   private var httpCode404 as String;
+  private var noServerConnection as String;
 
   private function getErrorMessage(code as Number) as String {
     switch (code) {
+      // Communications.UNKNOWN_ERROR. Garmin reports it when the request failed without a more
+      // specific reason, which in practice means the phone never reached the server - so it needs
+      // a message the rider can act on rather than the "error 0" the default branch produced.
+      case 0: return noServerConnection;
       case -1: return "BLE error";
       case -2: return "BLE timeout/h";
       case -3: return "BLE timeout/s";
@@ -29,7 +34,9 @@ class HttpClient {
       case -200: return "inv req header";
       case -201: return "inv req body";
       case -202: return "inv req method";
-      case -300: return "Enable Garmin in AAPS config"; // NETWORK_REQUEST_TIMED_OUT
+      // NETWORK_REQUEST_TIMED_OUT - also "we never got through", so it shares the message. This
+      // used to be hard-coded to the glucose apps' AAPS wording, which every other app inherited.
+      case -300: return noServerConnection;
       case -400: return "inv resp body";
       case -401: return "inv resp header";
       case -402: return "resp too large";
@@ -53,9 +60,15 @@ class HttpClient {
   //
   // @Param url (String)
   //        Base URL of the request.
-  function initialize(url as String, httpCode404 as String) {
+  // @Param httpCode404 (String)
+  //        Shown on HTTP 404 - the server answered but the path wasn't there.
+  // @Param noServerConnection (String)
+  //        Shown when the request never reached the server (UNKNOWN_ERROR, timeout). Per-app
+  //        because what the rider should do about it depends on which server that is.
+  function initialize(url as String, httpCode404 as String, noServerConnection as String) {
     me.url = url;
     me.httpCode404 = httpCode404;
+    me.noServerConnection = noServerConnection;
   }
 
   private function putIfNotNull(d as Dictionary<String, String>, k as String, v as String?) as Void {
