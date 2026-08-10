@@ -1,0 +1,267 @@
+{
+  "L1/Data1Label": {
+    "dx": 24,
+    "dy": -5
+  },
+  "L1/Data2Label": {
+    "dx": 39,
+    "dy": -1
+  },
+  "L1/Data4Label": {
+    "dx": 10
+  },
+  "L2_Bot/Data2Label": {
+    "dx": 7,
+    "dy": 3
+  },
+  "L2_Bot/Data3Label": {
+    "dx": -131,
+    "dy": 112,
+    "enabled": true
+  },
+  "L2_Bot/Data4Label": {
+    "dx": -15,
+    "dy": 78,
+    "align": "Left",
+    "enabled": true
+  },
+  "L2_Top/Data1Label": {
+    "dx": -56,
+    "dy": -41
+  },
+  "L2_Top/Data2Label": {
+    "dx": -20,
+    "dy": -50
+  },
+  "L2_Top/Data3Label": {
+    "dx": 62,
+    "dy": 49
+  },
+  "L2_Top/Data4Label": {
+    "dx": 164,
+    "dy": -7
+  },
+  "L2_Top/GlucoseLabel": {
+    "dx": 17,
+    "dy": -1,
+    "font": "numberMild"
+  },
+  "L3A_Bot/Data1Label": {
+    "dx": -27,
+    "dy": 38
+  },
+  "L3A_Bot/Data2Label": {
+    "dx": -10,
+    "dy": 32
+  },
+  "L3A_Bot/Data3Label": {
+    "dx": -5,
+    "dy": 7,
+    "enabled": true
+  },
+  "L3A_Bot/GlucoseLabel": {
+    "dx": -7,
+    "dy": 12,
+    "font": "numberMild"
+  },
+  "L3A_Mid/Data1Label": {
+    "dx": -85,
+    "dy": -1,
+    "align": "Left"
+  },
+  "L3A_Mid/Data2Label": {
+    "dx": 82,
+    "dy": -2,
+    "align": "Left"
+  },
+  "L3A_Mid/Data3Label": {
+    "dx": 102,
+    "dy": 6
+  },
+  "L3A_Mid/Data4Label": {
+    "dx": 8,
+    "dy": -2
+  },
+  "L3A_Top/Data1Label": {
+    "dx": -15,
+    "dy": -23,
+    "align": "Right"
+  },
+  "L3A_Top/Data2Label": {
+    "dx": 4,
+    "dy": -27,
+    "align": "Right"
+  },
+  "L3A_Top/Data3Label": {
+    "dx": -28,
+    "dy": 50,
+    "enabled": true
+  },
+  "L3A_Top/GlucoseLabel": {
+    "dx": -14,
+    "dy": -6,
+    "font": "numberMild"
+  },
+  "L3B_Bot/Data1Label": {
+    "enabled": true
+  },
+  "L3B_Bot/GlucoseLabel": {
+    "dx": -13,
+    "dy": 17,
+    "font": "numberMild"
+  },
+  "L3B_Mid/Data4Label": {
+    "dx": 8,
+    "dy": -1
+  },
+  "L3B_Mid/GlucoseLabel": {
+    "font": "numberMild"
+  },
+  "L3B_Top/GlucoseLabel": {
+    "dx": 13,
+    "dy": -16,
+    "font": "numberMild"
+  },
+  "L3C_Bot_L/Data1Label": {
+    "dx": -9,
+    "dy": 96,
+    "enabled": true
+  },
+  "L3C_Bot_L/GlucoseLabel": {
+    "dx": -9,
+    "dy": -10,
+    "font": "numberMild"
+  },
+  "L3C_Bot_R/Data1Label": {
+    "dx": -64,
+    "dy": 97,
+    "enabled": true
+  },
+  "L3C_Bot_R/GlucoseLabel": {
+    "dx": 1,
+    "dy": -9,
+    "font": "numberMild"
+  },
+  "L4A_Bot/Data1Label": {
+    "dx": -42,
+    "dy": 4,
+    "enabled": true
+  },
+  "L4A_Bot/Data2Label": {
+    "dx": -44,
+    "dy": -2,
+    "enabled": true
+  },
+  "L4A_Bot/GlucoseLabel": {
+    "dx": -46,
+    "dy": 16,
+    "font": "numberMild"
+  },
+  "L4A_Mid_L/Data1Label": {
+    "enabled": true
+  },
+  "L4A_Mid_L/Data2Label": {
+    "enabled": true
+  },
+  "L4A_Mid_L/GlucoseLabel": {
+    "dx": -43,
+    "dy": -4
+  },
+  "L4A_Mid_R/Data1Label": {
+    "enabled": true
+  },
+  "L4A_Mid_R/Data2Label": {
+    "enabled": true
+  },
+  "L4A_Mid_R/GlucoseLabel": {
+    "dx": -43,
+    "dy": -5,
+    "font": "large"
+  },
+  "L4A_Top/Data1Label": {
+    "dx": 4,
+    "dy": -25
+  },
+  "L4A_Top/Data2Label": {
+    "dx": 3,
+    "dy": -25
+  },
+  "L4A_Top/Data3Label": {
+    "dx": -16,
+    "dy": 28,
+    "enabled": true
+  },
+  "L4A_Top/GlucoseLabel": {
+    "dx": 7,
+    "dy": -8,
+    "font": "numberMild"
+  },
+  "L4B_Top_L/Data1Label": {
+    "dx": -16,
+    "dy": -21,
+    "enabled": true
+  },
+  "L4B_Top_L/GlucoseLabel": {
+    "dx": 3,
+    "dy": -3
+  },
+  "L4B_Top_R/Data1Label": {
+    "dx": 17,
+    "dy": -19,
+    "align": "Left",
+    "enabled": true
+  },
+  "L4B_Top_R/GlucoseLabel": {
+    "dx": -2,
+    "align": "Center"
+  },
+  "L4C_Bot/Data1Label": {
+    "dx": -8,
+    "dy": 12,
+    "enabled": true
+  },
+  "L4C_Mid/Data3Label": {
+    "enabled": false
+  },
+  "L4C_Mid/GlucoseLabel": {
+    "font": "large"
+  },
+  "L4C_Top/Data1Label": {
+    "dx": -10,
+    "dy": -9,
+    "enabled": true
+  },
+  "L4C_Top/GlucoseLabel": {
+    "dx": -15,
+    "dy": 7,
+    "font": "numberMild"
+  },
+  "L5_Mid_L/Data1Label": {
+    "font": "xtiny"
+  },
+  "L5_Mid_L/GlucoseLabel": {
+    "font": "glanceNumberFont"
+  },
+  "L5_Mid_R/Data1Label": {
+    "font": "xtiny"
+  },
+  "L5_Mid_R/GlucoseLabel": {
+    "font": "glanceNumberFont"
+  },
+  "L6_Mid_L/Data1Label": {
+    "font": "xtiny"
+  },
+  "L6_Mid_L/GlucoseLabel": {
+    "font": "glanceNumberFont"
+  },
+  "L6_Mid_R/Data1Label": {
+    "font": "xtiny"
+  },
+  "L7_Mid_L/GlucoseLabel": {
+    "font": "small"
+  },
+  "L7_Mid_R/GlucoseLabel": {
+    "dx": -3,
+    "font": "small"
+  }
+}
