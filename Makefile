@@ -6,21 +6,27 @@ MONKEYC_FLAGS = --private-key $(DEVELOPER_KEY) --typecheck 2
 .NOPARALELL:
 
 
-shared_dep = Shared/source/*.mc Shared/resources/*/* .df_auto_layout
+shared_dep = Shared/source/*.mc Shared/resources/*/*
 
+# Devices whose layout is generated rather than checked in. Generating is deliberately not part of
+# building: the generator's output moves between versions, so a build would silently replace the
+# layouts under test. Run `make layouts` when you want them (re)generated. Without the generated
+# files a device falls back to its family layout (resources-rectangle-246x322 and -282x470), which
+# builds fine but is not what these devices ship with.
 df_auto_layout = edge530 edge540 edge830 edge840 edge1030 edge1030bontrager \
 	edge1030plus edge1040 edge1050 edgeexplore2
 
-.df_auto_layout: Tools/connectiq_x-1.0-all.jar
+.PHONY: layouts
+layouts:
 	java -jar Tools/connectiq_x-1.0-all.jar \
 			--devices=/Users/robertbuessow/CIQ/Devices \
-			--output=GlucoseDataField $(df_auto_layout)
-	touch .df_auto_layout
+			--output=GlucoseDataField --generate $(df_auto_layout)
 
+# Single device, e.g. `make GlucoseDataField/resources-edge840/layout.xml`.
 GlucoseDataField/resources-edge%/layout.xml: Tools/connectiq_x-1.0-all.jar
 	java -jar Tools/connectiq_x-1.0-all.jar \
 			--devices=/Users/robertbuessow/CIQ/Devices \
-			--output=GlucoseDataField $(@:GlucoseDataField/resources-%/layout.xml=%)
+			--output=GlucoseDataField --generate $(@:GlucoseDataField/resources-%/layout.xml=%)
 
 %/resources/_version.xml: %/manifest.xml
 	v=`xmlstarlet select --text --template --value-of '//iq:manifest/iq:application/@version' -n $<`; \
@@ -48,7 +54,17 @@ bin-$(device)/%.prg: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/sourc
 release_jungle = $(wildcard $(<D)/monkey-release.jungle)
 release_jungles = "$<$(if $(release_jungle),;$(release_jungle))"
 
+# Data.fakeMode replays canned glucose values or a canned error instead of asking AAPS - handy in
+# the simulator, but a store build that ships it shows made-up readings to someone dosing insulin.
+# Only the .iq package is guarded; a device build is how the fake modes get used in the first place.
+check_fake_mode = \
+	grep -qE '^[[:space:]]*private var fakeMode as FakeMode = normal;' Shared/source/Data.mc || { \
+		echo "Shared/source/Data.mc: fakeMode is not normal - refusing to package $@" >&2; \
+		exit 1; \
+	}
+
 bin/%.iq: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/resources/_version.xml $(resource_dep) $(shared_dep)
+	@$(check_fake_mode)
 	[ -d "$(@D)" ] || mkdir "$(@D)"
 	monkeyc --jungle $(release_jungles) --output $@ $(MONKEYC_FLAGS) --optimization 3pz --package-app --release
 
@@ -77,6 +93,5 @@ clean:
 	rm -rf bin-*
 	rm -rf bin
 	rm -f */resources/_version.xml
-	rm -f .df_auto_layout
 	rm -rf $(df_auto_layout:%=GlucoseDataField/resources-%)
 
