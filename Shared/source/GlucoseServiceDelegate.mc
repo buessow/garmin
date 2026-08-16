@@ -12,7 +12,9 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
   private static const TAG = "GlucoseServiceDelegate";
   private var key = Properties.getValue("AAPSKey");
   private var glucoseValueIntervalSec as Number;
-  private var httpClient as HttpClient;
+  // Not private: the tests swap httpClient.makeWebRequest for a fake, the same seam HttpClient
+  // already exposes that field for.
+  var httpClient as HttpClient;
   private var waitSec as Number? = null;
 
   // Initializes a new instance.
@@ -57,28 +59,38 @@ class GlucoseServiceDelegate extends System.ServiceDelegate {
     }
   }
 
+  // The AAPS key authenticates every request, not just the glucose one. It used to be added in the
+  // same shared place as "manufacturer"/"version"; when those moved into HttpClient the key could
+  // not follow (HttpClient is shared with apps that authenticate differently), and it ended up
+  // only on the "get" path - so carbs and connect went out unauthenticated. Adding it here keeps
+  // all three callers on one line each.
+  private function withKey(parameters as Dictionary) as Dictionary {
+    parameters["key"] = key;
+    return parameters;
+  }
+
   function requestBloodGlucose(callback as Method(result as Dictionary<String, Object>) as Void) as Void {
     var parameters = {};
     if (waitSec != null) {
       parameters["wait"] = waitSec.toString();
     }
     parameters["from"] = Util.nowSec() - glucoseValueIntervalSec;
-    parameters["key"] = key;
     populateHeartRateHistory(parameters);
-    httpClient.get("get", callback, parameters);
+    httpClient.get("get", callback, withKey(parameters));
   }
 
 
   function postCarbs(
       carbs as Number,
       callback as Method(result as Dictionary<String, Object>) as Void) {
-    httpClient.get("carbs", callback, {"carbs" => carbs.toString()});
+    httpClient.get("carbs", callback, withKey({"carbs" => carbs.toString()}));
   }
 
   function connectPump(
       disconnectMinutes as Number,
       callback as Method(result as Dictionary<String, Object>) as Void) {
-    httpClient.get("connect", callback, { "disconnectMinutes" => disconnectMinutes.toString()});
+    httpClient.get(
+        "connect", callback, withKey({ "disconnectMinutes" => disconnectMinutes.toString()}));
   }
 
  function handlePhoneAppMessage(msg as Comm.PhoneAppMessage) as Void {
