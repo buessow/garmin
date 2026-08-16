@@ -9,15 +9,10 @@ using Toybox.Application.Properties;
 using Toybox.Lang;
 using Toybox.Communications as Comm;
 
-class TestServer {
-  var url;
-  var wait = true;
-  function initialize(url) {
-    me.url = url;
-  }
-}
-
-class FakeCommunication extends Shared.GlucoseServiceDelegate {
+// Stands in for Toybox.Communications.makeWebRequest, not for a GlucoseServiceDelegate - it used
+// to extend one without ever calling its initialize, which left the parent's fields unset and
+// broke as soon as that constructor gained parameters.
+class FakeCommunication {
   private static const TAG1 = "FakeCommunication";
   var url as String? = null;
   var parameters;
@@ -55,12 +50,31 @@ class Receiver {
 (:test)
 class GlucoseServiceDelegateTest {
 
+  // See DataTest.clearProperty: Properties.ValueType has no Null, so the literal null that used to
+  // be passed here is a type error - a nullable variable still clears the property.
+  private static function clearProperty(key as String) as Void {
+    var none = null as String?;
+    Properties.setValue(key, none);
+  }
+
   private static function clearProperties() {
-    Properties.setValue("Device", null);
-    Properties.setValue("HeartRateStartSec", null);
-    Properties.setValue("HeartRateLastSec", null);
-    Properties.setValue("HeartRateAvg", null);
-    Properties.setValue("AAPSKey", null);
+    clearProperty("Device");
+    clearProperty("HeartRateStartSec");
+    clearProperty("HeartRateLastSec");
+    clearProperty("HeartRateAvg");
+    clearProperty("AAPSKey");
+  }
+
+  // The delegate is built the way production builds it - GmwServer.createServiceDelegate passes
+  // its own url/interval/waitSec - so the tests keep exercising that wiring instead of a
+  // constructor call of their own that could drift from it again.
+  private static function newDelegate(
+      comm as FakeCommunication, waitSec as Number?) as Shared.GlucoseServiceDelegate {
+    var server = new Shared.GmwServer(10);
+    server.waitSec = waitSec;
+    var gsd = server.createServiceDelegate();
+    gsd.httpClient.makeWebRequest = comm.method(:makeWebRequest);
+    return gsd;
   }
 
   (:test)
@@ -74,12 +88,9 @@ class GlucoseServiceDelegateTest {
     Properties.setValue("AAPSKey", "");
     Properties.setValue("AppVersion", "3");
 
-    var server = new Shared.GmwServer();
-    server.wait = true;
     var comm = new FakeCommunication([{"foo" => "bar"}]);
-    var gsd = new Shared.GlucoseServiceDelegate(server, 10);
-    gsd.makeWebRequest = comm.method(:makeWebRequest);
-    
+    var gsd = GlucoseServiceDelegateTest.newDelegate(comm, 15);
+
     var recv = new Receiver();
     gsd.requestBloodGlucose(recv.method(:onResult));
 
@@ -105,11 +116,9 @@ class GlucoseServiceDelegateTest {
     Properties.setValue("Device", "Test23");
     Properties.setValue("AAPSKey", "k1");
     Properties.setValue("AppVersion", "3");
-    var server = new Shared.GmwServer();
     var comm = new FakeCommunication([400]);
-    var gsd = new Shared.GlucoseServiceDelegate(server, 10);
-    gsd.makeWebRequest = comm.method(:makeWebRequest);
-    
+    var gsd = GlucoseServiceDelegateTest.newDelegate(comm, null);
+
     var recv = new Receiver();
     gsd.requestBloodGlucose(recv.method(:onResult));
 
@@ -134,11 +143,9 @@ class GlucoseServiceDelegateTest {
     Properties.setValue("AAPSKey", "k2");
     Properties.setValue("AppVersion", "3");
 
-    var server = new Shared.GmwServer();
     var comm = new FakeCommunication([{}]);
-    var gsd = new Shared.GlucoseServiceDelegate(server, 10);
-    gsd.makeWebRequest = comm.method(:makeWebRequest);
-    
+    var gsd = GlucoseServiceDelegateTest.newDelegate(comm, null);
+
     var recv = new Receiver();
     gsd.postCarbs(25, recv.method(:onResult));
 
@@ -162,11 +169,9 @@ class GlucoseServiceDelegateTest {
     Properties.setValue("AAPSKey", "k2");
     Properties.setValue("AppVersion", "3");
 
-    var server = new Shared.GmwServer();
     var comm = new FakeCommunication([{}]);
-    var gsd = new Shared.GlucoseServiceDelegate(server, 10);
-    gsd.makeWebRequest = comm.method(:makeWebRequest);
-    
+    var gsd = GlucoseServiceDelegateTest.newDelegate(comm, null);
+
     var recv = new Receiver();
     gsd.connectPump(30, recv.method(:onResult));
 

@@ -63,7 +63,11 @@ check_fake_mode = \
 		exit 1; \
 	}
 
-bin/%.iq: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/resources/_version.xml $(resource_dep) $(shared_dep)
+# `| test` is order-only: the suite runs (and a failure aborts the package) before any store build,
+# but because `test` is .PHONY it would otherwise count as permanently newer than the target and
+# force a repackage on every invocation. Order-only prerequisites are still built, they just don't
+# feed into the up-to-date decision - which is exactly the gate wanted here.
+bin/%.iq: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/resources/_version.xml $(resource_dep) $(shared_dep) | test
 	@$(check_fake_mode)
 	[ -d "$(@D)" ] || mkdir "$(@D)"
 	monkeyc --jungle $(release_jungles) --output $@ $(MONKEYC_FLAGS) --optimization 3pz --package-app --release
@@ -78,8 +82,12 @@ test: test_flag = --unit-test
 test: bin-$(device)/Test.prg
 	connectiq $(device)
 	sleep 2
-	monkeydo bin-$(device)/Test.prg $(device) -t
-	killall simulator
+	# monkeydo exits 1 even when every test passed, so its status says nothing and `make test`
+	# could never succeed. The summary line is the actual verdict; tee keeps the run visible on
+	# the terminal while the log is what gets checked.
+	monkeydo bin-$(device)/Test.prg $(device) -t 2>&1 | tee bin-$(device)/test.log
+	grep -qE '^PASSED \(passed=[0-9]+, failed=0, errors=0\)$$' bin-$(device)/test.log
+	-killall simulator
 
 .PHONY: %/run
 %/run: %

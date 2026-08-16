@@ -101,7 +101,9 @@ class DateValuesTest {
 
   (:test)
   static function copy(l) {
-    var v = new Shared.DateValues([3, 4, null, null], 1);
+    // Trailing slots are spare capacity: count is 2*size = 2, so only [0] and [1] are ever read.
+    // They used to be null, which no longer satisfies the constructor's Array<Number>.
+    var v = new Shared.DateValues([3, 4, 0, 0], 1);
     Assert.equal(1, v.size());
     Assert.equal(3, v.getDateSec(0));
     Assert.equal(4, v.getValue(0));

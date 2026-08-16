@@ -1,3 +1,5 @@
+import Toybox.Lang;
+
 using TestLib.Assert;
 using Toybox.Application.Properties;
 using Toybox.Time;
@@ -6,12 +8,21 @@ using Shared.Util;
 
 (:Test)
 class DataTest {
+    // Properties.ValueType has no Null member, so `setValue(key, null)` is a type error under
+    // --typecheck 2 - but a nullable *variable* is accepted, which is how Shared.Data clears
+    // BasalProfile/TemporaryBasalRate. Same trick here, so a cleared property still reads back
+    // as null rather than as some stand-in value the code under test would treat as real data.
+    private static function clearProperty(key as String) as Void {
+      var none = null as String?;
+      Properties.setValue(key, none);
+    }
+
     private static function clearProperties() {
-      Properties.setValue("GlucoseValues", null);
-      Properties.setValue("RemainingInsulin", null);
-      Properties.setValue("TemporaryBasalRate", null);
-      Properties.setValue("BasalProfile", null);
-      Properties.setValue("GlucoseUnit", null);      
+      clearProperty("GlucoseValues");
+      clearProperty("RemainingInsulin");
+      clearProperty("TemporaryBasalRate");
+      clearProperty("BasalProfile");
+      clearProperty("GlucoseUnit");
     }
 
   (:test)
