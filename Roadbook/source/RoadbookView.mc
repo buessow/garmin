@@ -1,27 +1,29 @@
 import Toybox.Lang;
 
 using Shared.Log;
+using Shared.RoadbookRefreshPolicy;
 using Shared.Util;
 using Toybox.Graphics as Gfx;
 using Toybox.Position;
+using Toybox.Timer;
 using Toybox.WatchUi as Ui;
 
 class RoadbookView extends Ui.View {
   private static const TAG = "RoadbookView";
-  private const REFRESH_DISTANCE_METER = 2000.0;
-  private const RETRY_DISTANCE_METER = 500.0;
+  private static const WAITING_FOR_GPS_STATUS = "waiting for GPS...";
 
   private var client as RoadbookClient = new RoadbookClient();
   private var table as TownTable = new TownTable();
+  private var retryTimer as Timer.Timer = new Timer.Timer();
 
   private var towns as Array = [] as Array;
   private var course as Dictionary? = null;
-  private var statusText as String = "waiting for GPS...";
+  private var statusText as String = WAITING_FOR_GPS_STATUS;
   private var updatedAgoSec as Number?;
 
   private var currentPos as [Double, Double]?;
   private var lastQueryPos as [Double, Double]?;
-  private var lastFailedPos as [Double, Double]?;
+  private var lastFailedTimeSec as Number?;
 
   function initialize() {
     View.initialize();
@@ -52,6 +54,12 @@ class RoadbookView extends Ui.View {
     }
     Position.enableLocationEvents(options, method(:onPosition));
 
+    // onPosition only runs alongside a GPS fix, which may never come (indoors, or before the
+    // first fix while GPS is still acquiring) - without this, a failed request would then never
+    // get retried at all. A 1s tick is frequent enough to honour RETRY_DELAY_SEC closely without
+    // being a meaningful battery/CPU cost.
+    retryTimer.start(method(:onRetryTimer), 1000, true);
+
     // Fetch the course straight away, without waiting for a fix. Getting a GPS lock can take a
     // while (or never happen indoors), and until then a broken passcode, an unreachable server and
     // a missing course all look identical to "waiting for GPS...". This request tells them apart.
@@ -60,6 +68,16 @@ class RoadbookView extends Ui.View {
 
   function onHide() as Void {
     Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
+    retryTimer.stop();
+  }
+
+  // Catches the case onPosition can't: a failed request with no GPS fix to piggyback the retry
+  // on. Falls through to refresh(), which already knows how to retry with or without a position.
+  function onRetryTimer() as Void {
+    var failed = lastFailedTimeSec;
+    if (failed != null && Util.nowSec() - failed >= RoadbookRefreshPolicy.RETRY_DELAY_SEC) {
+      refresh();
+    }
   }
 
   function onUpdate(dc as Gfx.Dc) as Void {
@@ -92,21 +110,8 @@ class RoadbookView extends Ui.View {
     }
     currentPos = latLon;
 
-    var queried = lastQueryPos;
-    if (queried == null) {
-      requestTowns(lat, lon);
-      return;
-    }
-
-    var failed = lastFailedPos;
-    if (failed != null) {
-      if (Util.distanceMeter(failed[0], failed[1], lat, lon) >= RETRY_DISTANCE_METER) {
-        requestTowns(lat, lon);
-      }
-      return;
-    }
-
-    if (Util.distanceMeter(queried[0], queried[1], lat, lon) >= REFRESH_DISTANCE_METER) {
+    if (RoadbookRefreshPolicy.shouldRequestTowns(
+        lastQueryPos, lastFailedTimeSec, Util.nowSec(), lat, lon)) {
       requestTowns(lat, lon);
     }
   }
@@ -126,7 +131,7 @@ class RoadbookView extends Ui.View {
       newTowns as Array, newCourse as Dictionary?, newStatus as String?,
       errorMessage as String?) as Void {
     if (errorMessage != null) {
-      lastFailedPos = lastQueryPos;
+      lastFailedTimeSec = Util.nowSec();
       statusText = errorMessage;
       towns = [] as Array;
       // Keep the last known course: a dropped connection doesn't mean it's gone, and leaving the
@@ -135,13 +140,16 @@ class RoadbookView extends Ui.View {
       return;
     }
 
-    lastFailedPos = null;
+    lastFailedTimeSec = null;
     if (newCourse != null) {
       course = newCourse;
     }
     if (newStatus != null && newStatus.equals("no position")) {
-      // Reply to the course-only request - it says nothing about the towns, so leave them and the
-      // "waiting for GPS..." status alone.
+      // Reply to the course-only request - it says nothing about the towns, so leave them alone.
+      // The status does need resetting though: a request that failed before this one succeeded
+      // may have left an error message sitting here, which a later success has to clear even
+      // though there's still nothing more specific than "waiting for GPS..." to say instead.
+      statusText = WAITING_FOR_GPS_STATUS;
       Ui.requestUpdate();
       return;
     }
