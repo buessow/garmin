@@ -81,19 +81,27 @@ class RoadbookClient {
     if (c != null) {
       var cd = c as Dictionary;
       // :ascentMeter stays untyped - the GPX may have had no elevation data, so it can be null.
+      // :durationSecond likewise: the server only predicts when it has a stored elevation profile
+      // for the course, and older uploads have none. Unlike the row durations this one covers the
+      // whole course from its start, not the part still ahead of the rider.
       course = {
           :name => cd["name"] as String,
           :lengthMeter => cd["lengthMeter"] as Number,
-          :ascentMeter => cd["ascentMeter"] };
+          :ascentMeter => cd["ascentMeter"],
+          :durationSecond => cd["durationSecond"] };
     }
 
     var towns = [] as Array;
     var nextTowns = result["nextTowns"] as Array;
     for (var i = 0; i < nextTowns.size(); i++) {
       var t = nextTowns[i] as Dictionary;
+      // :durationSecond is the predicted riding time from the rider's current position to this
+      // row, excluding stops - so it is only meaningful together with the distance in the same
+      // response. Untyped: null whenever the course has no stored elevation profile.
       towns.add({
           :name => t["name"] as String,
           :distanceMeter => t["distanceMeter"] as Number,
+          :durationSecond => t["durationSecond"],
           :place => t["place"],
           :larger => false });
     }
@@ -109,6 +117,7 @@ class RoadbookClient {
         towns.add({
             :name => name,
             :distanceMeter => lt["distanceMeter"] as Number,
+            :durationSecond => lt["durationSecond"],
             :place => lt["place"],
             :larger => true });
       }
@@ -125,6 +134,7 @@ class RoadbookClient {
         towns.add({
             :name => p["name"],
             :distanceMeter => p["distanceMeter"] as Number,
+            :durationSecond => p["durationSecond"],
             :altitudeMeter => p["altitudeMeter"] as Number,
             :place => null,
             :larger => false,
