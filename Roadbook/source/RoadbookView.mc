@@ -24,6 +24,7 @@ class RoadbookView extends Ui.View {
   private var currentPos as [Double, Double]?;
   private var lastQueryPos as [Double, Double]?;
   private var lastFailedTimeSec as Number?;
+  private var showingArrival as Boolean = TownTable.showsArrival(Util.nowSec());
 
   function initialize() {
     View.initialize();
@@ -74,6 +75,15 @@ class RoadbookView extends Ui.View {
   // Catches the case onPosition can't: a failed request with no GPS fix to piggyback the retry
   // on. Falls through to refresh(), which already knows how to retry with or without a position.
   function onRetryTimer() as Void {
+    // The table alternates arrival time and time-to-go in one column, and nothing else would
+    // redraw between server responses - so the tick that already runs for retries drives the flip
+    // too, rather than a second timer. Only requests an update when it actually changes.
+    var arrival = TownTable.showsArrival(Util.nowSec());
+    if (arrival != showingArrival) {
+      showingArrival = arrival;
+      Ui.requestUpdate();
+    }
+
     var failed = lastFailedTimeSec;
     if (failed != null && Util.nowSec() - failed >= RoadbookRefreshPolicy.RETRY_DELAY_SEC) {
       refresh();
