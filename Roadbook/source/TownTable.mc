@@ -81,20 +81,19 @@ class TownTable {
     // toggle as the rows below rather than a plain duration.
     if (destination != null) {
       dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_TRANSPARENT);
-      var destName = destination[:name] as String;
-      dc.drawText(
-          width / 2, y, ROW_FONT,
-          truncate(dc, destName, ROW_FONT, width - MARGIN * 2), Gfx.TEXT_JUSTIFY_CENTER);
-      y += dc.getFontHeight(ROW_FONT);
-
-      var destSummary = formatDistance(destination[:distanceMeter] as Number);
+      var destSuffix = "  " + formatDistance(destination[:distanceMeter] as Number);
       var destSecond = destination[:durationSecond];
       if (destSecond != null) {
         var sec = destSecond as Number;
-        destSummary += "  " +
+        destSuffix += "  " +
             (showArrival ? formatClock(nowSec + sec) : "+" + formatHoursMinutes(sec));
       }
-      dc.drawText(width / 2, y, ROW_FONT, destSummary, Gfx.TEXT_JUSTIFY_CENTER);
+      // The name gets truncated, not the suffix - the distance and time are the more useful half
+      // of the line when space runs short.
+      var destNameWidth =
+          width - MARGIN * 2 - dc.getTextWidthInPixels(destSuffix, ROW_FONT);
+      var destName = truncate(dc, destination[:name] as String, ROW_FONT, destNameWidth);
+      dc.drawText(width / 2, y, ROW_FONT, destName + destSuffix, Gfx.TEXT_JUSTIFY_CENTER);
       y += dc.getFontHeight(ROW_FONT) + 4;
     }
 
