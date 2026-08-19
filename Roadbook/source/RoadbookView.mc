@@ -18,6 +18,7 @@ class RoadbookView extends Ui.View {
 
   private var towns as Array = [] as Array;
   private var course as Dictionary? = null;
+  private var destination as Dictionary? = null;
   private var statusText as String = WAITING_FOR_GPS_STATUS;
   private var updatedAgoSec as Number?;
 
@@ -92,7 +93,7 @@ class RoadbookView extends Ui.View {
 
   function onUpdate(dc as Gfx.Dc) as Void {
     View.onUpdate(dc);
-    table.draw(dc, towns, course, statusText, footerText());
+    table.draw(dc, towns, course, destination, statusText, footerText());
   }
 
   // Bypasses both the movement threshold and the failure backoff below - used by InputHandler
@@ -138,14 +139,16 @@ class RoadbookView extends Ui.View {
   }
 
   function onTowns(
-      newTowns as Array, newCourse as Dictionary?, newStatus as String?,
-      errorMessage as String?) as Void {
+      newTowns as Array, newCourse as Dictionary?, newDestination as Dictionary?,
+      newStatus as String?, errorMessage as String?) as Void {
     if (errorMessage != null) {
       lastFailedTimeSec = Util.nowSec();
       statusText = errorMessage;
       towns = [] as Array;
-      // Keep the last known course: a dropped connection doesn't mean it's gone, and leaving the
-      // header up makes clear the error is about this request, not the setup.
+      // Destination is rider-relative like the towns, so it goes stale the same way; the course
+      // itself is kept - a dropped connection doesn't mean it's gone, and leaving the header up
+      // makes clear the error is about this request, not the setup.
+      destination = null;
       Ui.requestUpdate();
       return;
     }
@@ -155,10 +158,11 @@ class RoadbookView extends Ui.View {
       course = newCourse;
     }
     if (newStatus != null && newStatus.equals("no position")) {
-      // Reply to the course-only request - it says nothing about the towns, so leave them alone.
-      // The status does need resetting though: a request that failed before this one succeeded
-      // may have left an error message sitting here, which a later success has to clear even
-      // though there's still nothing more specific than "waiting for GPS..." to say instead.
+      // Reply to the course-only request - it says nothing about the towns or the destination
+      // (both are relative to a position we don't have yet), so leave them alone. The status does
+      // need resetting though: a request that failed before this one succeeded may have left an
+      // error message sitting here, which a later success has to clear even though there's still
+      // nothing more specific than "waiting for GPS..." to say instead.
       statusText = WAITING_FOR_GPS_STATUS;
       Ui.requestUpdate();
       return;
@@ -166,6 +170,7 @@ class RoadbookView extends Ui.View {
 
     updatedAgoSec = Util.nowSec();
     towns = newTowns;
+    destination = newDestination;
     if (newStatus != null) {
       statusText = newStatus;
     } else {

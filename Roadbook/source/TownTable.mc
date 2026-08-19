@@ -29,8 +29,8 @@ class TownTable {
   static const TIME_TOGGLE_SEC = 3;
 
   function draw(
-      dc as Gfx.Dc, towns as Array, course as Dictionary?, statusText as String?,
-      footerText as String?) as Void {
+      dc as Gfx.Dc, towns as Array, course as Dictionary?, destination as Dictionary?,
+      statusText as String?, footerText as String?) as Void {
     var width = dc.getWidth();
     var height = dc.getHeight();
 
@@ -40,6 +40,12 @@ class TownTable {
     var y = MARGIN;
     dc.drawText(width / 2, y, HEADER_FONT, "Roadbook", Gfx.TEXT_JUSTIFY_CENTER);
     y += dc.getFontHeight(HEADER_FONT) + 4;
+
+    // Read once for the whole screen rather than per row, so every arrival time drawn - here for
+    // the destination, below for the towns/peaks - is anchored to the same instant and alternates
+    // between time-to-go and arrival clock in lockstep.
+    var nowSec = Util.nowSec();
+    var showArrival = showsArrival(nowSec);
 
     // The uploaded course this list is based on - two lines, name then length/ascent. Drawn
     // before maxRows is computed below so the town list gives up rows for it rather than
@@ -68,6 +74,30 @@ class TownTable {
       y += dc.getFontHeight(ROW_FONT) + 4;
     }
 
+    // Where the course ends, and how far/long that is from here - drawn here rather than as a row
+    // in the list below so it can never be squeezed off-screen by a long list of towns and peaks;
+    // the server itself guarantees this field for the same reason. Unlike the course summary
+    // above, this is relative to the rider right now, so it gets the same live "+"/arrival-clock
+    // toggle as the rows below rather than a plain duration.
+    if (destination != null) {
+      dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_TRANSPARENT);
+      var destName = destination[:name] as String;
+      dc.drawText(
+          width / 2, y, ROW_FONT,
+          truncate(dc, destName, ROW_FONT, width - MARGIN * 2), Gfx.TEXT_JUSTIFY_CENTER);
+      y += dc.getFontHeight(ROW_FONT);
+
+      var destSummary = formatDistance(destination[:distanceMeter] as Number);
+      var destSecond = destination[:durationSecond];
+      if (destSecond != null) {
+        var sec = destSecond as Number;
+        destSummary += "  " +
+            (showArrival ? formatClock(nowSec + sec) : "+" + formatHoursMinutes(sec));
+      }
+      dc.drawText(width / 2, y, ROW_FONT, destSummary, Gfx.TEXT_JUSTIFY_CENTER);
+      y += dc.getFontHeight(ROW_FONT) + 4;
+    }
+
     if (statusText != null && statusText.length() > 0) {
       dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
       dc.drawText(width / 2, y, ROW_FONT, statusText, Gfx.TEXT_JUSTIFY_CENTER);
@@ -92,14 +122,6 @@ class TownTable {
         break;
       }
     }
-
-    // Read once for the whole table rather than per row, so every arrival time on screen is
-    // anchored to the same instant - otherwise a redraw spanning a second boundary could show two
-    // rows a minute apart that are really the same.
-    var nowSec = Util.nowSec();
-    // Read once for the whole table too, so a redraw can't show arrival on one row and time-to-go
-    // on the next.
-    var showArrival = showsArrival(nowSec);
 
     var nameWidth = width - MARGIN * 2 - DISTANCE_COLUMN_WIDTH - timeWidth;
     for (var i = 0; i < towns.size(); i++) {

@@ -8,16 +8,20 @@ using Toybox.Application.Properties;
 // array of town dictionaries: {:name, :distanceMeter, :place, :larger}. "larger" marks the
 // response's nextLargerTown, merged into the same row if it's already among nextTowns.
 //
-// Also surfaces the uploaded course as {:name, :lengthMeter, :ascentMeter}, and the server's own
-// "status" string. lat/lon are optional: omitting them asks for the course only, which is the one
-// request that works before the device has a GPS fix.
+// Also surfaces the uploaded course as {:name, :lengthMeter, :ascentMeter}, the server's own
+// "status" string, and separately the course's own destination as
+// {:name, :distanceMeter, :durationSecond} - reverse-geocoded from the route's final point, so
+// unlike the town rows it is not dropped just because nothing settlement-shaped sits near the
+// endpoint or the endpoint is further out than any corridor search would look. lat/lon are
+// optional: omitting them asks for the course only, which is the one request that works before
+// the device has a GPS fix.
 class RoadbookClient {
   private static const TAG = "RoadbookClient";
 
   private var httpClient as Shared.HttpClient;
   private var requestPending as Boolean = false;
   private var callback as (Method(
-      towns as Array, course as Dictionary?, status as String?,
+      towns as Array, course as Dictionary?, destination as Dictionary?, status as String?,
       errorMessage as String?) as Void)?;
 
   function initialize() {
@@ -37,7 +41,7 @@ class RoadbookClient {
   function requestRoadbook(
       lat as Double?, lon as Double?,
       callback as Method(
-          towns as Array, course as Dictionary?, status as String?,
+          towns as Array, course as Dictionary?, destination as Dictionary?, status as String?,
           errorMessage as String?) as Void) as Void {
     if (requestPending) {
       return;
@@ -72,7 +76,7 @@ class RoadbookClient {
       var message = serverStatus instanceof String
           ? serverStatus as String
           : (result["errorMessage"] as String);
-      cb.invoke([] as Array, null, null, message);
+      cb.invoke([] as Array, null, null, null, message);
       return;
     }
 
@@ -143,8 +147,22 @@ class RoadbookClient {
       sortByDistance(towns);
     }
 
+    // Not folded into `towns`: it must survive even when the row list runs out of screen space,
+    // which a plain row in a sorted, droppable list cannot guarantee.
+    var destination = null;
+    var d = result["destination"];
+    if (d != null) {
+      var dd = d as Dictionary;
+      destination = {
+          :name => dd["name"] as String,
+          :distanceMeter => dd["distanceMeter"] as Number,
+          :durationSecond => dd["durationSecond"] };
+    }
+
     Log.i(TAG, "onResult " + towns.size() + " rows, status " + serverStatus);
-    cb.invoke(towns, course, serverStatus instanceof String ? serverStatus as String : null, null);
+    cb.invoke(
+        towns, course, destination,
+        serverStatus instanceof String ? serverStatus as String : null, null);
   }
 
   // Insertion sort: the list is at most a couple of dozen rows and already nearly ordered (both
