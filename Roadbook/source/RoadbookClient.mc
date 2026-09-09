@@ -2,6 +2,7 @@ import Toybox.Lang;
 
 using Shared;
 using Shared.Log;
+using Toybox.Activity;
 using Toybox.Application.Properties;
 
 // Wraps Shared.HttpClient to call GET /device/roadbook and parse the response into a flat
@@ -56,8 +57,26 @@ class RoadbookClient {
     if (lat != null && lon != null) {
       parameters["lat"] = lat.format("%.6f");
       parameters["lon"] = lon.format("%.6f");
+      addActivityTotals(parameters);
     }
     httpClient.get("roadbook", method(:onResult), parameters);
+  }
+
+  // Activity.Info describes the path actually ridden, not progress along the uploaded course.
+  // That distinction is intentional: the server terrain-normalizes these cumulative totals, so
+  // an early detour can still inform predictions after the rider rejoins the planned route.
+  // Garmin exposes all fields as nullable. Send them as one complete observation or not at all;
+  // a partial sample cannot separate slow riding from extra climbing.
+  private function addActivityTotals(parameters as Dictionary) as Void {
+    var info = Activity.getActivityInfo();
+    if (info == null || info.timerTime == null || info.elapsedDistance == null ||
+        info.totalAscent == null || info.timerTime <= 0 || info.elapsedDistance < 0 ||
+        info.totalAscent < 0) {
+      return;
+    }
+    parameters["movingTimeSecond"] = (info.timerTime / 1000.0).format("%.1f");
+    parameters["riddenDistanceMeter"] = info.elapsedDistance.format("%.1f");
+    parameters["riddenAscentMeter"] = info.totalAscent.toString();
   }
 
   function onResult(result as Dictionary<String, Object>) as Void {
