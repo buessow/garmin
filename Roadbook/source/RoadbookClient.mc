@@ -15,15 +15,17 @@ using Toybox.Application.Properties;
 // unlike the town rows it is not dropped just because nothing settlement-shaped sits near the
 // endpoint or the endpoint is further out than any corridor search would look. lat/lon are
 // optional: omitting them asks for the course only, which is the one request that works before
-// the device has a GPS fix.
+// the device has a GPS fix. A selected `poi` mode asks the server for only that route-side category
+// and parses it into a second flat row array for the same distance/time renderer. POI rows retain
+// their coordinates so a selection can be handed to Garmin's native waypoint navigation.
 class RoadbookClient {
   private static const TAG = "RoadbookClient";
 
   private var httpClient as Shared.HttpClient;
   private var requestPending as Boolean = false;
   private var callback as (Method(
-      towns as Array, course as Dictionary?, destination as Dictionary?, status as String?,
-      errorMessage as String?) as Void)?;
+      towns as Array, pois as Array, course as Dictionary?, destination as Dictionary?,
+      status as String?, errorMessage as String?) as Void)?;
 
   function initialize() {
     // NOT "no course uploaded": a bare 404 only says the server answered and the path wasn't
@@ -40,10 +42,10 @@ class RoadbookClient {
   }
 
   function requestRoadbook(
-      lat as Double?, lon as Double?,
+      lat as Double?, lon as Double?, poi as String?,
       callback as Method(
-          towns as Array, course as Dictionary?, destination as Dictionary?, status as String?,
-          errorMessage as String?) as Void) as Void {
+          towns as Array, pois as Array, course as Dictionary?, destination as Dictionary?,
+          status as String?, errorMessage as String?) as Void) as Void {
     if (requestPending) {
       return;
     }
@@ -54,6 +56,10 @@ class RoadbookClient {
         "count" => (Properties.getValue("Count") as Number).toString(),
         "bufferMeter" => (Properties.getValue("BufferMeter") as Number).toString(),
         "offCourseMeter" => (Properties.getValue("OffCourseMeter") as Number).toString() };
+    if (poi != null) {
+      parameters["poi"] = poi;
+      parameters["poiCount"] = (Properties.getValue("PoiCount") as Number).toString();
+    }
     if (lat != null && lon != null) {
       parameters["lat"] = lat.format("%.6f");
       parameters["lon"] = lon.format("%.6f");
@@ -95,7 +101,7 @@ class RoadbookClient {
       var message = serverStatus instanceof String
           ? serverStatus as String
           : (result["errorMessage"] as String);
-      cb.invoke([] as Array, null, null, null, message);
+      cb.invoke([] as Array, [] as Array, null, null, null, message);
       return;
     }
 
@@ -127,6 +133,33 @@ class RoadbookClient {
           :durationSecond => t["durationSecond"],
           :place => t["place"],
           :larger => false });
+    }
+
+    var pois = [] as Array;
+    var nextPois = result["nextPois"];
+    if (nextPois != null) {
+      var poiRows = nextPois as Array;
+      for (var i = 0; i < poiRows.size(); i++) {
+        var p = poiRows[i] as Dictionary;
+        var name = p["name"] as String;
+        var kind = p["kind"] as String;
+        pois.add({
+            :name => name,
+            :displayName => poiDisplayName(name, kind),
+            :distanceMeter => p["distanceMeter"] as Number,
+            // Optional for compatibility while the server is deployed. This is the one-way
+            // straight-line distance between the route and the POI, not route distance ahead.
+            :offRouteMeter => p["offRouteMeter"],
+            :durationSecond => p["durationSecond"],
+            :kind => kind,
+            // Untyped so a new client remains usable while an older server (which omitted POI
+            // coordinates) is still being replaced. The row can still be displayed; selecting it
+            // reports that navigation is unavailable instead of failing the whole response.
+            :latitude => p["latitude"],
+            :longitude => p["longitude"],
+            :larger => false,
+            :peak => false });
+      }
     }
 
     var largerTown = result["nextLargerTown"];
@@ -178,9 +211,10 @@ class RoadbookClient {
           :durationSecond => dd["durationSecond"] };
     }
 
-    Log.i(TAG, "onResult " + towns.size() + " rows, status " + serverStatus);
+    Log.i(TAG, "onResult " + towns.size() + " roadbook rows, " + pois.size() +
+        " POIs, status " + serverStatus);
     cb.invoke(
-        towns, course, destination,
+        towns, pois, course, destination,
         serverStatus instanceof String ? serverStatus as String : null, null);
   }
 
@@ -207,5 +241,25 @@ class RoadbookClient {
       }
     }
     return null;
+  }
+
+  // The food screen mixes three categories, so show which kind each row is. Preserve the short
+  // fallback used by unnamed OSM entries rather than producing "Bar: Bar".
+  private function poiDisplayName(name as String, kind as String) as String {
+    var label = null;
+    switch (kind) {
+      case "restaurant":
+        label = "Restaurant";
+        break;
+      case "bar":
+        label = "Bar";
+        break;
+      case "bakery":
+        label = "Bakery";
+        break;
+      default:
+        return name;
+    }
+    return name.equals(label as String) ? name : (label as String) + ": " + name;
   }
 }

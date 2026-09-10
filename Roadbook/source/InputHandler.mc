@@ -4,9 +4,8 @@ using Toybox.WatchUi as Ui;
 
 // Overrides the BehaviorDelegate *behaviours* rather than raw keys: edge1030 has no enter key at
 // all (only start/lap/menu/esc) and edge530 is button-only with no touchscreen, so neither
-// onSelect nor onTap alone covers every target - together they do. onMenu opens Settings instead:
-// there's no system-provided settings entry point for a widget (AppBase.getSettingsView() only
-// applies to watch faces/data fields), so this is the self-built substitute.
+// onSelect nor onTap alone covers every target - together they do. onMenu opens the roadbook's
+// POI/settings menu; while a POI category is showing, Back returns to the ordinary roadbook.
 class InputHandler extends Ui.BehaviorDelegate {
   private var view as RoadbookView;
 
@@ -16,18 +15,28 @@ class InputHandler extends Ui.BehaviorDelegate {
   }
 
   function onSelect() as Boolean {
+    if (view.openPoiNavigationMenu()) {
+      return true;
+    }
     view.refresh();
     return true;
   }
 
   function onTap(clickEvent as Ui.ClickEvent) as Boolean {
+    if (view.openPoiNavigationMenu()) {
+      return true;
+    }
     view.refresh();
     return true;
   }
 
   function onMenu() as Boolean {
-    var menu = new SettingsMenu();
-    Ui.pushView(menu, new SettingsMenuDelegate(menu, view), Ui.SLIDE_UP);
+    var menu = new RoadbookMenu();
+    Ui.pushView(menu, new RoadbookMenuDelegate(view), Ui.SLIDE_UP);
     return true;
+  }
+
+  function onBack() as Boolean {
+    return view.showRoadbook();
   }
 }

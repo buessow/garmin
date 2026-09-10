@@ -17,6 +17,7 @@ class RoadbookView extends Ui.View {
   private var retryTimer as Timer.Timer = new Timer.Timer();
 
   private var towns as Array = [] as Array;
+  private var pois as Array = [] as Array;
   private var course as Dictionary? = null;
   private var destination as Dictionary? = null;
   private var statusText as String = WAITING_FOR_GPS_STATUS;
@@ -26,6 +27,9 @@ class RoadbookView extends Ui.View {
   private var lastQueryPos as [Double, Double]?;
   private var lastFailedTimeSec as Number?;
   private var showingArrival as Boolean = TownTable.showsArrival(Util.nowSec());
+  private var poiMode as String?;
+  private var poiTitle as String = "Roadbook";
+  private var lastRequestedPoiMode as String?;
 
   function initialize() {
     View.initialize();
@@ -65,7 +69,12 @@ class RoadbookView extends Ui.View {
     // Fetch the course straight away, without waiting for a fix. Getting a GPS lock can take a
     // while (or never happen indoors), and until then a broken passcode, an unreachable server and
     // a missing course all look identical to "waiting for GPS...". This request tells them apart.
-    client.requestRoadbook(null, null, method(:onTowns));
+    if (currentPos != null) {
+      refresh();
+    } else {
+      lastRequestedPoiMode = null;
+      client.requestRoadbook(null, null, null, method(:onRoadbook));
+    }
   }
 
   function onHide() as Void {
@@ -93,7 +102,11 @@ class RoadbookView extends Ui.View {
 
   function onUpdate(dc as Gfx.Dc) as Void {
     View.onUpdate(dc);
-    table.draw(dc, towns, course, destination, statusText, footerText());
+    if (poiMode == null) {
+      table.draw(dc, towns, course, destination, statusText, footerText(), "Roadbook");
+    } else {
+      table.draw(dc, pois, null, null, statusText, footerText(), poiTitle);
+    }
   }
 
   // Bypasses both the movement threshold and the failure backoff below - used by InputHandler
@@ -102,9 +115,10 @@ class RoadbookView extends Ui.View {
   function refresh() as Void {
     var pos = currentPos;
     if (pos != null) {
-      requestTowns(pos[0], pos[1]);
+      requestRoadbook(pos[0], pos[1]);
     } else if (!client.isRequestPending()) {
-      client.requestRoadbook(null, null, method(:onTowns));
+      lastRequestedPoiMode = null;
+      client.requestRoadbook(null, null, null, method(:onRoadbook));
     }
   }
 
@@ -123,28 +137,37 @@ class RoadbookView extends Ui.View {
 
     if (RoadbookRefreshPolicy.shouldRequestTowns(
         lastQueryPos, lastFailedTimeSec, Util.nowSec(), lat, lon)) {
-      requestTowns(lat, lon);
+      requestRoadbook(lat, lon);
     }
   }
 
-  private function requestTowns(lat as Double, lon as Double) as Void {
+  private function requestRoadbook(lat as Double, lon as Double) as Void {
     if (client.isRequestPending()) {
       return;
     }
-    Log.i(TAG, "requestTowns " + lat + "," + lon);
+    Log.i(TAG, "requestRoadbook " + lat + "," + lon + " poi=" + poiMode);
     lastQueryPos = [lat, lon];
     statusText = "loading...";
     Ui.requestUpdate();
-    client.requestRoadbook(lat, lon, method(:onTowns));
+    lastRequestedPoiMode = poiMode;
+    client.requestRoadbook(lat, lon, poiMode, method(:onRoadbook));
   }
 
-  function onTowns(
-      newTowns as Array, newCourse as Dictionary?, newDestination as Dictionary?,
-      newStatus as String?, errorMessage as String?) as Void {
+  function onRoadbook(
+      newTowns as Array, newPois as Array, newCourse as Dictionary?,
+      newDestination as Dictionary?, newStatus as String?, errorMessage as String?) as Void {
+    // A menu selection can change mode while the previous HTTP request is still in flight. Do not
+    // show that previous screen's empty result under the new heading; immediately request the mode
+    // the rider actually selected now that the client is idle again.
+    if (currentPos != null && !sameMode(lastRequestedPoiMode, poiMode)) {
+      refresh();
+      return;
+    }
     if (errorMessage != null) {
       lastFailedTimeSec = Util.nowSec();
       statusText = errorMessage;
       towns = [] as Array;
+      pois = [] as Array;
       // Destination is rider-relative like the towns, so it goes stale the same way; the course
       // itself is kept - a dropped connection doesn't mean it's gone, and leaving the header up
       // makes clear the error is about this request, not the setup.
@@ -170,13 +193,77 @@ class RoadbookView extends Ui.View {
 
     updatedAgoSec = Util.nowSec();
     towns = newTowns;
+    pois = newPois;
     destination = newDestination;
     if (newStatus != null) {
       statusText = newStatus;
     } else {
-      statusText = newTowns.size() == 0 ? "no upcoming towns" : "";
+      statusText = poiMode == null
+          ? (newTowns.size() == 0 ? "no upcoming towns" : "")
+          : (newPois.size() == 0 ? emptyPoiStatus() : "");
     }
     Ui.requestUpdate();
+  }
+
+  function showPoi(mode as String, title as String) as Void {
+    poiMode = mode;
+    poiTitle = title;
+    lastQueryPos = null;
+    statusText = "loading...";
+    Ui.requestUpdate();
+  }
+
+  // POI rows are drawn in the compact roadbook table, which has no focusable row controls of its
+  // own. Select/tap therefore opens a Menu2 containing the same loaded destinations; selecting one
+  // there saves a temporary waypoint and hands it to Garmin's native navigation.
+  function openPoiNavigationMenu() as Boolean {
+    if (poiMode == null) {
+      return false;
+    }
+    if (pois.size() == 0) {
+      refresh();
+      return true;
+    }
+    var menu = new PoiNavigationMenu(pois, poiTitle);
+    Ui.pushView(menu, new PoiNavigationMenuDelegate(pois, method(:navigationFailed)), Ui.SLIDE_UP);
+    return true;
+  }
+
+  function navigationFailed(message as String) as Void {
+    statusText = message;
+    Ui.requestUpdate();
+  }
+
+  // Returns whether Back was consumed. At the ordinary roadbook level false lets the system close
+  // the widget as before; on a POI screen it first returns to the roadbook and refreshes its data.
+  function showRoadbook() as Boolean {
+    if (poiMode == null) {
+      return false;
+    }
+    poiMode = null;
+    poiTitle = "Roadbook";
+    lastQueryPos = null;
+    statusText = "loading...";
+    refresh();
+    Ui.requestUpdate();
+    return true;
+  }
+
+  private function sameMode(a as String?, b as String?) as Boolean {
+    if (a == null || b == null) {
+      return a == null && b == null;
+    }
+    return a.equals(b);
+  }
+
+  private function emptyPoiStatus() as String {
+    if (poiMode != null && (poiMode as String).equals("water")) {
+      return "no upcoming water";
+    }
+    if (poiMode != null && (poiMode as String).equals("toilet")) {
+      return "no upcoming toilets";
+    }
+    return "no upcoming food";
   }
 
   private function footerText() as String? {

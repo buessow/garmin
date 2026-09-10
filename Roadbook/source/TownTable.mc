@@ -30,7 +30,7 @@ class TownTable {
 
   function draw(
       dc as Gfx.Dc, towns as Array, course as Dictionary?, destination as Dictionary?,
-      statusText as String?, footerText as String?) as Void {
+      statusText as String?, footerText as String?, title as String) as Void {
     var width = dc.getWidth();
     var height = dc.getHeight();
 
@@ -38,7 +38,7 @@ class TownTable {
     dc.clear();
 
     var y = MARGIN;
-    dc.drawText(width / 2, y, HEADER_FONT, "Roadbook", Gfx.TEXT_JUSTIFY_CENTER);
+    dc.drawText(width / 2, y, HEADER_FONT, title, Gfx.TEXT_JUSTIFY_CENTER);
     y += dc.getFontHeight(HEADER_FONT) + 4;
 
     // Read once for the whole screen rather than per row, so every arrival time drawn - here for
@@ -136,7 +136,12 @@ class TownTable {
         var peakName = town[:name];
         name = peakName == null ? altitude : (peakName as String) + " " + altitude;
       } else {
-        name = town[:name] as String;
+        var displayName = town[:displayName];
+        name = displayName == null ? town[:name] as String : displayName as String;
+        var offRouteMeter = town[:offRouteMeter];
+        if (offRouteMeter != null) {
+          name += " (" + formatDistance(offRouteMeter as Number) + " off)";
+        }
       }
       if (larger) {
         name = name.toUpper();

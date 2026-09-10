@@ -3,13 +3,14 @@ import Toybox.Lang;
 using Toybox.Application.Properties;
 using Toybox.WatchUi as Ui;
 
-// In-app settings screen, opened via InputHandler.onMenu(). AppBase.getSettingsView() only
+// In-app settings screen, opened from RoadbookMenu. AppBase.getSettingsView() only
 // applies to watch faces and data fields (not watch-app, what this is), so there's no
 // system-provided settings entry point here - this has to be self-built and self-triggered.
 class SettingsMenu extends Ui.Menu2 {
   private var passcodeItem as Ui.MenuItem;
   private var serverUrlItem as Ui.MenuItem;
   private var countItem as Ui.MenuItem;
+  private var poiCountItem as Ui.MenuItem;
   private var bufferMeterItem as Ui.MenuItem;
   private var offCourseMeterItem as Ui.MenuItem;
   private var versionItem as Ui.MenuItem;
@@ -22,6 +23,8 @@ class SettingsMenu extends Ui.Menu2 {
         "Server URL", Properties.getValue("ServerUrl") as String, :serverUrl, {});
     countItem = new Ui.MenuItem(
         "Towns to show", formatCount(Properties.getValue("Count") as Number), :count, {});
+    poiCountItem = new Ui.MenuItem(
+        "POIs to show", formatPoiCount(Properties.getValue("PoiCount") as Number), :poiCount, {});
     bufferMeterItem = new Ui.MenuItem(
         "Search radius", formatMeter(Properties.getValue("BufferMeter") as Number), :bufferMeter,
         {});
@@ -36,6 +39,7 @@ class SettingsMenu extends Ui.Menu2 {
     addItem(passcodeItem);
     addItem(serverUrlItem);
     addItem(countItem);
+    addItem(poiCountItem);
     addItem(bufferMeterItem);
     addItem(offCourseMeterItem);
     addItem(versionItem);
@@ -58,16 +62,25 @@ class SettingsMenu extends Ui.Menu2 {
 
   function refreshBufferMeter() as Void {
     bufferMeterItem.setSubLabel(formatMeter(Properties.getValue("BufferMeter") as Number));
-    updateItem(bufferMeterItem, 3);
+    updateItem(bufferMeterItem, 4);
   }
 
   function refreshOffCourseMeter() as Void {
     offCourseMeterItem.setSubLabel(formatMeter(Properties.getValue("OffCourseMeter") as Number));
-    updateItem(offCourseMeterItem, 4);
+    updateItem(offCourseMeterItem, 5);
+  }
+
+  function refreshPoiCount() as Void {
+    poiCountItem.setSubLabel(formatPoiCount(Properties.getValue("PoiCount") as Number));
+    updateItem(poiCountItem, 3);
   }
 
   private function formatCount(count as Number) as String {
     return count.toString() + " towns";
+  }
+
+  private function formatPoiCount(count as Number) as String {
+    return count.toString() + " POIs";
   }
 
   private function formatMeter(meter as Number) as String {
@@ -77,12 +90,10 @@ class SettingsMenu extends Ui.Menu2 {
 
 class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
   private var menu as SettingsMenu;
-  private var view as RoadbookView;
 
-  function initialize(menu as SettingsMenu, view as RoadbookView) {
+  function initialize(menu as SettingsMenu) {
     Ui.Menu2InputDelegate.initialize();
     me.menu = menu;
-    me.view = view;
   }
 
   function onSelect(item as Ui.MenuItem) as Void {
@@ -103,6 +114,12 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
         Ui.pushView(
             new ChoiceMenu("Towns to show", [2, 4, 6, 8, 10], "towns"),
             new ChoiceMenuDelegate("Count", method(:onCountChanged)),
+            Ui.SLIDE_UP);
+        return;
+      case :poiCount:
+        Ui.pushView(
+            new ChoiceMenu("POIs to show", [2, 4, 6, 8, 10], "POIs"),
+            new ChoiceMenuDelegate("PoiCount", method(:onPoiCountChanged)),
             Ui.SLIDE_UP);
         return;
       case :bufferMeter:
@@ -133,6 +150,10 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
     menu.refreshCount();
   }
 
+  function onPoiCountChanged() as Void {
+    menu.refreshPoiCount();
+  }
+
   function onBufferMeterChanged() as Void {
     menu.refreshBufferMeter();
   }
@@ -142,7 +163,6 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
   }
 
   function onBack() as Void {
-    view.refresh();
     Ui.popView(Ui.SLIDE_DOWN);
   }
 }

@@ -8,6 +8,9 @@
   <setting propertyKey="@Properties.Count" title="@Strings.CountTitle">
     <settingConfig type="numeric" min="1" max="10" />
   </setting>
+  <setting propertyKey="@Properties.PoiCount" title="@Strings.PoiCountTitle">
+    <settingConfig type="numeric" min="1" max="10" />
+  </setting>
   <setting propertyKey="@Properties.BufferMeter" title="@Strings.BufferMeterTitle">
     <settingConfig type="numeric" min="50" max="5000" />
   </setting>
