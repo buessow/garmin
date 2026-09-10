@@ -14,7 +14,14 @@ class InputHandler extends Ui.BehaviorDelegate {
     me.view = view;
   }
 
+  // Checked before the POI menu, and before refresh, because right after a download the status line
+  // reads "select to start course" - so for that one press Select has to mean what it says, on a
+  // POI screen as much as on the roadbook. The offer is one-shot, so the next press goes back to
+  // opening the POI menu or refreshing as usual.
   function onSelect() as Boolean {
+    if (view.startImportedCourse()) {
+      return true;
+    }
     if (view.openPoiNavigationMenu()) {
       return true;
     }
@@ -23,6 +30,9 @@ class InputHandler extends Ui.BehaviorDelegate {
   }
 
   function onTap(clickEvent as Ui.ClickEvent) as Boolean {
+    if (view.startImportedCourse()) {
+      return true;
+    }
     if (view.openPoiNavigationMenu()) {
       return true;
     }

@@ -11,6 +11,7 @@ class RoadbookMenu extends Ui.Menu2 {
     addItem(new Ui.MenuItem("Toilet", null, :toilet, {}));
     addItem(new Ui.MenuItem("Restaurant/bar/bakery", null, :food, {}));
     addItem(new Ui.MenuItem("Settings", null, :settings, {}));
+    addItem(new Ui.MenuItem("Download course", null, :downloadCourse, {}));
   }
 }
 
@@ -39,6 +40,12 @@ class RoadbookMenuDelegate extends Ui.Menu2InputDelegate {
       case :settings:
         var settings = new SettingsMenu();
         Ui.pushView(settings, new SettingsMenuDelegate(settings), Ui.SLIDE_UP);
+        return;
+      case :downloadCourse:
+        // Closes the menu first so the roadbook's status line is what reports the outcome - the
+        // request is asynchronous and would otherwise finish behind the menu.
+        Ui.popView(Ui.SLIDE_DOWN);
+        view.downloadCourse();
         return;
     }
   }

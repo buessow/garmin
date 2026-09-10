@@ -26,6 +26,11 @@ class RoadbookView extends Ui.View {
   private var currentPos as [Double, Double]?;
   private var lastQueryPos as [Double, Double]?;
   private var lastFailedTimeSec as Number?;
+  private var courseDownload as CourseDownload? = null;
+  // Set while a freshly imported course is waiting to be started, which is what makes Select do
+  // that instead of its usual manual refresh. Cleared by the next roadbook response, so the offer
+  // never outlives the status line that advertises it.
+  private var courseReadyToStart as Boolean = false;
   private var showingArrival as Boolean = TownTable.showsArrival(Util.nowSec());
   private var poiMode as String?;
   private var poiTitle as String = "Roadbook";
@@ -165,6 +170,7 @@ class RoadbookView extends Ui.View {
     }
     if (errorMessage != null) {
       lastFailedTimeSec = Util.nowSec();
+      courseReadyToStart = false;
       statusText = errorMessage;
       towns = [] as Array;
       pois = [] as Array;
@@ -177,6 +183,10 @@ class RoadbookView extends Ui.View {
     }
 
     lastFailedTimeSec = null;
+    // A fresh roadbook reply overwrites the status line, so the "select to start" offer it was
+    // advertising has to go with it - otherwise Select would silently start a course with nothing
+    // on screen saying it would.
+    courseReadyToStart = false;
     if (newCourse != null) {
       course = newCourse;
     }
@@ -232,6 +242,42 @@ class RoadbookView extends Ui.View {
   function navigationFailed(message as String) as Void {
     statusText = message;
     Ui.requestUpdate();
+  }
+
+  // Held in a field because the request is asynchronous and a local would be collected before the
+  // response callback runs. Reports through the same status line as navigation failures.
+  function downloadCourse() as Void {
+    // Passes the name already on screen, which is the same one the server writes into the FIT file
+    // - that is how CourseDownload recognises its own earlier import of this course.
+    var c = course;
+    courseDownload = new CourseDownload(
+        c == null ? null : c[:name] as String,
+        method(:navigationFailed),
+        method(:courseImported));
+    (courseDownload as CourseDownload).start();
+  }
+
+  function courseImported() as Void {
+    courseReadyToStart = true;
+    // Deliberately not the course name: this line is drawn centred and untruncated, so a long name
+    // would run off the 246px screens. The name is already in the course header above.
+    statusText = "select to start course";
+    Ui.requestUpdate();
+  }
+
+  // Returns whether Select/tap was consumed by starting the course rather than refreshing. Only
+  // ever true right after a download, so the button keeps its usual meaning the rest of the time.
+  function startImportedCourse() as Boolean {
+    if (!courseReadyToStart) {
+      return false;
+    }
+    courseReadyToStart = false;
+    var download = courseDownload;
+    if (download == null) {
+      return false;
+    }
+    download.startImported();
+    return true;
   }
 
   // Returns whether Back was consumed. At the ordinary roadbook level false lets the system close
