@@ -28,6 +28,15 @@ class TownTable {
   // Slow enough to read at a glance on a bike, quick enough that the other value is never far off.
   static const TIME_TOGGLE_SEC = 3;
 
+  // The heading is the least informative thing on screen - the same word every time - so it is
+  // dimmed to the lighter of the two greys and the rows keep the eye.
+  private const TITLE_COLOR = Gfx.COLOR_LT_GRAY;
+  // Teal rather than Gfx.COLOR_BLUE (0x00AAFF), which reads heavy against the black background.
+  // There is no teal constant, and these Edges are 16bpp with no fixed palette, so a literal is
+  // fine - it is quantised to RGB565, which for a flat UI colour is invisible. Blue is kept a shade
+  // above green so a pass can't be taken for the destination's green at a glance.
+  private const PEAK_COLOR = 0x33CCDD;
+
   function draw(
       dc as Gfx.Dc, towns as Array, course as Dictionary?, destination as Dictionary?,
       statusText as String?, footerText as String?, title as String) as Void {
@@ -38,6 +47,8 @@ class TownTable {
     dc.clear();
 
     var y = MARGIN;
+    // clear() above leaves white as the foreground; the heading sets its own from here on.
+    dc.setColor(TITLE_COLOR, Gfx.COLOR_TRANSPARENT);
     dc.drawText(width / 2, y, HEADER_FONT, title, Gfx.TEXT_JUSTIFY_CENTER);
     y += dc.getFontHeight(HEADER_FONT) + 4;
 
@@ -157,7 +168,7 @@ class TownTable {
       }
 
       dc.setColor(
-          peak ? Gfx.COLOR_BLUE : (larger ? Gfx.COLOR_YELLOW : Gfx.COLOR_WHITE),
+          peak ? PEAK_COLOR : (larger ? Gfx.COLOR_YELLOW : Gfx.COLOR_WHITE),
           Gfx.COLOR_TRANSPARENT);
       dc.drawText(MARGIN, y, ROW_FONT, lines[0], Gfx.TEXT_JUSTIFY_LEFT);
       if (lines.size() > 1) {

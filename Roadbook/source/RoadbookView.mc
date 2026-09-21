@@ -31,6 +31,10 @@ class RoadbookView extends Ui.View {
   // that instead of its usual manual refresh. Cleared by the next roadbook response, so the offer
   // never outlives the status line that advertises it.
   private var courseReadyToStart as Boolean = false;
+  // Set while a category picked from the menu is still loading, so its POIs open the selection
+  // menu as soon as they land rather than stopping at the table behind it. One-shot: the later
+  // refreshes that a ride produces must not keep reopening it over whatever the rider is doing.
+  private var openPoiMenuWhenLoaded as Boolean = false;
   private var showingArrival as Boolean = TownTable.showsArrival(Util.nowSec());
   private var poiMode as String?;
   private var poiTitle as String = "Roadbook";
@@ -171,6 +175,8 @@ class RoadbookView extends Ui.View {
     if (errorMessage != null) {
       lastFailedTimeSec = Util.nowSec();
       courseReadyToStart = false;
+      // The error belongs on the table, where it is readable - not behind a menu.
+      openPoiMenuWhenLoaded = false;
       statusText = errorMessage;
       towns = [] as Array;
       pois = [] as Array;
@@ -213,6 +219,17 @@ class RoadbookView extends Ui.View {
           : (newPois.size() == 0 ? emptyPoiStatus() : "");
     }
     Ui.requestUpdate();
+
+    // Picked from the menu and the reply is in: go straight to the selection menu, which is what
+    // the rider is after. Cleared either way - an empty list stays on the table where the status
+    // line explains why, and must not leave the menu armed to spring open later in the ride when
+    // some water finally comes into range.
+    if (openPoiMenuWhenLoaded && poiMode != null) {
+      openPoiMenuWhenLoaded = false;
+      if (newPois.size() > 0) {
+        openPoiNavigationMenu();
+      }
+    }
   }
 
   function showPoi(mode as String, title as String) as Void {
@@ -220,6 +237,9 @@ class RoadbookView extends Ui.View {
     poiTitle = title;
     lastQueryPos = null;
     statusText = "loading...";
+    // The POIs aren't here yet - the request goes out on the next position fix - so the menu can
+    // only be opened once the response arrives. See onTowns.
+    openPoiMenuWhenLoaded = true;
     Ui.requestUpdate();
   }
 
@@ -288,6 +308,7 @@ class RoadbookView extends Ui.View {
     }
     poiMode = null;
     poiTitle = "Roadbook";
+    openPoiMenuWhenLoaded = false;
     lastQueryPos = null;
     statusText = "loading...";
     refresh();
