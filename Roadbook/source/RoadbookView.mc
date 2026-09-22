@@ -3,6 +3,7 @@ import Toybox.Lang;
 using Shared.Log;
 using Shared.RoadbookRefreshPolicy;
 using Shared.Util;
+using Toybox.Application.Storage;
 using Toybox.Graphics as Gfx;
 using Toybox.Position;
 using Toybox.Timer;
@@ -211,6 +212,7 @@ class RoadbookView extends Ui.View {
     towns = newTowns;
     pois = newPois;
     destination = newDestination;
+    cacheForGlance(newDestination);
     if (newStatus != null) {
       statusText = newStatus;
     } else {
@@ -230,6 +232,32 @@ class RoadbookView extends Ui.View {
         openPoiNavigationMenu();
       }
     }
+  }
+
+  // Leaves the remaining ride time where the glance can find it. The glance runs as its own
+  // lifecycle in ~32KB and cannot make a request of its own, so the only thing it ever shows is
+  // what was cached here on the last successful roadbook response. Stored with the moment it was
+  // made, because the figure is a prediction from a point in time - the glance counts it down from
+  // there rather than redisplaying a number that is quietly going stale.
+  //
+  // Written by the widget build too, where nothing reads it. Cheaper than annotating it out, and it
+  // keeps the two builds running identical code.
+  private function cacheForGlance(newDestination as Dictionary?) as Void {
+    if (newDestination == null) {
+      return;
+    }
+    var second = newDestination[:durationSecond];
+    if (second == null) {
+      // No elevation profile on the server side, so no prediction to cache. Leaving the previous
+      // value would be worse than showing nothing: it belongs to a course that may be long gone.
+      Storage.deleteValue("GlanceRemainingSec");
+      Storage.deleteValue("GlanceUpdatedAtSec");
+      Storage.deleteValue("GlanceDestinationName");
+      return;
+    }
+    Storage.setValue("GlanceRemainingSec", second as Number);
+    Storage.setValue("GlanceUpdatedAtSec", Util.nowSec());
+    Storage.setValue("GlanceDestinationName", newDestination[:name] as String);
   }
 
   function showPoi(mode as String, title as String) as Void {

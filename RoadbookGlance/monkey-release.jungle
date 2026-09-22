@@ -1,0 +1,3 @@
+# Release-only overlay, mirroring Roadbook's: drops resources-local/, which is gitignored and holds
+# personal simulator defaults that would otherwise ship as the store app's defaults.
+base.resourcePath = ../Roadbook/resources

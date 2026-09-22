@@ -1,0 +1,33 @@
+<iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
+    <iq:application entry="RoadbookGlanceApp"
+                    id="f98ed7f2f8cb469bbc016478508586f6"
+		    minSdkVersion="3.2.0"
+		    launcherIcon="@Drawables.LauncherIcon"
+		    name="@Strings.AppName"
+		    type="watch-app"
+		    version="1.0.0.pre">
+        <!-- The Edge generation after edge1030/530/830: these dropped widget support, so Roadbook
+             itself cannot build for them. Same sources, packaged as a watch-app whose glance shows
+             the remaining ride time. Glance needs nothing in the manifest - it is enabled purely by
+             AppBase.getGlanceView(), which is the one thing RoadbookGlanceApp adds. -->
+        <iq:products>
+            <iq:product id="edge540"/>
+            <iq:product id="edge550"/>
+            <iq:product id="edge840"/>
+            <iq:product id="edge850"/>
+            <iq:product id="edge1040"/>
+            <iq:product id="edge1050"/>
+            <iq:product id="edgeexplore2"/>
+            <iq:product id="edgemtb"/>
+        </iq:products>
+        <iq:permissions>
+            <iq:uses-permission id="Background"/>
+            <iq:uses-permission id="Communications"/>
+            <iq:uses-permission id="PersistedContent"/>
+            <iq:uses-permission id="Positioning"/>
+        </iq:permissions>
+        <iq:languages>
+            <iq:language>eng</iq:language>
+        </iq:languages>
+    </iq:application>
+</iq:manifest>

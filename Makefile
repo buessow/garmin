@@ -72,10 +72,32 @@ bin/%.iq: %/monkey.jungle %/manifest.xml %/source/_Version.mc %/source/*.mc %/re
 	[ -d "$(@D)" ] || mkdir "$(@D)"
 	monkeyc --jungle $(release_jungles) --output $@ $(MONKEYC_FLAGS) --optimization 3pz --package-app --release
 
+# RoadbookGlance is built from Roadbook's sources and resources - its own directory holds only the
+# glance view and the AppBase subclass that returns it. The pattern rules above glob the target's
+# own directory for sources and resources, so neither can match it; spelled out instead, with the
+# shared inputs listed so an edit to Roadbook rebuilds this too.
+roadbook_glance_dep = RoadbookGlance/monkey.jungle RoadbookGlance/manifest.xml \
+	RoadbookGlance/source/_Version.mc RoadbookGlance/source/*.mc \
+	Roadbook/source/*.mc Roadbook/resources/*/* $(shared_dep)
+
+bin-$(device)/RoadbookGlance.prg: $(roadbook_glance_dep)
+	[ -d "$(@D)" ] || mkdir "$(@D)"
+	monkeyc --jungle RoadbookGlance/monkey.jungle --output $@ $(MONKEYC_FLAGS) \
+		--optimization $(opt) --device $(device)
+
+bin/RoadbookGlance.iq: $(roadbook_glance_dep) | test
+	[ -d "$(@D)" ] || mkdir "$(@D)"
+	monkeyc --jungle "RoadbookGlance/monkey.jungle;RoadbookGlance/monkey-release.jungle" \
+		--output $@ $(MONKEYC_FLAGS) --optimization 3pz --package-app --release
+
 GlucoseDataField: bin-$(device)/GlucoseDataField.prg
 GlucoseWidget: bin-$(device)/GlucoseWidget.prg
 GlucoseWatchFace: bin-$(device)/GlucoseWatchFace.prg
 Roadbook: bin-$(device)/Roadbook.prg
+# Same sources as Roadbook, built as a watch-app with a glance for the Edge generation that dropped
+# widgets. device= must be one of those (edge540/550/840/850/1040/1050/explore2/mtb).
+RoadbookGlance: bin-$(device)/RoadbookGlance.prg
+
 
 .PHONY: test
 test: test_flag = --unit-test

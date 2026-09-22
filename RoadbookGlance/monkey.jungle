@@ -1,0 +1,11 @@
+project.manifest = manifest.xml
+
+# Same app as Roadbook, built for the devices that replaced widgets with glances. Only the glance
+# view and the AppBase subclass that returns it live here; everything else comes from Roadbook's
+# own source, so the two cannot drift apart.
+base.sourcePath = source;../Roadbook/source;../Shared/source
+# All of Roadbook's, shared rather than copied, so the settings defaults have one source of truth.
+# No resources of its own: the version shown in the app comes from BuildInfo.VERSION in the
+# generated _Version.mc, which is built per-app from this manifest.
+base.resourcePath = ../Roadbook/resources;../Roadbook/resources-local
+base.excludeAnnotations = glucose;graph;partNumbers;exclude;fitContributor;showConnected;pumpControl
