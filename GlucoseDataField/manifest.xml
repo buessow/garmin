@@ -4,12 +4,12 @@
     <!-- prod id="815c7328c21248c493ad9ac4682fe6b3"-->
     <iq:application
         entry="GlucoseDataFieldApp"
-        id="815c7328c21248c493ad9ac4682fe6b3"
+        id="1107ca6c2d5644b998d4bcb3793f2b7c"
         launcherIcon="@Drawables.LauncherIcon"
         minSdkVersion="3.3.1"
         name="@Strings.AppName"
         type="datafield"
-        version="1.0.31">
+        version="1.0.32">
         <iq:products>
             <iq:product id='d2airx10'/>
             <iq:product id='d2mach1'/>
@@ -60,6 +60,8 @@
             <iq:product id="fenix847mm"/>
             <iq:product id="fenix8solar47mm"/>
             <iq:product id="fenix8solar51mm"/>
+            <iq:product id="vivoactive5"/>
+            <iq:product id="vivoactive6"/>
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="Background"/>

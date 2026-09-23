@@ -1,0 +1,136 @@
+{
+  "L1/Data1Label": {
+    "dx": -91,
+    "dy": 11,
+    "font": "tiny"
+  },
+  "L1/Data2Label": {
+    "dx": 70,
+    "dy": -52,
+    "font": "tiny",
+    "align": "Left"
+  },
+  "L1/Data3Label": {
+    "dx": 108,
+    "dy": 51,
+    "font": "tiny",
+    "align": "Left"
+  },
+  "L1/Data4Label": {
+    "dx": 24,
+    "dy": -11,
+    "font": "tiny"
+  },
+  "L1/GlucoseLabel": {
+    "dx": -12,
+    "dy": -1,
+    "font": "numberMild"
+  },
+  "L3_Bot/Data1Label": {
+    "dx": -30,
+    "dy": 2,
+    "enabled": true
+  },
+  "L3_Bot/Data2Label": {
+    "dx": 90,
+    "dy": -34,
+    "align": "Left",
+    "enabled": true
+  },
+  "L3_Bot/Data3Label": {
+    "dx": -15,
+    "dy": 45,
+    "enabled": true
+  },
+  "L3_Bot/GlucoseLabel": {
+    "dx": -23,
+    "dy": -3
+  },
+  "L3_Mid/Data1Label": {
+    "dx": -94,
+    "dy": -1,
+    "enabled": true
+  },
+  "L3_Mid/Data2Label": {
+    "dx": 53,
+    "dy": -37,
+    "align": "Left",
+    "enabled": true
+  },
+  "L3_Mid/Data3Label": {
+    "dx": -11,
+    "dy": 39,
+    "enabled": true
+  },
+  "L3_Mid/Data4Label": {
+    "dx": 85,
+    "dy": 3,
+    "align": "Left",
+    "enabled": true
+  },
+  "L3_Mid/GlucoseLabel": {
+    "dy": -6
+  },
+  "L3_Top/Data1Label": {
+    "dx": -12,
+    "dy": -30,
+    "align": "Right"
+  },
+  "L3_Top/Data2Label": {
+    "dx": -2,
+    "dy": -30,
+    "align": "Left"
+  },
+  "L3_Top/Data3Label": {
+    "dx": -93,
+    "dy": 22,
+    "enabled": true
+  },
+  "L3_Top/Data4Label": {
+    "dx": 78,
+    "dy": -8,
+    "align": "Left",
+    "enabled": true
+  },
+  "L3_Top/GlucoseLabel": {
+    "dx": -6,
+    "dy": -17,
+    "font": "large"
+  },
+  "L4_Mid_L/Data1Label": {
+    "enabled": true
+  },
+  "L4_Mid_L/Data2Label": {
+    "enabled": true
+  },
+  "L4_Mid_L/GlucoseLabel": {
+    "dx": -33,
+    "dy": -3
+  },
+  "L4_Mid_R/Data1Label": {
+    "dx": -6,
+    "enabled": true
+  },
+  "L4_Mid_R/Data2Label": {
+    "dx": -5,
+    "dy": 4,
+    "enabled": true
+  },
+  "L4_Mid_R/GlucoseLabel": {
+    "dx": -38,
+    "dy": -1
+  },
+  "L4_Top/Data1Label": {
+    "dx": -4,
+    "dy": -28
+  },
+  "L4_Top/Data2Label": {
+    "dx": -8,
+    "dy": -28
+  },
+  "L4_Top/Data3Label": {
+    "dx": -65,
+    "dy": 25,
+    "enabled": true
+  }
+}

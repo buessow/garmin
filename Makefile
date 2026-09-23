@@ -16,11 +16,27 @@ shared_dep = Shared/source/*.mc Shared/resources/*/*
 df_auto_layout = edge530 edge540 edge830 edge840 edge1030 edge1030bontrager \
 	edge1030plus edge1040 edge1050 edgeexplore2
 
+# Generated the same way, but checked in rather than thrown away: these are meant to be hand-tuned
+# in connectiq_x's editor (--preview --generate), which writes its adjustments to a
+# layout-overrides.json beside the layout.xml and re-applies them on every regeneration. `clean`
+# deliberately leaves them alone - wiping the directory would take the overrides with it.
+df_editable_layout = vivoactive5 vivoactive6
+
 .PHONY: layouts
 layouts:
 	java -jar Tools/connectiq_x-1.0-all.jar \
 			--devices=/Users/robertbuessow/CIQ/Devices \
-			--output=GlucoseDataField --generate $(df_auto_layout)
+			--output=GlucoseDataField --generate $(df_auto_layout) $(df_editable_layout)
+
+# Opens connectiq_x's editor on the checked-in layouts. --generate alongside --preview is what
+# makes an edit stick: it saves the override and rewrites layout.xml as you go. Without it the
+# window is read-only. e.g. `make layout-edit dev=vivoactive5`.
+.PHONY: layout-edit
+layout-edit: dev ?= $(firstword $(df_editable_layout))
+layout-edit:
+	java -jar Tools/connectiq_x-1.0-all.jar \
+			--devices=/Users/robertbuessow/CIQ/Devices \
+			--output=GlucoseDataField --preview --generate $(dev)
 
 # Single device, e.g. `make GlucoseDataField/resources-edge840/layout.xml`.
 GlucoseDataField/resources-edge%/layout.xml: Tools/connectiq_x-1.0-all.jar

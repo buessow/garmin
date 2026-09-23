@@ -33,6 +33,9 @@ class LabelView extends Ui.DataField {
         "L2A_3C_Top"    => :L2A_3C_Top,
         "L2A_Bot"       => :L2A_Bot,
         "L3A_4A_Top"    => :L3A_4A_Top,
+        "L3_Bot"        => :L3_Bot,
+        "L3_Mid"        => :L3_Mid,
+        "L3_Top"        => :L3_Top,
         "L3A_Bot"       => :L3A_Bot,
         "L3A_Mid"       => :L3A_Mid,
         "L3A_Top"       => :L3A_Top,
@@ -49,6 +52,10 @@ class LabelView extends Ui.DataField {
         "L3C_4C_Bot_L"  => :L3C_4C_Bot_L,
         "L3C_4C_Bot_R"  => :L3C_4C_Bot_R,
         "L3C_Top"       => :L3C_Top,
+        "L4_Bot"        => :L4_Bot,
+        "L4_Mid_L"      => :L4_Mid_L,
+        "L4_Mid_R"      => :L4_Mid_R,
+        "L4_Mid"        => :L4_Mid,
         "L4A_Bot"       => :L4A_Bot,
         "L4A_Mid_L"     => :L4A_Mid_L,
         "L4A_Mid_R"     => :L4A_Mid_R,
@@ -225,7 +232,7 @@ class LabelView extends Ui.DataField {
     var title = findDrawableById("TitleLabel") as Ui.Text;
     if (title != null) {
       title.setColor(0xffffff & ~getBackgroundColor());
-    } 
+    }
     (findDrawableById("GlucoseLabel") as Ui.Text).setColor(0xffffff & ~getBackgroundColor());
 
     var connected = Sys.getDeviceSettings().phoneConnected;
